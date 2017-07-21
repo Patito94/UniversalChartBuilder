@@ -1,21 +1,62 @@
 ﻿@{
     ViewBag.Title = "Chart Builder";
 }
-<script src="~/Scripts/Strategies.js"></script>
-<script>
-    var strategy;
-    function runOnLoad() {
-        var position = { posx: 0, posy: 0 }
-        var library = new JSPlumbStrategy();
-        strategy = new LibraryStrategy();
-        strategy.setStrategy(library);
-    }
-    function initStartBtn() {
-        document.getElementById('startbtn').onclick = function () {
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="/Content/main.css">
+    <link rel="stylesheet" href="/Content/jsplumbtoolkit-defaults.css">
+    <link rel="stylesheet" href="~/Content/canvasStyle.css">
+    <link rel="stylesheet" href="/Content/demo.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="/Scripts/jsplumb.js"></script>
+    <script src="~/Scripts/Strategies.js"></script>
+    <script>
+        var strategy;
+        function runOnLoad() {
+            var library = new JSPlumbStrategy();
+            strategy = new LibraryStrategy();
+            strategy.setStrategy(library);
+        }
+        function AddStart() {
             strategy.AddStart(0, 0, 'Start');
         }
-    }
-</script>
-<body onload="runOnLoad()">
-    <button id="startbtn" onclick="initStartBtn()">Start</button>
+    </script>
+</head>
+<body data-demo-id="flowchart" onload="runOnLoad()">
+    <div style="width:100%; white-space:nowrap;">
+        <span style="display: inline-block; vertical-align: top; width:100px">
+            <div id="palette"></div>
+        </span>
+        <span style="display: inline-block; vertical-align: top; width:80%">
+            <div class="jtk-demo-main">
+                <div class="jtk-demo-canvas canvas-wide flowchart-demo jtk-surface jtk-surface-nopan" id="canvas">
+                </div>
+            </div>
+        </span>
+    </div>
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p></p>
+            <button id="modal_editbtn" onclick="EditNode();">Edit</button>
+            <button id="modal_deletebtn" onclick="DeleteNode();">Delete</button>
+        </div>
+
+    </div>
+    <button id="startbtn" onClick="AddStart();">Add start</button>
+    <button id="stopbtn" onClick="AddStop(0,0);">Add stop</button>
+    <button onClick="AddDiv(0,0);">Add action</button>
+    <button onClick="AddDec(0,0);">Add decision</button>
+    <button onclick="Save();">Save</button>
+    <button onclick="loadFile();">Load</button>
+    <button onclick="LOG();">LOG</button>
+    <button onclick="ClearCanvas();">Clear</button>
 </body>
+</html>
