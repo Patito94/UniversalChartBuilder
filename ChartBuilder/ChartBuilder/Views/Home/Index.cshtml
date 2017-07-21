@@ -16,15 +16,19 @@
 	<script src="/Scripts/jsplumb.js"></script>
 	<script src="~/Scripts/Strategies.js"></script>
 
+    @*mxGraph*@
 	<script type="text/javascript">
 		mxBasePath = '../Scripts/src';
 	</script>
 	<script type="text/javascript" src="../Scripts/mxClient.js"></script>
 
+    @*goJS*@
+    <script src="../Scripts/go-1.7.15.js"></script>
+
 	<script>
 		var strategy;
 		function runOnLoad() {
-			var library = new mxGraphStrategy();
+			var library = new GoJsStrategy();
 			strategy = new LibraryStrategy();
 			strategy.setStrategy(library);
 			strategy.Create();
@@ -34,6 +38,12 @@
 		}
 		function AddStop() {
 			strategy.AddStop(0, 0, 'Stop');
+		}
+		function AddDec() {
+		    strategy.AddDec(0, 0, 'Decision');
+		}
+		function AddAct() {
+		    strategy.AddAct(0, 0, 'Action');
 		}
 	</script>
 </head>
@@ -62,8 +72,8 @@
 	</div>
 	<button id="startbtn" onClick="AddStart();">Add start</button>
 	<button id="stopbtn" onClick="AddStop();">Add stop</button>
-	<button onClick="AddDiv(0,0);">Add action</button>
-	<button onClick="AddDec(0,0);">Add decision</button>
+	<button onClick="AddAct();">Add action</button>
+	<button onClick="AddDec();">Add decision</button>
 	<button onclick="Save();">Save</button>
 	<button onclick="loadFile();">Load</button>
 	<button onclick="LOG();">LOG</button>
