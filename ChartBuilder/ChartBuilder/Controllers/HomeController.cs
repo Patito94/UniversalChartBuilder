@@ -10,22 +10,24 @@ namespace ChartBuilder.Controllers
 {
     public class HomeController : Controller
     {
-        string chartPath = HostingEnvironment.ApplicationPhysicalPath + @"Charts\chart.txt";
+        //string chartPath = HostingEnvironment.ApplicationPhysicalPath + @"Charts\chart.txt";
 
         public ActionResult Index()
         {
             return View();
         }
 
-        public JsonResult GetChart()
+        public JsonResult GetChart(string path)
         {
+            string chartPath = HostingEnvironment.ApplicationPhysicalPath + @path;
             string chart = System.IO.File.ReadAllText(chartPath);
             return Json(chart, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
-        public void SaveChart(string chartJson)
+        public void SaveChart(string path, string chartJson)
         {
+            string chartPath = HostingEnvironment.ApplicationPhysicalPath + @path;
             System.IO.File.WriteAllText(chartPath, chartJson);
         }
     }

@@ -45,6 +45,15 @@
 		function AddAct() {
 		    strategy.AddAct(0, 0, 'Action');
 		}
+
+		function Save() {
+		    strategy.Save();
+		}
+
+		function Load() {
+		    strategy.Load();
+		}
+
 	</script>
 </head>
 <body data-demo-id="flowchart" onload="runOnLoad()">
@@ -75,7 +84,7 @@
 	<button onClick="AddAct();">Add action</button>
 	<button onClick="AddDec();">Add decision</button>
 	<button onclick="Save();">Save</button>
-	<button onclick="loadFile();">Load</button>
+	<button onclick="Load();">Load</button>
 	<button onclick="LOG();">LOG</button>
 	<button onclick="ClearCanvas();">Clear</button>
 </body>

@@ -21,6 +21,12 @@ LibraryStrategy.prototype = {
     AddAct: function (posx, posy, text) {
         return this.library.AddAct(posx, posy, text);
     },
+    Save: function () {
+        return this.library.Save();
+    },
+    Load: function () {
+        return this.library.Load();
+    },
 
 };
 
@@ -255,6 +261,10 @@ var JSPlumbStrategy = function () {
             x++;
         }
     }
+
+    this.Save = function () { }
+
+    this.Load = function () { }
 }
 
 var GoJsStrategy = function () {
@@ -492,7 +502,30 @@ var GoJsStrategy = function () {
 
     this.AddDec = function (posx, posy, text) { }
 
-    this.AddAct = function (posx, posy, text) {}
+    this.AddAct = function (posx, posy, text) { }
+
+    this.Save = function () {
+        JSONObj = myDiagram.model.toJson();
+        $.ajax({
+            type: "POST",
+            url: "/Home/SaveChart",
+            data: { path: "Charts/gojsChart.txt" , chartJson: JSONObj }
+        });
+        myDiagram.isModified = false;
+    }
+
+    this.Load = function () {
+        $.ajax({
+            dataType: "json",
+            url: "/Home/GetChart",
+            data: {path: "Charts/gojsChart.txt"},
+            success: function (json) {
+                JSONObj = JSON.parse(json);
+                myDiagram.model = go.Model.fromJson(JSONObj);
+            }
+        });
+        
+    }
 }
 var mxGraphStrategy = function () {
     mxPolyline.prototype.constraints = null;
@@ -605,4 +638,8 @@ var mxGraphStrategy = function () {
             graph.getModel().endUpdate();
         }
     }
+
+    this.Save = function () { }
+
+    this.Load = function () { }
 }
