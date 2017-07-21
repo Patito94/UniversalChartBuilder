@@ -28,7 +28,7 @@
 	<script>
 		var strategy;
 		function runOnLoad() {
-			var library = new mxGraphStrategy();
+		    var library = new GoJsStrategy();
 			strategy = new LibraryStrategy();
 			strategy.setStrategy(library);
 			strategy.Create();
@@ -93,20 +93,12 @@
 		<button id="stopbtn" onClick="AddStop();">Add stop</button>
 		<button onClick="AddAct();">Add action</button>
 		<button onClick="AddDec();">Add decision</button>
-		<button onclick="Save();">Save</button>
-		<button onclick="loadFile();">Load</button>
+		
 		<button onclick="ClearCanvas();">Clear</button>
 	</div>
-<<<<<<< HEAD
-	<button id="startbtn" onClick="AddStart();">Add start</button>
-	<button id="stopbtn" onClick="AddStop();">Add stop</button>
-	<button onClick="AddAct();">Add action</button>
-	<button onClick="AddDec();">Add decision</button>
-	<button onclick="Save();">Save</button>
-	<button onclick="Load();">Load</button>
-	<button onclick="LOG();">LOG</button>
-	<button onclick="ClearCanvas();">Clear</button>
-=======
->>>>>>> 859dd4dc2c11d893bdb429347812bb59edb10d43
+    <div style="text-align:center;">
+        <button onclick="Save();">Save</button>
+        <button onclick="Load();">Load</button>
+    </div>
 </body>
 </html>

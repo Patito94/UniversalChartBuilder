@@ -21,7 +21,7 @@ LibraryStrategy.prototype = {
     AddAct: function (posx, posy, text) {
         return this.library.AddAct(posx, posy, text);
     },
-<<<<<<< HEAD
+
     Save: function () {
         return this.library.Save();
     },
@@ -29,14 +29,12 @@ LibraryStrategy.prototype = {
         return this.library.Load();
     },
 
-=======
     EditNode: function () {
         return this.library.EditNode();
     },
     DeleteNode: function () {
         return this.library.DeleteNode();
     }
->>>>>>> 859dd4dc2c11d893bdb429347812bb59edb10d43
 };
 
 var JSPlumbStrategy = function () {
@@ -547,7 +545,6 @@ var GoJsStrategy = function () {
     this.AddDec = function (posx, posy, text) { }
 
     this.AddAct = function (posx, posy, text) { }
-<<<<<<< HEAD
 
     this.Save = function () {
         JSONObj = myDiagram.model.toJson();
@@ -571,8 +568,7 @@ var GoJsStrategy = function () {
         });
         
     }
-=======
->>>>>>> 859dd4dc2c11d893bdb429347812bb59edb10d43
+
 }
 var mxGraphStrategy = function () {
     mxPolyline.prototype.constraints = null;
@@ -687,7 +683,16 @@ var mxGraphStrategy = function () {
         }
     }
 
-    this.Save = function () { }
+    this.Save = function () {
+        var encoder = new mxCodec();
+        var node = encoder.encode(graph.getModel());
+        var xmlString = mxUtils.getXml(node);
+        $.ajax({
+            type: "POST",
+            url: "/Home/SaveChart",
+            data: { path: "Charts/mxgChart.txt", chartJson: xmlString },
+        });
+    }
 
     this.Load = function () { }
 }
