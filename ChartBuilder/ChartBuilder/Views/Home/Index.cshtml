@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "Chart Builder";
+}
+<script src="~/Scripts/Strategies.js"></script>
+<script>
+    var strategy;
+    function runOnLoad() {
+        var position = { posx: 0, posy: 0 }
+        var library = new JSPlumbStrategy();
+        strategy = new LibraryStrategy();
+        strategy.setStrategy(library);
+    }
+    function initStartBtn() {
+        document.getElementById('startbtn').onclick = function () {
+            strategy.AddStart(0, 0, 'Start');
+        }
+    }
+</script>
+<body onload="runOnLoad()">
+    <button id="startbtn" onclick="initStartBtn()">Start</button>
+</body>
