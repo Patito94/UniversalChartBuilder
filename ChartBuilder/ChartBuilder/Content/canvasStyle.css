@@ -13,55 +13,55 @@ body {
 }
 
 .jtk-bootstrap {
-  min-height:100vh;
-  display:flex;
-  flex-direction: column;  
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-.jtk-bootstrap .jtk-page-container {
-    display:flex;
-    width:100vw;
-    justify-content: center;
-    flex:1;
-  }
+    .jtk-bootstrap .jtk-page-container {
+        display: flex;
+        width: 100vw;
+        justify-content: center;
+        flex: 1;
+    }
 
-  .jtk-bootstrap .jtk-container {
-    width: 60%;
-    max-width:800px;
-  }
+    .jtk-bootstrap .jtk-container {
+        width: 60%;
+        max-width: 800px;
+    }
 
-  .jtk-bootstrap-wide .jtk-container {
-      width: 80%;
-      max-width:1187px;
-  }
+.jtk-bootstrap-wide .jtk-container {
+    width: 80%;
+    max-width: 1187px;
+}
 
-.jtk-demo-main {    
+.jtk-demo-main {
     position: relative;
-    margin-top:100px;
+    margin-top: 100px;
 }
 
-.jtk-demo-main .description {
-    font-size: 13px;
-    margin-top: 25px;
-    padding: 13px;
-    margin-bottom: 22px;
-    background-color: #f4f5ef;
-}
+    .jtk-demo-main .description {
+        font-size: 13px;
+        margin-top: 25px;
+        padding: 13px;
+        margin-bottom: 22px;
+        background-color: #f4f5ef;
+    }
 
-.jtk-demo-main .description li {
-    list-style-type: disc !important;
-}
+        .jtk-demo-main .description li {
+            list-style-type: disc !important;
+        }
 
-.jtk-demo-canvas {    
-    height:550px;
-    max-height:700px;
-    border:1px solid #CCC;
-    background-color:white;
+.jtk-demo-canvas {
+    height: 550px;
+    max-height: 700px;
+    border: 1px solid #CCC;
+    background-color: white;
     display: flex;
 }
 
 .canvas-wide {
-    margin-left:0;
+    margin-left: 0;
 }
 
 .miniview {
@@ -79,8 +79,8 @@ body {
 }
 
 .demo-title {
-    float:left;
-    font-size:18px;
+    float: left;
+    font-size: 18px;
 }
 
 .controls {
@@ -92,13 +92,13 @@ body {
     z-index: 1;
 }
 
-.controls i {
-    background-color: #3E7E9C;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-right: 0;
-    padding: 4px;
-}
+    .controls i {
+        background-color: #3E7E9C;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-right: 0;
+        padding: 4px;
+    }
 
 li {
     list-style-type: none;
@@ -107,58 +107,59 @@ li {
 /* ------------------------ node palette -------------------- */
 
 .sidebar {
-    margin:0;
-    padding:0;
+    margin: 0;
+    padding: 0;
     padding-top: 7px;
     padding-right: 10px;
-    width:150px;
-    float:left;
-    text-align:center;
+    width: 150px;
+    float: left;
+    text-align: center;
     height: 550px;
     background-color: #84acb3;
 }
 
-.sidebar ul li {
-    background-color: #234b5e;
-    border-radius: 11px;
-    color: #f7ebca;
-    cursor: move;
-    margin-bottom: 10px;
-    margin-left: 6px;
-    padding: 8px;
-    width:128px;
-}
+    .sidebar ul li {
+        background-color: #234b5e;
+        border-radius: 11px;
+        color: #f7ebca;
+        cursor: move;
+        margin-bottom: 10px;
+        margin-left: 6px;
+        padding: 8px;
+        width: 128px;
+    }
 
-.sidebar ul {
-    width:100%;
-    padding:0;
-}
+    .sidebar ul {
+        width: 100%;
+        padding: 0;
+    }
 
-.sidebar ul li:hover {
-    background-color: #577a8b;
-}
+        .sidebar ul li:hover {
+            background-color: #577a8b;
+        }
 
-.sidebar i {
-    float:left;
-}
+    .sidebar i {
+        float: left;
+    }
 
 @media (max-width: 600px) {
     .sidebar {
-        float:none;
+        float: none;
         height: 55px;
         width: 100%;
-        padding-top:0;
+        padding-top: 0;
     }
 
-    .sidebar ul li {
-        display:inline-block;
-        margin-top: 7px;
-        width:67px;
-    }
+        .sidebar ul li {
+            display: inline-block;
+            margin-top: 7px;
+            width: 67px;
+        }
+
     .jtk-demo-canvas {
         margin-left: 0;
-        margin-top:10px;
-        height:364px;
+        margin-top: 10px;
+        height: 364px;
     }
 }
 
@@ -167,13 +168,13 @@ li {
 /* ---------------------------------------------------------------------------------------------------- */
 
 .jtk-connector {
-    z-index:9;
+    z-index: 9;
 }
 
 .jtk-endpoint {
-    z-index:12;
-    opacity:0.8;
-    cursor:pointer;
+    z-index: 12;
+    opacity: 0.8;
+    cursor: pointer;
 }
 
 .jtk-overlay {
@@ -181,16 +182,15 @@ li {
     color: #434343;
     font-weight: 400;
     padding: 4px;
-    z-index:10;
-
+    z-index: 10;
 }
 
-.jtk-overlay.jtk-hover {
-    color: #434343;
-}
+    .jtk-overlay.jtk-hover {
+        color: #434343;
+    }
 
 path {
-    cursor:pointer;
+    cursor: pointer;
 }
 
 .delete {
@@ -203,26 +203,26 @@ path {
 
 .add, .edit {
     cursor: pointer;
-    float:right;
+    float: right;
     font-size: 10px;
     line-height: 20px;
-    margin-right:2px;
+    margin-right: 2px;
     padding: 2px;
 }
 
-.edit:hover {
-    color: #ff8000;
-}
+    .edit:hover {
+        color: #ff8000;
+    }
 
 .selected-mode {
-    color:#E4F013;
+    color: #E4F013;
 }
 
 .connect {
-    width:10px;
-    height:10px;
-    background-color:#f76258;
-    position:absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #f76258;
+    position: absolute;
     bottom: 13px;
     right: 5px;
 }
@@ -239,21 +239,61 @@ path {
     padding-right: 10px;
     padding-left: 5px;
     text-transform: uppercase;
-    z-index:100001;
+    z-index: 100001;
 }
 
-.demo-links div {
-    display:inline;
-    margin-right:7px;
-    margin-left:7px;
-}
+    .demo-links div {
+        display: inline;
+        margin-right: 7px;
+        margin-left: 7px;
+    }
 
-.demo-links i {
-    padding:4px;
-}
+    .demo-links i {
+        padding: 4px;
+    }
 
-#palette{
+#palette {
     margin-top: 100px;
     height: 550px;
-    border:1px solid #CCC;
+    border: 1px solid #CCC;
 }
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+    align-content: center;
+}
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+    .close:hover,
+    .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }

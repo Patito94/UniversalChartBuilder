@@ -16,19 +16,19 @@
 	<script src="/Scripts/jsplumb.js"></script>
 	<script src="~/Scripts/Strategies.js"></script>
 
-    @*mxGraph*@
+	@*mxGraph*@
 	<script type="text/javascript">
 		mxBasePath = '../Scripts/src';
 	</script>
 	<script type="text/javascript" src="../Scripts/mxClient.js"></script>
 
-    @*goJS*@
-    <script src="../Scripts/go-1.7.15.js"></script>
+	@*goJS*@
+	<script src="../Scripts/go-1.7.15.js"></script>
 
 	<script>
 		var strategy;
 		function runOnLoad() {
-			var library = new GoJsStrategy();
+			var library = new mxGraphStrategy();
 			strategy = new LibraryStrategy();
 			strategy.setStrategy(library);
 			strategy.Create();
@@ -40,16 +40,24 @@
 			strategy.AddStop(0, 0, 'Stop');
 		}
 		function AddDec() {
-		    strategy.AddDec(0, 0, 'Decision');
+			strategy.AddDec(0, 0, 'Decision');
 		}
 		function AddAct() {
-		    strategy.AddAct(0, 0, 'Action');
+			strategy.AddAct(0, 0, 'Action');
+		}
+
+		//Ez csak JSPlumb esetén van:
+		function DeleteNode() {
+			strategy.DeleteNode();
+		}
+		function EditNode() {
+			strategy.EditNode();
 		}
 	</script>
 </head>
 <body data-demo-id="flowchart" onload="runOnLoad()">
 	<div style="width:100%; white-space:nowrap;">
-		<span style="display: inline-block; vertical-align: top; width:100px">
+		<span style="display: inline-block; vertical-align: top; width:100px; visibility:hidden">
 			<div id="palette"></div>
 		</span>
 		<span style="display: inline-block; vertical-align: top; width:80%">
@@ -59,6 +67,7 @@
 			</div>
 		</span>
 	</div>
+
 	<!-- The Modal -->
 	<div id="myModal" class="modal">
 		<!-- Modal content -->
@@ -68,15 +77,16 @@
 			<button id="modal_editbtn" onclick="EditNode();">Edit</button>
 			<button id="modal_deletebtn" onclick="DeleteNode();">Delete</button>
 		</div>
-
 	</div>
-	<button id="startbtn" onClick="AddStart();">Add start</button>
-	<button id="stopbtn" onClick="AddStop();">Add stop</button>
-	<button onClick="AddAct();">Add action</button>
-	<button onClick="AddDec();">Add decision</button>
-	<button onclick="Save();">Save</button>
-	<button onclick="loadFile();">Load</button>
-	<button onclick="LOG();">LOG</button>
-	<button onclick="ClearCanvas();">Clear</button>
+
+	<div id="buttons" style="text-align:center; visibility:hidden">
+		<button id="startbtn" onClick="AddStart();">Add start</button>
+		<button id="stopbtn" onClick="AddStop();">Add stop</button>
+		<button onClick="AddAct();">Add action</button>
+		<button onClick="AddDec();">Add decision</button>
+		<button onclick="Save();">Save</button>
+		<button onclick="loadFile();">Load</button>
+		<button onclick="ClearCanvas();">Clear</button>
+	</div>
 </body>
 </html>
