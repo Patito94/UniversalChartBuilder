@@ -28,7 +28,7 @@
 	<script>
 		var strategy;
 		function runOnLoad() {
-		    var library = new GoJsStrategy();
+			var library = new GoJsStrategy();
 			strategy = new LibraryStrategy();
 			strategy.setStrategy(library);
 			strategy.Create();
@@ -55,11 +55,15 @@
 		}
 
 		function Save() {
-		    strategy.Save();
+			strategy.Save();
 		}
 
 		function Load() {
-		    strategy.Load();
+			strategy.Load();
+		}
+
+		function Clear() {
+			strategy.Clear();
 		}
 
 	</script>
@@ -94,11 +98,11 @@
 		<button onClick="AddAct();">Add action</button>
 		<button onClick="AddDec();">Add decision</button>
 		
-		<button onclick="ClearCanvas();">Clear</button>
+		<button onclick="Clear();">Clear</button>
 	</div>
-    <div style="text-align:center;">
-        <button onclick="Save();">Save</button>
-        <button onclick="Load();">Load</button>
-    </div>
+	<div style="text-align:center;">
+		<button onclick="Save();">Save</button>
+		<button onclick="Load();">Load</button>
+	</div>
 </body>
 </html>

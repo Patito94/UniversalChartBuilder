@@ -29,7 +29,7 @@ LibraryStrategy.prototype = {
         return this.library.Load();
     },
     Clear: function () {
-        return this.library.clear();
+        return this.library.Clear();
     },
 
 
@@ -385,7 +385,7 @@ var JSPlumbStrategy = function () {
         });
     }
 
-    ClearCanvas = function () {
+    Clear = function () {
         var i = block_array.blocks.length - 1;
         while (i >= 0) {
             jsPlumb.remove(block_array.blocks[i].id);
@@ -785,4 +785,9 @@ var mxGraphStrategy = function () {
     }
 
     this.Load = function () { }
+
+    this.Clear = function()
+    {
+        graph.removeCells(graph.getChildVertices(graph.getDefaultParent()))
+    }
 }
