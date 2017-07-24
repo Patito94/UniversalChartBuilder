@@ -28,30 +28,22 @@
 	<script>
 		var strategy;
 		function runOnLoad() {
-			var library = new GoJsStrategy();
+			var library = new JSPlumbStrategy();
 			strategy = new LibraryStrategy();
 			strategy.setStrategy(library);
 			strategy.Create();
 		}
-		function AddStart() {
-			strategy.AddStart(0, 0, 'Start');
+		function AddStart(x,y,text) {
+			strategy.AddStart(x, y, text);
 		}
-		function AddStop() {
-			strategy.AddStop(0, 0, 'Stop');
+		function AddStop(x,y,text) {
+			strategy.AddStop(x,y,text);
 		}
-		function AddDec() {
-			strategy.AddDec(0, 0, 'Decision');
+		function AddDec(x,y,text) {
+			strategy.AddDec(x,y,text);
 		}
-		function AddAct() {
-			strategy.AddAct(0, 0, 'Action');
-		}
-
-		//Ez csak JSPlumb esetén van:
-		function DeleteNode() {
-			strategy.DeleteNode();
-		}
-		function EditNode() {
-			strategy.EditNode();
+		function AddAct(x,y,text) {
+			strategy.AddAct(x,y,text)
 		}
 
 		function Save() {
@@ -66,6 +58,13 @@
 			strategy.Clear();
 		}
 
+		//Ez csak JSPlumb esetén van:
+		function DeleteNode() {
+		    strategy.DeleteNode();
+		}
+		function EditNode() {
+		    strategy.EditNode();
+		}
 	</script>
 </head>
 <body data-demo-id="flowchart" onload="runOnLoad()">
@@ -93,11 +92,10 @@
 	</div>
 
 	<div id="buttons" style="text-align:center; visibility:hidden">
-		<button id="startbtn" onClick="AddStart();">Add start</button>
-		<button id="stopbtn" onClick="AddStop();">Add stop</button>
-		<button onClick="AddAct();">Add action</button>
-		<button onClick="AddDec();">Add decision</button>
-		
+		<button id="startbtn" onClick="AddStart(0,0,'Start');">Add start</button>
+		<button id="stopbtn" onClick="AddStop(0,0,'Stop');">Add stop</button>
+		<button onClick="AddAct(0,0,'Action');">Add action</button>
+		<button onClick="AddDec(0,0,'Decision');">Add decision</button>
 		<button onclick="Clear();">Clear</button>
 	</div>
 	<div style="text-align:center;">

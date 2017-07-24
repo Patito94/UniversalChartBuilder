@@ -32,12 +32,14 @@ LibraryStrategy.prototype = {
         return this.library.Clear();
     },
 
-
     EditNode: function () {
         return this.library.EditNode();
     },
     DeleteNode: function () {
         return this.library.DeleteNode();
+    },
+    jsonToCanvas: function () {
+        return this.library.jsonToCanvas();
     }
 };
 
@@ -168,6 +170,7 @@ var JSPlumbStrategy = function () {
     }
 
     this.AddDec = function (posx, posy, text) {
+        console.log("Ez fut le baszod?");
         if (text == null) {
             text = prompt("Decision name: ", "Some Decision");
             if (text != null) {
@@ -358,18 +361,19 @@ var JSPlumbStrategy = function () {
     }
 
     jsonToCanvas = function () {
-        ClearCanvas();
+        this.Clear();
         var length = load_array.loadblocks.length;
         for (i = 0; i < length; i++) {
             switch (load_array.loadblocks[i].type) {
                 case "dec":
-                    this.AddDec(load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, load_array.loadblocks[i].name, "Decision");
+                    this.AddDec(load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, load_array.loadblocks[i].name);
                     break;
                 case "start":
-                    AddStart(load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, "Startoooooo");
+                    this.AddStart(load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, "Start");
+                    console.log(load_array.loadblocks[i].position.posX + " ," + load_array.loadblocks[i].position.posY);
                     break;
                 case "div":
-                    this.AddAct(load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, load_array.loadblocks[i].name, "Action");
+                    this.AddAct(load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, load_array.loadblocks[i].name);
                     break;
                 case "stop":
                     this.AddStop(load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, "Stop");
@@ -399,7 +403,6 @@ var JSPlumbStrategy = function () {
     }
 
 }
-
 var GoJsStrategy = function () {
     var JSONObj;
     this.Create = function () {
