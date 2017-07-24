@@ -84,7 +84,7 @@ var JSPlumbStrategy = function () {
     this.DeleteNode = function () {
         modal.style.display = "none";
         console.log(thisid);
-        
+
         jsPlumb.remove(thisid);
         for (i = 0; i < block_array.blocks.length; i++) {
             if (thisid == block_array.blocks[i].id) {
@@ -341,7 +341,7 @@ var JSPlumbStrategy = function () {
         $.ajax({
             type: "POST",
             url: "/Home/SaveChart",
-            data: { path: "Charts/jsplumChart.txt" , chartJson: JSONObj }
+            data: { path: "Charts/jsplumChart.txt", chartJson: JSONObj }
         });
     }
 
@@ -366,7 +366,7 @@ var JSPlumbStrategy = function () {
                     this.AddDec(load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, load_array.loadblocks[i].name, "Decision");
                     break;
                 case "start":
-                    AddStart(load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, "Startoooooo");
+                    this.AddStart(load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, "Start");
                     break;
                 case "div":
                     this.AddAct(load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, load_array.loadblocks[i].name, "Action");
@@ -637,26 +637,61 @@ var GoJsStrategy = function () {
     this.AddAct = function (posx, posy, text) { }
 
     this.Save = function () {
-        JSONObj = myDiagram.model.toJson();
-        $.ajax({
-            type: "POST",
-            url: "/Home/SaveChart",
-            data: { path: "Charts/gojsChart.txt" , chartJson: JSONObj }
-        });
-        myDiagram.isModified = false;
+        //JSONObj = myDiagram.model.toJson();
+        //$.ajax({
+        //    type: "POST",
+        //    url: "/Home/SaveChart",
+        //    data: { path: "Charts/gojsChart.txt" , chartJson: JSONObj }
+        //});
+        //myDiagram.isModified = false;
+
+        //console.log(myDiagram.model.linkDataArray);
+
+
+        //myDiagram.model.nodeDataArray = [
+        //{ key: "0", category: "", text: "kiskutya" },
+        //{ key: "1", category: "Start", loc: "100 100" }
+
+        //];
+
+        nodeData = [];
+
+        for (var i = 0; i < myDiagram.model.nodeDataArray.length; i++) {
+            item = myDiagram.model.nodeDataArray[i];
+            nodeData[i] = ["id:" + item.key, "category:" + item.category, "loc:" + item.loc];
+        }
+
+        linkData = [];
+
+        for (var i = 0; i < myDiagram.model.linkDataArray.length; i++) {
+            link = myDiagram.model.linkDataArray[i];
+            linkData[i] = ["from:" + link.from, "to:" + link.to];
+        }
+
+
+
+        var JSONObj = "";
+        JSONObj += "{\"blocks\":";
+        JSONObj += JSON.stringify(nodeData);
+        JSONObj += ",\"connections\":";
+        JSONObj += JSON.stringify(linkData);
+        JSONObj += "}";
+        console.log(JSONObj);
+
+        //console.log(myDiagram.model.nodeDataArray[1].category);
     }
 
     this.Load = function () {
         $.ajax({
             dataType: "json",
             url: "/Home/GetChart",
-            data: {path: "Charts/gojsChart.txt"},
+            data: { path: "Charts/gojsChart.txt" },
             success: function (json) {
                 JSONObj = JSON.parse(json);
                 myDiagram.model = go.Model.fromJson(JSONObj);
             }
         });
-        
+
     }
 
 }
@@ -667,6 +702,7 @@ var mxGraphStrategy = function () {
     // from the onLoad event handler of the document (see below).
     var graph;
     var parent;
+    var nodes = [];
 
     //Set Anchors:
     var topCenter = new mxConnectionConstraint(new mxPoint(0.5, 0), true);
@@ -717,6 +753,8 @@ var mxGraphStrategy = function () {
         try {
             var v1 = graph.insertVertex(parent, null, text, posx, posy, 100, 50);
             v1.setConnectable(false);
+            nodes.push(v1.id);
+            console.log(nodes);
             var port = graph.insertVertex(v1, null, '', 0.5, 1.0, 16, 16, 'port;image=/Content/dot.gif', true);
             port.geometry.offset = new mxPoint(-6, -6);
         }
@@ -730,6 +768,7 @@ var mxGraphStrategy = function () {
         try {
             var v1 = graph.insertVertex(parent, null, text, posx, posy, 100, 50);
             v1.setConnectable(false);
+            nodes.push(v1.id);
             var port = graph.insertVertex(v1, null, '', 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
             port.geometry.offset = new mxPoint(-6, -8);
         }
@@ -744,6 +783,7 @@ var mxGraphStrategy = function () {
         try {
             var v1 = graph.insertVertex(parent, null, text, posx, posy, 100, 50);
             v1.setConnectable(false);
+            nodes.push(v1.id);
             var port = graph.insertVertex(v1, null, '', 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
             var port2 = graph.insertVertex(v1, null, '', 0, 0.5, 16, 16, 'port;image=/Content/dot.gif', true);
             var port3 = graph.insertVertex(v1, null, '', 1, 0.5, 16, 16, 'port;image=/Content/dot.gif', true);
@@ -762,6 +802,7 @@ var mxGraphStrategy = function () {
         try {
             var v1 = graph.insertVertex(parent, null, text, posx, posy, 100, 50);
             v1.setConnectable(false);
+            nodes.push(v1.id);
             var port = graph.insertVertex(v1, null, '', 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
             var port2 = graph.insertVertex(v1, null, '', 0.5, 1, 16, 16, 'port;image=/Content/dot.gif', true);
             port.geometry.offset = new mxPoint(-8, -8);
@@ -775,19 +816,30 @@ var mxGraphStrategy = function () {
 
     this.Save = function () {
         var encoder = new mxCodec();
-        var node = encoder.encode(graph.getModel());
-        var xmlString = mxUtils.getXml(node);
-        $.ajax({
-            type: "POST",
-            url: "/Home/SaveChart",
-            data: { path: "Charts/mxgChart.txt", chartJson: xmlString },
-        });
+        //var node = encoder.encode(graph.getModel());
+        //var xmlString = mxUtils.getXml(node);
+        //$.ajax({
+        //    type: "POST",
+        //    url: "/Home/SaveChart",
+        //    data: { path: "Charts/mxgChart.txt", chartJson: xmlString },
+        //});
+
+        console.log(encoder.encode(graph.getModel()));
+
+        console.log(graph.getModel().getCell(0));
+        console.log(graph.getModel().getCell(1));
+
+        for (var i = 0; i < nodes.length; i++) {
+            console.log(graph.getModel().getCell(nodes[i]).geometry.x);
+        }
+
+
+
     }
 
     this.Load = function () { }
 
-    this.Clear = function()
-    {
+    this.Clear = function () {
         graph.removeCells(graph.getChildVertices(graph.getDefaultParent()))
     }
 }
