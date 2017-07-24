@@ -28,6 +28,10 @@ LibraryStrategy.prototype = {
     Load: function () {
         return this.library.Load();
     },
+    Clear: function () {
+        return this.library.clear();
+    },
+
 
     EditNode: function () {
         return this.library.EditNode();
@@ -305,9 +309,95 @@ var JSPlumbStrategy = function () {
         }
     }
 
-    this.Save = function () { }
+    this.Save = function () {
+        for (i = 0; i < block_array.blocks.length; i++) {
+            block_array.blocks[i].position.posX = document.getElementById(block_array.blocks[i].id).offsetLeft;
+            block_array.blocks[i].position.posY = document.getElementById(block_array.blocks[i].id).offsetTop;
+        }
+        $.each(jsPlumb.getConnections(), function (idx, connection) {
+            connections_array.connections.push({
+                connectionId: connection.id,
+                pageSourceId: connection.sourceId,
+                pageTargetId: connection.targetId,
+                anchors: $.map(connection.endpoints, function (endpoint) {
 
-    this.Load = function () { }
+                    return [[endpoint.anchor.x,
+                    endpoint.anchor.y,
+                    endpoint.anchor.orientation[0],
+                    endpoint.anchor.orientation[1],
+                    endpoint.anchor.offsets[0],
+                    endpoint.anchor.offsets[1]]];
+
+                })
+            });
+        });
+        var JSONObj = "";
+        JSONObj += "{\"loadblocks\":";
+        JSONObj += JSON.stringify(block_array.blocks);
+        JSONObj += ",\"loadconnections\":";
+        JSONObj += JSON.stringify(connections_array.connections);
+        JSONObj += "}";
+
+        $.ajax({
+            type: "POST",
+            url: "/Home/SaveChart",
+            data: { path: "Charts/jsplumChart.txt" , chartJson: JSONObj }
+        });
+    }
+
+    this.Load = function () {
+        $.ajax({
+            dataType: "json",
+            url: "/Home/GetChart",
+            data: { path: "Charts/jsplumChart.txt" },
+            success: function (json) {
+                load_array = JSON.parse(json);
+                jsonToCanvas();
+            }
+        });
+    }
+
+    jsonToCanvas = function () {
+        ClearCanvas();
+        var length = load_array.loadblocks.length;
+        for (i = 0; i < length; i++) {
+            switch (load_array.loadblocks[i].type) {
+                case "dec":
+                    this.AddDec(load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, load_array.loadblocks[i].name, "Decision");
+                    break;
+                case "start":
+                    AddStart(load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, "Startoooooo");
+                    break;
+                case "div":
+                    this.AddAct(load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, load_array.loadblocks[i].name, "Action");
+                    break;
+                case "stop":
+                    this.AddStop(load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, "Stop");
+                    break;
+            }
+        }
+        $.each(load_array.loadconnections, function (index, elem) {
+            var connection1 = jsPlumb.connect({
+                source: elem.pageSourceId,
+                target: elem.pageTargetId,
+                anchors: elem.anchors
+            });
+        });
+    }
+
+    ClearCanvas = function () {
+        var i = block_array.blocks.length - 1;
+        while (i >= 0) {
+            jsPlumb.remove(block_array.blocks[i].id);
+            i--;
+        }
+        block_array.blocks.splice(0, block_array.blocks.length);
+        connections_array.connections.splice(0, connections_array.connections.length);
+        document.getElementById("startbtn").removeAttribute("disabled");
+        document.getElementById("stopbtn").removeAttribute("disabled");
+        x = 0;
+    }
+
 }
 
 var GoJsStrategy = function () {
