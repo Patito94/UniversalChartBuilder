@@ -1,0 +1,1 @@
+{"loadblocks":[{"name":"Start","id":"flowchartWindow0","type":"start","position":{"posX":108,"posY":62}},{"name":"Stop","id":"flowchartWindow1","type":"stop","position":{"posX":291,"posY":197}}],"loadconnections":[{"connectionId":"con_8","pageSourceId":"flowchartWindow0","pageTargetId":"flowchartWindow1","anchors":[[0.5,1,0,1,0,0],[0.5,0,0,-1,0,0]]}]}
