@@ -428,6 +428,7 @@ var GoJsStrategy = function () {
             }
         });
 
+
         // helper definitions for node templates
 
         function nodeStyle() {
@@ -497,7 +498,10 @@ var GoJsStrategy = function () {
             makePort("B", go.Spot.Bottom, true, false)
           ));
 
+
+
         myDiagram.nodeTemplateMap.add("Start",
+
           $(go.Node, "Spot", nodeStyle(),
             $(go.Panel, "Auto",
               $(go.Shape, "Circle",
@@ -508,6 +512,46 @@ var GoJsStrategy = function () {
             ),
             // three named ports, one on each side except the top, all output only:
             makePort("B", go.Spot.Bottom, true, false)
+          ));
+
+        myDiagram.nodeTemplateMap.add("Action",
+          $(go.Node, "Spot", nodeStyle(),
+            $(go.Panel, "Auto",
+              $(go.Shape, "Rectangle",{ fill: "#00A9C9", stroke: null }),
+              $(go.TextBlock, "Action",
+                {
+                    font: "bold 11pt Helvetica, Arial, sans-serif",
+                    stroke: lightText,
+                    margin: 8,
+                    maxSize: new go.Size(160, NaN),
+                    wrap: go.TextBlock.WrapFit,
+                    editable: true
+                },
+                new go.Binding("text"))
+            ),
+            makePort("T", go.Spot.Top, false, true),
+            makePort("B", go.Spot.Bottom, true, false)
+          ));
+
+        myDiagram.nodeTemplateMap.add("Decision",
+          $(go.Node, "Spot", nodeStyle(),
+            $(go.Panel, "Auto",
+              $(go.Shape, "Diamond",
+                { fill: "#00A9C9", stroke: null }),
+              $(go.TextBlock, "Decision",
+                {
+                    font: "bold 11pt Helvetica, Arial, sans-serif",
+                    stroke: lightText,
+                    margin: 8,
+                    maxSize: new go.Size(160, NaN),
+                    wrap: go.TextBlock.WrapFit,
+                    editable: true
+                },
+                new go.Binding("text"))
+            ),
+            makePort("T", go.Spot.Top, false, true),
+            makePort("L", go.Spot.Left, true, false),
+            makePort("R", go.Spot.Right, true, false),
           ));
 
         myDiagram.nodeTemplateMap.add("End",
@@ -541,43 +585,47 @@ var GoJsStrategy = function () {
             // no ports, because no links are allowed to connect with a comment
           ));
 
-
         // replace the default Link template in the linkTemplateMap
         myDiagram.linkTemplate =
-          $(go.Link,  // the whole link panel
-            {
-                routing: go.Link.AvoidsNodes,
-                curve: go.Link.JumpOver,
-                corner: 5, toShortLength: 4,
-                relinkableFrom: true,
-                relinkableTo: true,
-                reshapable: true,
-                resegmentable: true,
-                // mouse-overs subtly highlight links:
-                mouseEnter: function (e, link) { link.findObject("HIGHLIGHT").stroke = "rgba(30,144,255,0.2)"; },
-                mouseLeave: function (e, link) { link.findObject("HIGHLIGHT").stroke = "transparent"; }
-            },
-            new go.Binding("points").makeTwoWay(),
-            $(go.Shape,  // the highlight shape, normally transparent
-              { isPanelMain: true, strokeWidth: 8, stroke: "transparent", name: "HIGHLIGHT" }),
-            $(go.Shape,  // the link path shape
-              { isPanelMain: true, stroke: "gray", strokeWidth: 2 }),
-            $(go.Shape,  // the arrowhead
-              { toArrow: "standard", stroke: null, fill: "gray" }),
-            $(go.Panel, "Auto",  // the link label, normally not visible
-              { visible: false, name: "LABEL", segmentIndex: 2, segmentFraction: 0.5 },
-              new go.Binding("visible", "visible").makeTwoWay(),
-              $(go.Shape, "RoundedRectangle",  // the label shape
-                { fill: "#F8F8F8", stroke: null }),
-              $(go.TextBlock, "Yes",  // the label
-                {
-                    textAlign: "center",
-                    font: "10pt helvetica, arial, sans-serif",
-                    stroke: "#333333",
-                    editable: true
-                },
-                new go.Binding("text").makeTwoWay())
-            )
+           $(go.Link,
+            { routing: go.Link.Orthogonal, corner: 3 },
+            $(go.Shape),
+            $(go.Shape, { toArrow: "Standard" })
+
+          //$(go.Link,  // the whole link panel
+          //  {
+          //      routing: go.Link.AvoidsNodes,
+          //      curve: go.Link.JumpOver,
+          //      corner: 5, toShortLength: 4,
+          //      relinkableFrom: true,
+          //      relinkableTo: true,
+          //      reshapable: true,
+          //      resegmentable: true,
+          //      // mouse-overs subtly highlight links:
+          //      mouseEnter: function (e, link) { link.findObject("HIGHLIGHT").stroke = "rgba(30,144,255,0.2)"; },
+          //      mouseLeave: function (e, link) { link.findObject("HIGHLIGHT").stroke = "transparent"; }
+          //  },
+          //  new go.Binding("points").makeTwoWay(),
+          //  $(go.Shape,  // the highlight shape, normally transparent
+          //    { isPanelMain: true, strokeWidth: 8, stroke: "transparent", name: "HIGHLIGHT" }),
+          //  $(go.Shape,  // the link path shape
+          //    { isPanelMain: true, stroke: "gray", strokeWidth: 2 }),
+          //  $(go.Shape,  // the arrowhead
+          //    { toArrow: "standard", stroke: null, fill: "gray" }),
+          //  $(go.Panel, "Auto",  // the link label, normally not visible
+          //    { visible: false, name: "LABEL", segmentIndex: 2, segmentFraction: 0.5 },
+          //    new go.Binding("visible", "visible").makeTwoWay(),
+          //    $(go.Shape, "RoundedRectangle",  // the label shape
+          //      { fill: "#F8F8F8", stroke: null }),
+          //    $(go.TextBlock, "Yes",  // the label
+          //      {
+          //          textAlign: "center",
+          //          font: "10pt helvetica, arial, sans-serif",
+          //          stroke: "#333333",
+          //          editable: true
+          //      },
+          //      new go.Binding("text").makeTwoWay())
+          //  )
           );
 
         // Make link labels visible if coming out of a "conditional" node.
@@ -599,8 +647,8 @@ var GoJsStrategy = function () {
                 nodeTemplateMap: myDiagram.nodeTemplateMap,  // share the templates used by myDiagram
                 model: new go.GraphLinksModel([  // specify the contents of the Palette
                   { category: "Start", text: "Start" },
-                  { text: "Step" },
-                  { text: "???", figure: "Diamond" },
+                  { category: "Action", text: "Step" },
+                  { category: "Decision", text: "???", figure: "Diamond" },
                   { category: "End", text: "End" },
                   { category: "Comment", text: "Comment" }
                 ])
@@ -654,28 +702,31 @@ var GoJsStrategy = function () {
 
         //];
 
-        nodeData = {};
+        //nodeData = {};
 
-        for (var i = 0; i < myDiagram.model.nodeDataArray.length; i++) {
-            item = myDiagram.model.nodeDataArray[i];
-            nodeData[i] = { id: item.key, category: item.category, x: +item.loc.split(" ")[0], y: item.loc.split(" ")[1] };
-        }
+        //for (var i = 0; i < myDiagram.model.nodeDataArray.length; i++) {
+        //    item = myDiagram.model.nodeDataArray[i];
+        //    nodeData[i] = { id: item.key, category: item.category, x: +item.loc.split(" ")[0], y: item.loc.split(" ")[1] };
+        //}
 
-        linkData = {};
+        //linkData = {};
 
         for (var i = 0; i < myDiagram.model.linkDataArray.length; i++) {
             link = myDiagram.model.linkDataArray[i];
-            linkData[i] = {from: link.from, to: link.to};
+            //linkData[i] = {from: link.from, to: link.to};
+            console.log(link.fromSpot);
         }
 
 
 
-        var JSONObj = "";
-        JSONObj += "{\"blocks\":";
-        JSONObj += JSON.stringify(nodeData);
-        JSONObj += ",\"connections\":";
-        JSONObj += JSON.stringify(linkData);
-        JSONObj += "}";
+        //var JSONObj = "";
+        //JSONObj += "{\"blocks\":";
+        //JSONObj += JSON.stringify(nodeData);
+        //JSONObj += ",\"connections\":";
+        //JSONObj += JSON.stringify(linkData);
+        //JSONObj += "}";
+
+        console.log(myDiagram.model.linkDataArray);
     }
 
     this.Load = function () {
@@ -705,6 +756,8 @@ var mxGraphStrategy = function () {
     var leftCenter = new mxConnectionConstraint(new mxPoint(0, 0.5), true);
     var rightCenter = new mxConnectionConstraint(new mxPoint(1, 0.5), true);
     var bottomCenter = new mxConnectionConstraint(new mxPoint(0.5, 1), true);
+
+
 
     this.Create = function () {
         document.getElementById("buttons").style.visibility = "visible";
