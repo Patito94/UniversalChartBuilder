@@ -93,7 +93,7 @@ var JSPlumbStrategy = function () {
             }
         }
     }
-    $(document).on("dblclick", "div[name='flowchartWindow']", function () {
+    $(document).on("dblclick", "div[text='flowchartWindow']", function () {
         thisid = this.id;
         openModal();
     });
@@ -107,7 +107,7 @@ var JSPlumbStrategy = function () {
         var Div = $('<div>', {
             id: "flowchartWindow" + x,
             class: 'window jtk-node',
-            name: "flowchartWindow"
+            text: "flowchartWindow"
         })
 .css(
     {
@@ -123,9 +123,9 @@ var JSPlumbStrategy = function () {
         $(Div).addClass('window');
         jsPlumb.addEndpoint($(Div), { anchor: "BottomCenter" }, { isSource: true, isTarget: false });
         block_array.blocks.push({
-            "name": text,
             "id": "flowchartWindow" + x,
-            "type": "start",
+            "type": "Start",
+            "text": text,
             "position": {
                 "posX": posx,
                 "posY": posy
@@ -135,12 +135,44 @@ var JSPlumbStrategy = function () {
         document.getElementById("startbtn").disabled = true;
     }
 
+    LoadStart = function (id, posx, posy, text) {
+        id=String(id);
+        var Div = $('<div>', {
+            id: id,
+            class: 'window jtk-node',
+            text: "flowchartWindow"
+        })
+.css(
+    {
+        top: posy,
+        left: posx,
+        height: '100px',
+        width: '100px',
+        border: 'solid 1px'
+    });
+        Div.appendTo("#canvas");
+        document.getElementById(id).innerHTML = text;
+        jsPlumb.draggable($(Div));
+        $(Div).addClass('window');
+        jsPlumb.addEndpoint($(Div), { anchor: "BottomCenter" }, { isSource: true, isTarget: false });
+        block_array.blocks.push({
+            "id": id,
+            "type": "Start",
+            "text": text,
+            "position": {
+                "posX": posx,
+                "posY": posy
+            }
+        });
+        document.getElementById("startbtn").disabled = true;
+    }
+
     this.AddStop = function (posx, posy, text) {
 
         var Div = $('<div>', {
             id: "flowchartWindow" + x,
             class: 'window jtk-node',
-            name: "flowchartWindow"
+            text: "flowchartWindow"
         })
     .css(
         {
@@ -156,15 +188,47 @@ var JSPlumbStrategy = function () {
         $(Div).addClass('window');
         jsPlumb.addEndpoint($(Div), { anchor: "TopCenter" }, { isSource: false, isTarget: true, maxConnections: -1 });
         block_array.blocks.push({
-            "name": text,
             "id": "flowchartWindow" + x,
-            "type": "stop",
+            "type": "Stop",
+            "text": text,
             "position": {
                 "posX": posx,
                 "posY": posy
             }
         });
         x++;
+        document.getElementById("stopbtn").disabled = true;
+    }
+
+    LoadStop = function (id, posx, posy, text) {
+        id=String(id);
+        var Div = $('<div>', {
+            id: id,
+            class: 'window jtk-node',
+            text: "flowchartWindow"
+        })
+    .css(
+        {
+            top: posy,
+            left: posx,
+            height: '100px',
+            width: '100px',
+            border: 'solid 1px'
+        });
+        Div.appendTo("#canvas");
+        document.getElementById(id).innerHTML = text;
+        jsPlumb.draggable($(Div));
+        $(Div).addClass('window');
+        jsPlumb.addEndpoint($(Div), { anchor: "TopCenter" }, { isSource: false, isTarget: true, maxConnections: -1 });
+        block_array.blocks.push({
+            "id": id,
+            "type": "Stop",
+            "text": text,
+            "position": {
+                "posX": posx,
+                "posY": posy
+            }
+        });
         document.getElementById("stopbtn").disabled = true;
     }
 
@@ -176,7 +240,7 @@ var JSPlumbStrategy = function () {
             {
                 id: "flowchartWindow" + x,
                 class: 'window jtk-node',
-                name: "flowchartWindow"
+                text: "flowchartWindow"
             })
             .css(
             {
@@ -195,9 +259,9 @@ var JSPlumbStrategy = function () {
                 jsPlumb.addEndpoint($(Div), { anchor: "Right" }, { isSource: true, isTarget: false });
                 jsPlumb.addEndpoint($(Div), { anchor: "Left" }, { isSource: true, isTarget: false });
                 block_array.blocks.push({
-                    "name": text,
                     "id": "flowchartWindow" + x,
-                    "type": "dec",
+                    "type": "Dec",
+                    "text": text,
                     "position": {
                         "posX": posx,
                         "posY": posy
@@ -211,7 +275,7 @@ var JSPlumbStrategy = function () {
         {
             id: "flowchartWindow" + x,
             class: 'window jtk-node',
-            name: "flowchartWindow"
+            text: "flowchartWindow"
         })
         .css(
         {
@@ -230,15 +294,88 @@ var JSPlumbStrategy = function () {
             jsPlumb.addEndpoint($(Div), { anchor: "Right" }, { isSource: true, isTarget: false });
             jsPlumb.addEndpoint($(Div), { anchor: "Left" }, { isSource: true, isTarget: false });
             block_array.blocks.push({
-                "name": text,
                 "id": "flowchartWindow" + x,
-                "type": "dec",
+                "type": "Dec",
+                "text": text,
                 "position": {
                     "posX": posx,
                     "posY": posy
                 }
             });
             x++;
+        }
+    }
+
+    LoadDec = function (id, posx, posy, text) {
+        id=String(id);
+        if (text == null) {
+            text = prompt("Decision name: ", "Some Decision");
+            if (text != null) {
+                var Div = $('<div>',
+            {
+                id: id,
+                class: 'window jtk-node',
+                text: "flowchartWindow"
+            })
+            .css(
+            {
+                top: posy,
+                left: posx,
+                height: '100px',
+                width: '100px',
+                border: 'solid 1px'
+            }
+            );
+                Div.appendTo("#canvas");
+                document.getElementById(id).innerHTML = text;
+                jsPlumb.draggable($(Div));
+                $(Div).addClass('window');
+                jsPlumb.addEndpoint($(Div), { anchor: "TopCenter" }, { isSource: false, isTarget: true, maxConnections: -1 });
+                jsPlumb.addEndpoint($(Div), { anchor: "Right" }, { isSource: true, isTarget: false });
+                jsPlumb.addEndpoint($(Div), { anchor: "Left" }, { isSource: true, isTarget: false });
+                block_array.blocks.push({
+                    "id": id,
+                    "type": "Dec",
+                    "text": text,
+                    "position": {
+                        "posX": posx,
+                        "posY": posy
+                    }
+                });
+            }
+        }
+        else if (text != null) {
+            var Div = $('<div>',
+        {
+            id: id,
+            class: 'window jtk-node',
+            text: "flowchartWindow"
+        })
+        .css(
+        {
+            top: posy,
+            left: posx,
+            height: '100px',
+            width: '100px',
+            border: 'solid 1px'
+        }
+        );
+            Div.appendTo("#canvas");
+            document.getElementById(id).innerHTML = text;
+            jsPlumb.draggable($(Div));
+            $(Div).addClass('window');
+            jsPlumb.addEndpoint($(Div), { anchor: "TopCenter" }, { isSource: false, isTarget: true, maxConnections: -1 });
+            jsPlumb.addEndpoint($(Div), { anchor: "Right" }, { isSource: true, isTarget: false });
+            jsPlumb.addEndpoint($(Div), { anchor: "Left" }, { isSource: true, isTarget: false });
+            block_array.blocks.push({
+                "id": id,
+                "type": "Dec",
+                "text": text,
+                "position": {
+                    "posX": posx,
+                    "posY": posy
+                }
+            });
         }
     }
 
@@ -249,7 +386,7 @@ var JSPlumbStrategy = function () {
                 var Div = $('<div>', {
                     id: "flowchartWindow" + x,
                     class: 'window jtk-node',
-                    name: "flowchartWindow"
+                    text: "flowchartWindow"
                 })
             .css(
                 {
@@ -265,10 +402,10 @@ var JSPlumbStrategy = function () {
                 $(Div).addClass('window');
                 jsPlumb.addEndpoint($(Div), { anchor: "TopCenter" }, { isSource: false, isTarget: true, maxConnections: -1 });
                 jsPlumb.addEndpoint($(Div), { anchor: "BottomCenter" }, { isSource: true, isTarget: false });
-                block_array.blocks.push({
-                    "name": text,
+                block_array.blocks.push({                   
                     "id": "flowchartWindow" + x,
-                    "type": "div",
+                    "type": "Act",
+                    "text": text,
                     "position": {
                         "posX": posx,
                         "posY": posy
@@ -281,7 +418,7 @@ var JSPlumbStrategy = function () {
             var Div = $('<div>', {
                 id: "flowchartWindow" + x,
                 class: 'window jtk-node',
-                name: "flowchartWindow"
+                text: "flowchartWindow"
             })
         .css(
             {
@@ -298,9 +435,9 @@ var JSPlumbStrategy = function () {
             jsPlumb.addEndpoint($(Div), { anchor: "TopCenter" }, { isSource: false, isTarget: true, maxConnections: -1 });
             jsPlumb.addEndpoint($(Div), { anchor: "BottomCenter" }, { isSource: true, isTarget: false });
             block_array.blocks.push({
-                "name": text,
                 "id": "flowchartWindow" + x,
-                "type": "div",
+                "type": "Act",
+                "text": text,
                 "position": {
                     "posX": posx,
                     "posY": posy
@@ -310,6 +447,74 @@ var JSPlumbStrategy = function () {
         }
     }
 
+    LoadAct = function (id, posx, posy, text) {
+        id=String(id);
+        if (text == null) {
+            text = prompt("Action name: ", "Some Action");
+            if (text != null) {
+                var Div = $('<div>', {
+                    id: id,
+                    class: 'window jtk-node',
+                    text: "flowchartWindow"
+                })
+            .css(
+                {
+                    top: posy,
+                    left: posx,
+                    height: '100px',
+                    width: '100px',
+                    border: 'solid 1px'
+                });
+                Div.appendTo("#canvas");
+                document.getElementById(id).innerHTML = text;
+                jsPlumb.draggable($(Div));
+                $(Div).addClass('window');
+                jsPlumb.addEndpoint($(Div), { anchor: "TopCenter" }, { isSource: false, isTarget: true, maxConnections: -1 });
+                jsPlumb.addEndpoint($(Div), { anchor: "BottomCenter" }, { isSource: true, isTarget: false });
+                block_array.blocks.push({                   
+                    "id": id,
+                    "type": "Act",
+                    "text": text,
+                    "position": {
+                        "posX": posx,
+                        "posY": posy
+                    }
+                });
+            }
+        }
+        else if (text != null) {
+            var Div = $('<div>', {
+                id: id,
+                class: 'window jtk-node',
+                text: "flowchartWindow"
+            })
+        .css(
+            {
+                top: posy,
+                left: posx,
+                height: '100px',
+                width: '100px',
+                border: 'solid 1px'
+            });
+            Div.appendTo("#canvas");
+            document.getElementById(id).innerHTML = text;
+            jsPlumb.draggable($(Div));
+            $(Div).addClass('window');
+            jsPlumb.addEndpoint($(Div), { anchor: "TopCenter" }, { isSource: false, isTarget: true, maxConnections: -1 });
+            jsPlumb.addEndpoint($(Div), { anchor: "BottomCenter" }, { isSource: true, isTarget: false });
+            block_array.blocks.push({
+                "id": id,
+                "type": "Act",
+                "text": text,
+                "position": {
+                    "posX": posx,
+                    "posY": posy
+                }
+            });
+        }
+    }
+
+
     this.Save = function () {
         for (i = 0; i < block_array.blocks.length; i++) {
             block_array.blocks[i].position.posX = document.getElementById(block_array.blocks[i].id).offsetLeft;
@@ -317,17 +522,18 @@ var JSPlumbStrategy = function () {
         }
         $.each(jsPlumb.getConnections(), function (idx, connection) {
             connections_array.connections.push({
-                connectionId: connection.id,
-                pageSourceId: connection.sourceId,
-                pageTargetId: connection.targetId,
+                //connectionId: connection.id,
+                sourceId: connection.sourceId,
+                targetId: connection.targetId,
                 anchors: $.map(connection.endpoints, function (endpoint) {
 
                     return [[endpoint.anchor.x,
                     endpoint.anchor.y,
-                    endpoint.anchor.orientation[0],
-                    endpoint.anchor.orientation[1],
-                    endpoint.anchor.offsets[0],
-                    endpoint.anchor.offsets[1]]];
+                    //endpoint.anchor.orientation[0],
+                    //endpoint.anchor.orientation[1],
+                    //endpoint.anchor.offsets[0],
+                    //endpoint.anchor.offsets[1]
+                    ]];
 
                 })
             });
@@ -358,29 +564,30 @@ var JSPlumbStrategy = function () {
         });
     }
 
+
     jsonToCanvas = function () {
         this.Clear();
         var length = load_array.loadblocks.length;
         for (i = 0; i < length; i++) {
             switch (load_array.loadblocks[i].type) {
-                case "dec":
-                    this.AddDec(load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, load_array.loadblocks[i].name);
+                case "Dec":
+                    LoadDec(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, load_array.loadblocks[i].text);
                     break;
-                case "start":
-                    this.AddStart(load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, "Start");
+                case "Start":
+                    LoadStart(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, "Start");
                     break;
-                case "div":
-                    this.AddAct(load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, load_array.loadblocks[i].name);
+                case "Act":
+                    LoadAct(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, load_array.loadblocks[i].text);
                     break;
-                case "stop":
-                    this.AddStop(load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, "Stop");
+                case "Stop":
+                    LoadStop(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, "Stop");
                     break;
             }
         }
         $.each(load_array.loadconnections, function (index, elem) {
             var connection1 = jsPlumb.connect({
-                source: elem.pageSourceId,
-                target: elem.pageTargetId,
+                source: elem.sourceId,
+                target: elem.targetId,
                 anchors: elem.anchors
             });
         });
@@ -514,7 +721,7 @@ var GoJsStrategy = function () {
             makePort("B", go.Spot.Bottom, true, false)
           ));
 
-        myDiagram.nodeTemplateMap.add("Action",
+        myDiagram.nodeTemplateMap.add("Act",
           $(go.Node, "Spot", nodeStyle(),
             $(go.Panel, "Auto",
               $(go.Shape, "Rectangle",{ fill: "#00A9C9", stroke: null }),
@@ -533,7 +740,7 @@ var GoJsStrategy = function () {
             makePort("B", go.Spot.Bottom, true, false)
           ));
 
-        myDiagram.nodeTemplateMap.add("Decision",
+        myDiagram.nodeTemplateMap.add("Dec",
           $(go.Node, "Spot", nodeStyle(),
             $(go.Panel, "Auto",
               $(go.Shape, "Diamond",
@@ -554,7 +761,7 @@ var GoJsStrategy = function () {
             makePort("R", go.Spot.Right, true, false),
           ));
 
-        myDiagram.nodeTemplateMap.add("End",
+        myDiagram.nodeTemplateMap.add("Stop",
           $(go.Node, "Spot", nodeStyle(),
             $(go.Panel, "Auto",
               $(go.Shape, "Circle",
@@ -652,9 +859,9 @@ var GoJsStrategy = function () {
                 nodeTemplateMap: myDiagram.nodeTemplateMap,  // share the templates used by myDiagram
                 model: new go.GraphLinksModel([  // specify the contents of the Palette
                   { category: "Start", text: "Start" },
-                  { category: "Action", text: "Step" },
-                  { category: "Decision", text: "???", figure: "Diamond" },
-                  { category: "End", text: "End" }
+                  { category: "Act", text: "Action"},
+                  { category: "Dec", text: "???", figure: "Diamond" },
+                  { category: "Stop", text: "Stop" }
                   //{ category: "Comment", text: "Comment" }
                 ])
             });
@@ -689,6 +896,25 @@ var GoJsStrategy = function () {
 
     this.AddAct = function (posx, posy, text) { }
 
+    portToCoordinate = function(s){
+        switch(s){
+            case "R": return [1,0.5];
+            case "L": return [0,0.5]; 
+            case "T": return [0.5,0];
+            case "B": return [0.5,1];
+        }
+    }
+
+
+    coordinateToPort = function(s){
+        switch(s){
+            case "[1,0.5]": return "R";
+            case "[0,0.5]": return "L";
+            case "[0.5,0]": return "T";
+            case "[0.5,1]": return "B";
+        }
+    }
+
     this.Save = function () {
         //JSONObj = myDiagram.model.toJson();
         //$.ajax({
@@ -707,31 +933,43 @@ var GoJsStrategy = function () {
 
         //];
 
-        //nodeData = {};
+        nodeData = [];
 
-        //for (var i = 0; i < myDiagram.model.nodeDataArray.length; i++) {
-        //    item = myDiagram.model.nodeDataArray[i];
-        //    nodeData[i] = { id: item.key, category: item.category, x: +item.loc.split(" ")[0], y: item.loc.split(" ")[1] };
-        //}
+        for (var i = 0; i < myDiagram.model.nodeDataArray.length; i++) {
+            item = myDiagram.model.nodeDataArray[i];
+            //a koordináta itt lehet negatív is
+            x = parseFloat(item.loc.split(" ")[0]) + (myDiagram.documentBounds.width/2);
+            y = parseFloat(item.loc.split(" ")[1])+(myDiagram.documentBounds.height/2);
+            nodeData[i] = { id: String(item.key), type: item.category, text: item.text, position: {posX: + x, posY: y} };
+        }
 
-        //linkData = {};
+        linkData = [];
 
         for (var i = 0; i < myDiagram.model.linkDataArray.length; i++) {
             link = myDiagram.model.linkDataArray[i];
-            //linkData[i] = {from: link.from, to: link.to};
-            console.log(link.fromSpot);
+            linkData[i] = {sourceId: String(link.from),targetId: String(link.to), anchors:[portToCoordinate(link.fromPort),portToCoordinate(link.toPort)]};
+            
+            //console.log(link.fromPort);
+            //console.log(link.toPort);
         }
 
 
 
-        //var JSONObj = "";
-        //JSONObj += "{\"blocks\":";
-        //JSONObj += JSON.stringify(nodeData);
-        //JSONObj += ",\"connections\":";
-        //JSONObj += JSON.stringify(linkData);
-        //JSONObj += "}";
+        var JSONObj = "";
+        JSONObj += "{\"loadblocks\":";
+        JSONObj += JSON.stringify(nodeData);
+        JSONObj += ",\"loadconnections\":";
+        JSONObj += JSON.stringify(linkData);
+        JSONObj += "}";
 
-        console.log(myDiagram.model.linkDataArray);
+        console.log(JSONObj);
+
+        $.ajax({
+            type: "POST",
+            url: "/Home/SaveChart",
+            data: { path: "Charts/jsplumChart.txt", chartJson: JSONObj }
+        });
+
     }
 
     this.Load = function () {
@@ -744,7 +982,6 @@ var GoJsStrategy = function () {
                 myDiagram.model = go.Model.fromJson(JSONObj);
             }
         });
-
     }
 
 }
@@ -886,7 +1123,8 @@ var mxGraphStrategy = function () {
 
         for (var i = 0; i < nodes.length; i++) {
             item = graph.getModel().getCell(i);
-            nodeData[i] = { id: item.id, category: item.value };
+            console.log();
+            //nodeData[i] = { id: item.id, category: item.value };
         }
 
         //linkData = [];
