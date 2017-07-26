@@ -567,23 +567,28 @@ var GoJsStrategy = function () {
             makePort("T", go.Spot.Top, false, true)
           ));
 
-        myDiagram.nodeTemplateMap.add("Comment",
-          $(go.Node, "Auto", nodeStyle(),
-            $(go.Shape, "File",
-              { fill: "#EFFAB4", stroke: null }),
-            $(go.TextBlock,
-              {
-                  margin: 5,
-                  maxSize: new go.Size(200, NaN),
-                  wrap: go.TextBlock.WrapFit,
-                  textAlign: "center",
-                  editable: true,
-                  font: "bold 12pt Helvetica, Arial, sans-serif",
-                  stroke: '#454545'
-              },
-              new go.Binding("text").makeTwoWay())
-            // no ports, because no links are allowed to connect with a comment
-          ));
+        //myDiagram.nodeTemplateMap.add("Comment",
+        //  $(go.Node, "Auto", nodeStyle(),
+        //    $(go.Shape, "File",
+        //      { fill: "#EFFAB4", stroke: null }),
+        //    $(go.TextBlock,
+        //      {
+        //          margin: 5,
+        //          maxSize: new go.Size(200, NaN),
+        //          wrap: go.TextBlock.WrapFit,
+        //          textAlign: "center",
+        //          editable: true,
+        //          font: "bold 12pt Helvetica, Arial, sans-serif",
+        //          stroke: '#454545'
+        //      },
+        //      new go.Binding("text").makeTwoWay())
+        //    // no ports, because no links are allowed to connect with a comment
+        //  ));
+
+            //A port ne ugráljon
+            myDiagram.model =  $(go.GraphLinksModel,
+          { linkFromPortIdProperty: "fromPort",  // required information:
+          linkToPortIdProperty: "toPort"});
 
         // replace the default Link template in the linkTemplateMap
         myDiagram.linkTemplate =
@@ -649,8 +654,8 @@ var GoJsStrategy = function () {
                   { category: "Start", text: "Start" },
                   { category: "Action", text: "Step" },
                   { category: "Decision", text: "???", figure: "Diamond" },
-                  { category: "End", text: "End" },
-                  { category: "Comment", text: "Comment" }
+                  { category: "End", text: "End" }
+                  //{ category: "Comment", text: "Comment" }
                 ])
             });
 
