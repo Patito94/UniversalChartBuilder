@@ -908,10 +908,10 @@ var GoJsStrategy = function () {
 
     coordinateToPort = function(s){
         switch(s){
-            case "[1,0.5]": return "R";
-            case "[0,0.5]": return "L";
-            case "[0.5,0]": return "T";
-            case "[0.5,1]": return "B";
+            case "1,0.5": return "R";
+            case "0,0.5": return "L";
+            case "0.5,0": return "T";
+            case "0.5,1": return "B";
         }
     }
 
@@ -948,9 +948,6 @@ var GoJsStrategy = function () {
         for (var i = 0; i < myDiagram.model.linkDataArray.length; i++) {
             link = myDiagram.model.linkDataArray[i];
             linkData[i] = {sourceId: String(link.from),targetId: String(link.to), anchors:[portToCoordinate(link.fromPort),portToCoordinate(link.toPort)]};
-            
-            //console.log(link.fromPort);
-            //console.log(link.toPort);
         }
 
 
@@ -961,8 +958,6 @@ var GoJsStrategy = function () {
         JSONObj += ",\"loadconnections\":";
         JSONObj += JSON.stringify(linkData);
         JSONObj += "}";
-
-        console.log(JSONObj);
 
         $.ajax({
             type: "POST",
@@ -976,12 +971,43 @@ var GoJsStrategy = function () {
         $.ajax({
             dataType: "json",
             url: "/Home/GetChart",
-            data: { path: "Charts/gojsChart.txt" },
+            data: { path: "Charts/jsplumChart.txt" },
             success: function (json) {
-                JSONObj = JSON.parse(json);
-                myDiagram.model = go.Model.fromJson(JSONObj);
+                load_array = JSON.parse(json);
+                jsonToCanvas();
             }
         });
+
+        jsonToCanvas = function () {
+            myDiagram.model.nodeDataArray=[];
+            var length = load_array.loadblocks.length;
+            for (i = 0; i < length; i++) {
+                x = parseFloat(load_array.loadblocks[i].position.posX)-(myDiagram.documentBounds.width/2);
+                y=parseFloat(load_array.loadblocks[i].position.posY)-(myDiagram.documentBounds.height/2);
+
+                myDiagram.model.addNodeData({       
+                    key: load_array.loadblocks[i].id,
+                    category: load_array.loadblocks[i].type,
+                    text: load_array.loadblocks[i].text,                   
+                    loc: x + " " + y
+                    
+                });
+
+            }
+            for (i = 0; i < load_array.loadconnections.length; i++) {
+                myDiagram.model.addLinkData({
+                    from:load_array.loadconnections[i].sourceId,
+                    to:load_array.loadconnections[i].targetId,
+                    fromPort: coordinateToPort(String(load_array.loadconnections[i].anchors[0])),
+                    toPort:coordinateToPort(String(load_array.loadconnections[i].anchors[1]))
+
+                });
+                console.log(String(load_array.loadconnections[i].anchors[0]));
+            }
+
+            console.log(myDiagram.model.linkDataArray);
+            //myDiagram.model.nodeDataArray = [ { key: "100", category: "Start", loc: "100 100" }];
+        }
     }
 
 }
