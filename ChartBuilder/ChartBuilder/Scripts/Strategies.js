@@ -659,18 +659,18 @@ var GoJsStrategy = function () {
 
         //];
 
-        nodeData = [];
+        nodeData = {};
 
         for (var i = 0; i < myDiagram.model.nodeDataArray.length; i++) {
             item = myDiagram.model.nodeDataArray[i];
-            nodeData[i] = ["id:" + item.key, "category:" + item.category, "loc:" + item.loc];
+            nodeData[i] = { id: item.key, category: item.category, x: +item.loc.split(" ")[0], y: item.loc.split(" ")[1] };
         }
 
-        linkData = [];
+        linkData = {};
 
         for (var i = 0; i < myDiagram.model.linkDataArray.length; i++) {
             link = myDiagram.model.linkDataArray[i];
-            linkData[i] = ["from:" + link.from, "to:" + link.to];
+            linkData[i] = {from: link.from, to: link.to};
         }
 
 
@@ -707,7 +707,6 @@ var mxGraphStrategy = function () {
     // from the onLoad event handler of the document (see below).
     var graph;
     var parent;
-    var nodes = [];
 
     //Set Anchors:
     var topCenter = new mxConnectionConstraint(new mxPoint(0.5, 0), true);
@@ -753,13 +752,13 @@ var mxGraphStrategy = function () {
         };
     }
 
+
+
     this.AddStart = function (posx, posy, text) {
         graph.getModel().beginUpdate();
         try {
             var v1 = graph.insertVertex(parent, null, text, posx, posy, 100, 50);
             v1.setConnectable(false);
-            nodes.push(v1.id);
-            console.log(nodes);
             var port = graph.insertVertex(v1, null, '', 0.5, 1.0, 16, 16, 'port;image=/Content/dot.gif', true);
             port.geometry.offset = new mxPoint(-6, -6);
         }
@@ -773,7 +772,6 @@ var mxGraphStrategy = function () {
         try {
             var v1 = graph.insertVertex(parent, null, text, posx, posy, 100, 50);
             v1.setConnectable(false);
-            nodes.push(v1.id);
             var port = graph.insertVertex(v1, null, '', 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
             port.geometry.offset = new mxPoint(-6, -8);
         }
@@ -788,7 +786,6 @@ var mxGraphStrategy = function () {
         try {
             var v1 = graph.insertVertex(parent, null, text, posx, posy, 100, 50);
             v1.setConnectable(false);
-            nodes.push(v1.id);
             var port = graph.insertVertex(v1, null, '', 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
             var port2 = graph.insertVertex(v1, null, '', 0, 0.5, 16, 16, 'port;image=/Content/dot.gif', true);
             var port3 = graph.insertVertex(v1, null, '', 1, 0.5, 16, 16, 'port;image=/Content/dot.gif', true);
@@ -807,7 +804,6 @@ var mxGraphStrategy = function () {
         try {
             var v1 = graph.insertVertex(parent, null, text, posx, posy, 100, 50);
             v1.setConnectable(false);
-            nodes.push(v1.id);
             var port = graph.insertVertex(v1, null, '', 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
             var port2 = graph.insertVertex(v1, null, '', 0.5, 1, 16, 16, 'port;image=/Content/dot.gif', true);
             port.geometry.offset = new mxPoint(-8, -8);
@@ -831,20 +827,55 @@ var mxGraphStrategy = function () {
 
         console.log(encoder.encode(graph.getModel()));
 
-        console.log(graph.getModel().getCell(0));
-        console.log(graph.getModel().getCell(1));
+        //console.log(graph.getModel().getCell(0));
+        //console.log(graph.getModel().getCell(2));
+
+        nodeData = [];
+
+        nodes = graph.getChildVertices(graph.getDefaultParent())
 
         for (var i = 0; i < nodes.length; i++) {
-            console.log(graph.getModel().getCell(nodes[i]).geometry.x);
+            item = graph.getModel().getCell(i);
+            nodeData[i] = { id: item.id, category: item.value };
         }
+
+        //linkData = [];
+
+        //edges = graph.getChildEdges(graph.getDefaultParent());
+
+        //for (var i = 0; i < edges.length; i++) {
+        //    item = graph.getModel().getCell(nodes[i]);
+        //    if (item.edge != null) {
+        //        //console.log(item);
+        //    }
+        //}
+
+        console.log(graph.getChildVertices(graph.getDefaultParent()));
+
+        console.log(graph.getChildEdges(graph.getDefaultParent()));
+        
+
+
+        var JSONObj = "";
+        JSONObj += "{\"blocks\":";
+        JSONObj += JSON.stringify(nodeData);
+        JSONObj += "}";
+        console.log(JSONObj);
+
+        //for (var i = 0; i < nodes.length; i++) {
+        //    console.log(graph.getModel().getCell(nodes[i]).geometry.x);
+        //}
 
 
 
     }
 
-    this.Load = function () { }
+    this.Load = function () {
+        graph.setChildEdges(null);
+    }
 
     this.Clear = function () {
         graph.removeCells(graph.getChildVertices(graph.getDefaultParent()))
+        nodes = [];
     }
 }
