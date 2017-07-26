@@ -85,7 +85,6 @@ var JSPlumbStrategy = function () {
 
     this.DeleteNode = function () {
         modal.style.display = "none";
-        console.log(thisid);
 
         jsPlumb.remove(thisid);
         for (i = 0; i < block_array.blocks.length; i++) {
@@ -170,7 +169,6 @@ var JSPlumbStrategy = function () {
     }
 
     this.AddDec = function (posx, posy, text) {
-        console.log("Ez fut le baszod?");
         if (text == null) {
             text = prompt("Decision name: ", "Some Decision");
             if (text != null) {
@@ -370,9 +368,6 @@ var JSPlumbStrategy = function () {
                     break;
                 case "start":
                     this.AddStart(load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, "Start");
-
-                    console.log(load_array.loadblocks[i].position.posX + " ," + load_array.loadblocks[i].position.posY);
-
                     break;
                 case "div":
                     this.AddAct(load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, load_array.loadblocks[i].name);
@@ -681,9 +676,6 @@ var GoJsStrategy = function () {
         JSONObj += ",\"connections\":";
         JSONObj += JSON.stringify(linkData);
         JSONObj += "}";
-        console.log(JSONObj);
-
-        //console.log(myDiagram.model.nodeDataArray[1].category);
     }
 
     this.Load = function () {
@@ -759,7 +751,7 @@ var mxGraphStrategy = function () {
         try {
             var v1 = graph.insertVertex(parent, null, text, posx, posy, 100, 50);
             v1.setConnectable(false);
-            var port = graph.insertVertex(v1, null, '', 0.5, 1.0, 16, 16, 'port;image=/Content/dot.gif', true);
+			            var port = graph.insertVertex(v1, null, '', 0.5, 1.0, 16, 16, 'port;image=/Content/dot.gif', true);
             port.geometry.offset = new mxPoint(-6, -6);
         }
         finally {
@@ -842,7 +834,6 @@ var mxGraphStrategy = function () {
         //linkData = [];
 
         //edges = graph.getChildEdges(graph.getDefaultParent());
-
         //for (var i = 0; i < edges.length; i++) {
         //    item = graph.getModel().getCell(nodes[i]);
         //    if (item.edge != null) {
