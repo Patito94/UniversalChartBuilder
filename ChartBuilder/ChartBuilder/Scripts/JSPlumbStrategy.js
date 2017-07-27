@@ -12,7 +12,7 @@
         loadconnections: []
     }
 
-    var x = 0;
+    var indexer = 0;
     //Modalthings
     var modal = document.getElementById('myModal');
     // Get the button that opens the modal
@@ -59,8 +59,8 @@
     }
 
     this.AddStart = function (posx, posy, text) {
-        LoadStart("flowchartWindow" + x, posx, posy, text);
-        x++;
+        LoadStart("flowchartWindow" + indexer, posx, posy, text);
+        indexer++;
     }
 
     LoadStart = function (id, posx, posy, text) {
@@ -95,8 +95,8 @@
     }
 
     this.AddStop = function (posx, posy, text) {
-        LoadStop("flowchartWindow" + x, posx, posy, text);
-        x++;
+        LoadStop("flowchartWindow" + indexer, posx, posy, text);
+        indexer++;
     }
 
     LoadStop = function (id, posx, posy, text) {
@@ -131,8 +131,8 @@
     }
 
     this.AddDec = function (posx, posy, text) {
-        LoadDec("flowchartWindow" + x,posx,posy,text);
-        x++;
+        LoadDec("flowchartWindow" + indexer,posx,posy,text);
+        indexer++;
     }
 
     LoadDec = function (id, posx, posy, text) {
@@ -209,8 +209,8 @@
     }
 
     this.AddAct = function (posx, posy, text) {
-        LoadAct("flowchartWindow" + x,posx,posy,text);
-        x++;
+        LoadAct("flowchartWindow" + indexer,posx,posy,text);
+        indexer++;
     }
 
     LoadAct = function (id, posx, posy, text) {
@@ -362,7 +362,6 @@
         connections_array.connections.splice(0, connections_array.connections.length);
         document.getElementById("startbtn").removeAttribute("disabled");
         document.getElementById("stopbtn").removeAttribute("disabled");
-        x = 0;
+        indexer = 0;
     }
-
 }
