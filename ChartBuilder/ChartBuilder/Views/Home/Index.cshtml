@@ -35,8 +35,8 @@
 		var strategy;
 		function runOnLoad() {
 		    //var library = new JSPlumbStrategy();
-		    //var library = new GoJsStrategy();
-		    var library = new mxGraphStrategy();
+		    var library = new GoJsStrategy();
+		    //var library = new mxGraphStrategy();
 			strategy = new LibraryStrategy();
 			strategy.setStrategy(library);
 			strategy.Create();
@@ -102,13 +102,13 @@
 	<div id="buttons" style="text-align:center; visibility:hidden">
 		<button id="startbtn" onClick="AddStart(0,0,'Start');">Add start</button>
 		<button id="stopbtn" onClick="AddStop(0,0,'Stop');">Add stop</button>
-		<button onClick="AddAct(0,0,'Action');">Add action</button>
-		<button onClick="AddDec(0,0,'Decision');">Add decision</button>
-		<button onclick="Clear();">Clear</button>
+		<button id="actbtn" onClick="AddAct(0,0,'Action');">Add action</button>
+		<button id="decbtn" onClick="AddDec(0,0,'Decision');">Add decision</button>
 	</div>
 	<div style="text-align:center;">
-		<button onclick="Save();">Save</button>
-		<button onclick="Load();">Load</button>
+		<button id="savebtn" onclick="Save();">Save</button>
+		<button id="loadbtn" onclick="Load();">Load</button>
+        <button id="clearbtn" onclick="Clear();">Clear</button>
 	</div>
 </body>
 </html>

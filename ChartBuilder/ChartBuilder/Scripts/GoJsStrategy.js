@@ -3,6 +3,12 @@
     this.Create = function () {
         var $ = go.GraphObject.make;  // for conciseness in defining templates
         document.getElementById("palette").style.visibility = "visible";
+        //Gombok látszódása
+        document.getElementById("clearbtn").style.visibility = "visible";
+        document.getElementById("startbtn").style.visibility = "visible";
+        document.getElementById("stopbtn").style.visibility = "visible";
+        document.getElementById("decbtn").style.visibility = "visible";
+        document.getElementById("actbtn").style.visibility = "visible";
         myDiagram =
           $(go.Diagram, "canvas",  // must name or refer to the DIV HTML element
             {
@@ -225,13 +231,30 @@
         });
     },
 
-    this.AddStart = function (posx, posy, text) { }
+    this.AddStart = function (posx, posy, text) {
+        CreateNode(posx, posy, text, "Start");
+    }
 
-    this.AddStop = function (posx, posy, text) { }
+    this.AddStop = function (posx, posy, text) {
+        CreateNode(posx, posy, text, "Stop");
+    }
 
-    this.AddDec = function (posx, posy, text) { }
+    this.AddDec = function (posx, posy, text) {
+        CreateNode(posx, posy, text, "Dec");
+    }
 
-    this.AddAct = function (posx, posy, text) { }
+    this.AddAct = function (posx, posy, text) {
+        CreateNode(posx, posy, text, "Act");
+    }
+
+    CreateNode = function(posx,posy,text,cat)
+    {
+        myDiagram.model.addNodeData({
+            category: cat,
+            text: text,
+            loc: posx + " " + posy
+        });
+    }
 
     portToCoordinate = function(s){
         switch(s){
@@ -269,8 +292,6 @@
             linkData[i] = {sourceId: String(link.from),targetId: String(link.to), anchors:[portToCoordinate(link.fromPort),portToCoordinate(link.toPort)]};
         }
 
-
-
         var JSONObj = "";
         JSONObj += "{\"loadblocks\":";
         JSONObj += JSON.stringify(nodeData);
@@ -283,10 +304,10 @@
             url: "/Home/SaveChart",
             data: { path: "Charts/jsplumChart.txt", chartJson: JSONObj }
         });
-
     }
 
     this.Load = function () {
+        Clear();
         $.ajax({
             dataType: "json",
             url: "/Home/GetChart",
@@ -308,8 +329,7 @@
                     key: load_array.loadblocks[i].id,
                     category: load_array.loadblocks[i].type,
                     text: load_array.loadblocks[i].text,                   
-                    loc: x + " " + y
-                    
+                    loc: x + " " + y           
                 });
 
             }
@@ -325,4 +345,9 @@
         }
     }
 
+    this.Clear = function()
+    {
+        myDiagram.model.nodeDataArray = [];
+        myDiagram.model.linkDataArray = [];
+    }
 }
