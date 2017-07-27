@@ -1017,9 +1017,15 @@ var mxGraphStrategy = function () {
             mxUtils.error('Browser is not supported!', 200, false);
         }
         else {
+           
+
             graph = new mxGraph(container);
             graph.setConnectable(true);
             graph.setPortsEnabled(false);
+            //edgek (vonalak) ne legyenek mozgathatóak
+            graph.setAllowDanglingEdges(false);
+            graph.setDisconnectOnMove(false);
+
             style = new Object();
             style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_IMAGE;
             graph.getStylesheet().putCellStyle('port', style);
@@ -1048,6 +1054,7 @@ var mxGraphStrategy = function () {
         };
     }
 
+    
 
 
     this.AddStart = function (posx, posy, text) {
@@ -1260,7 +1267,7 @@ var mxGraphStrategy = function () {
             source = graph.getModel().getCell(load_array.loadconnections[i].sourceId);
             target = graph.getModel().getCell(load_array.loadconnections[i].targetId);
             var sourceCell, targetCell;
-            //megkeresi a source a megfelelő pont indexét
+            //megkeresi a source a megfelelő pontjának indexét
             for(var j=0;j<source.children.length;j++){
                 if(
                     source.children[j].geometry.x == load_array.loadconnections[i].anchors[0][0]
@@ -1268,7 +1275,7 @@ var mxGraphStrategy = function () {
                   )
                     sourceCell= j;
             }
-            //megkeresi a target a megfelelő pont indexét
+            //megkeresi a target a megfelelő pontjának indexét
             for(var j=0;j<target.children.length;j++){
                 if(
                     target.children[j].geometry.x == load_array.loadconnections[i].anchors[1][0]
@@ -1277,7 +1284,7 @@ var mxGraphStrategy = function () {
                     targetCell= j;
             }
 
-          
+            //beilleszti a vonalat
             graph.getModel().beginUpdate();
             try {
                 var e1 = graph.insertEdge(parent, null, "", source.children[sourceCell], target.children[targetCell]);
@@ -1286,8 +1293,6 @@ var mxGraphStrategy = function () {
                 graph.getModel().endUpdate();
             }
         }
-
-
 
     }
 
