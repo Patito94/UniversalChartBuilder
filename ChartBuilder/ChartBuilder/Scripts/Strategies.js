@@ -1025,6 +1025,10 @@ var mxGraphStrategy = function () {
     var rightCenter = new mxConnectionConstraint(new mxPoint(1, 0.5), true);
     var bottomCenter = new mxConnectionConstraint(new mxPoint(0.5, 1), true);
 
+    var load_array = {
+        loadblocks: [],
+        loadconnections: []
+    }
 
 
     this.Create = function () {
@@ -1071,8 +1075,9 @@ var mxGraphStrategy = function () {
         graph.getModel().beginUpdate();
         try {
             var v1 = graph.insertVertex(parent, null, text, posx, posy, 100, 50);
+            v1.setStyle("Start");
             v1.setConnectable(false);
-			            var port = graph.insertVertex(v1, null, '', 0.5, 1.0, 16, 16, 'port;image=/Content/dot.gif', true);
+			var port = graph.insertVertex(v1, null, '', 0.5, 1.0, 16, 16, 'port;image=/Content/dot.gif', true);
             port.geometry.offset = new mxPoint(-6, -6);
         }
         finally {
@@ -1084,6 +1089,7 @@ var mxGraphStrategy = function () {
         graph.getModel().beginUpdate();
         try {
             var v1 = graph.insertVertex(parent, null, text, posx, posy, 100, 50);
+            v1.setStyle("Stop");
             v1.setConnectable(false);
             var port = graph.insertVertex(v1, null, '', 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
             port.geometry.offset = new mxPoint(-6, -8);
@@ -1098,6 +1104,7 @@ var mxGraphStrategy = function () {
         graph.getModel().beginUpdate();
         try {
             var v1 = graph.insertVertex(parent, null, text, posx, posy, 100, 50);
+            v1.setStyle("Dec");
             v1.setConnectable(false);
             var port = graph.insertVertex(v1, null, '', 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
             var port2 = graph.insertVertex(v1, null, '', 0, 0.5, 16, 16, 'port;image=/Content/dot.gif', true);
@@ -1117,6 +1124,24 @@ var mxGraphStrategy = function () {
         try {
             var v1 = graph.insertVertex(parent, null, text, posx, posy, 100, 50);
             v1.setConnectable(false);
+            v1.setStyle("Act");
+            var port = graph.insertVertex(v1, null, '', 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
+            var port2 = graph.insertVertex(v1, null, '', 0.5, 1, 16, 16, 'port;image=/Content/dot.gif', true);
+            port.geometry.offset = new mxPoint(-8, -8);
+            port2.geometry.offset = new mxPoint(-8, -8);
+        }
+        finally {
+            // Updates the display
+            graph.getModel().endUpdate();
+        }
+    }
+
+    LoadAct = function (id, posx, posy, text) {
+        graph.getModel().beginUpdate();
+        try {
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, 100, 50);
+            v1.setConnectable(false);
+            v1.setStyle("Act");
             var port = graph.insertVertex(v1, null, '', 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
             var port2 = graph.insertVertex(v1, null, '', 0.5, 1, 16, 16, 'port;image=/Content/dot.gif', true);
             port.geometry.offset = new mxPoint(-8, -8);
@@ -1138,7 +1163,6 @@ var mxGraphStrategy = function () {
         //    data: { path: "Charts/mxgChart.txt", chartJson: xmlString },
         //});
 
-        console.log(encoder.encode(graph.getModel()));
 
         //console.log(graph.getModel().getCell(0));
         //console.log(graph.getModel().getCell(2));
@@ -1148,43 +1172,71 @@ var mxGraphStrategy = function () {
         nodes = graph.getChildVertices(graph.getDefaultParent())
 
         for (var i = 0; i < nodes.length; i++) {
-            item = graph.getModel().getCell(i);
-            console.log();
-            //nodeData[i] = { id: item.id, category: item.value };
+            item = nodes[i];
+            nodeData[i] = { id: String(item.id), type: item.style, text: item.value, position: {posX: item.geometry.x, posY:item.geometry.y} };
         }
 
-        //linkData = [];
+        linkData = [];
 
-        //edges = graph.getChildEdges(graph.getDefaultParent());
-        //for (var i = 0; i < edges.length; i++) {
-        //    item = graph.getModel().getCell(nodes[i]);
-        //    if (item.edge != null) {
-        //        //console.log(item);
-        //    }
-        //}
+        edges = graph.getChildEdges(graph.getDefaultParent());
 
-        console.log(graph.getChildVertices(graph.getDefaultParent()));
+        for (var i = 0; i < edges.length; i++) {
+            link = edges[i];
+            linkData[i] = {sourceId: String(link.source.parent.id),targetId: String(link.target.parent.id), anchors:[[link.source.geometry.x,link.source.geometry.y],[link.target.geometry.x,link.target.geometry.y]]};
+            console.log(item);
+        }
 
-        console.log(graph.getChildEdges(graph.getDefaultParent()));
-        
-
-
+       
         var JSONObj = "";
-        JSONObj += "{\"blocks\":";
+        JSONObj += "{\"loadblocks\":";
         JSONObj += JSON.stringify(nodeData);
+        JSONObj += ",\"loadconnections\":";
+        JSONObj += JSON.stringify(linkData);
         JSONObj += "}";
         console.log(JSONObj);
 
-        //for (var i = 0; i < nodes.length; i++) {
-        //    console.log(graph.getModel().getCell(nodes[i]).geometry.x);
-        //}
 
-
+        $.ajax({
+            type: "POST",
+            url: "/Home/SaveChart",
+            data: { path: "Charts/jsplumChart.txt", chartJson: JSONObj }
+        });
 
     }
 
     this.Load = function () {
-        graph.setChildEdges(null);
+
+        $.ajax({
+            dataType: "json",
+            url: "/Home/GetChart",
+            data: { path: "Charts/jsplumChart.txt" },
+            success: function (json) {
+                load_array = JSON.parse(json);
+            }
+        });
+
+        this.Clear();
+
+        var length = load_array.loadblocks.length;
+        for (i = 0; i < length; i++) {
+            switch (load_array.loadblocks[i].type) {
+                case "Dec":
+                    //LoadDec(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, load_array.loadblocks[i].text);
+                    break;
+                case "Start":
+                    //LoadStart(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, "Start");
+                    break;
+                case "Act":
+                    //ar efesfkiesfwhoa FASZ 1 = graph.insertVertex(parent, load_array.loadblocks[i].id, load_array.loadblocks[i].text, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, 100, 50);
+                    
+                    LoadAct(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, load_array.loadblocks[i].text);
+                    break;
+                case "Stop":
+                    //LoadStop(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, "Stop");
+                    break;
+            }
+        }
+
     }
 
     this.Clear = function () {
