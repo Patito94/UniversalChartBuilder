@@ -916,28 +916,11 @@ var GoJsStrategy = function () {
     }
 
     this.Save = function () {
-        //JSONObj = myDiagram.model.toJson();
-        //$.ajax({
-        //    type: "POST",
-        //    url: "/Home/SaveChart",
-        //    data: { path: "Charts/gojsChart.txt" , chartJson: JSONObj }
-        //});
-        //myDiagram.isModified = false;
-
-        //console.log(myDiagram.model.linkDataArray);
-
-
-        //myDiagram.model.nodeDataArray = [
-        //{ key: "0", category: "", text: "kiskutya" },
-        //{ key: "1", category: "Start", loc: "100 100" }
-
-        //];
-
         nodeData = [];
 
         for (var i = 0; i < myDiagram.model.nodeDataArray.length; i++) {
             item = myDiagram.model.nodeDataArray[i];
-            //a koordináta itt lehet negatív is
+            //a koordináta itt lehet negatív is, ezért eltoljuk
             x = parseFloat(item.loc.split(" ")[0]) + (myDiagram.documentBounds.width/2);
             y = parseFloat(item.loc.split(" ")[1])+(myDiagram.documentBounds.height/2);
             nodeData[i] = { id: String(item.key), type: item.category, text: item.text, position: {posX: + x, posY: y} };
@@ -1002,11 +985,7 @@ var GoJsStrategy = function () {
                     toPort:coordinateToPort(String(load_array.loadconnections[i].anchors[1]))
 
                 });
-                console.log(String(load_array.loadconnections[i].anchors[0]));
             }
-
-            console.log(myDiagram.model.linkDataArray);
-            //myDiagram.model.nodeDataArray = [ { key: "100", category: "Start", loc: "100 100" }];
         }
     }
 
@@ -1077,7 +1056,22 @@ var mxGraphStrategy = function () {
             var v1 = graph.insertVertex(parent, null, text, posx, posy, 100, 50);
             v1.setStyle("Start");
             v1.setConnectable(false);
-			var port = graph.insertVertex(v1, null, '', 0.5, 1.0, 16, 16, 'port;image=/Content/dot.gif', true);
+            var port = graph.insertVertex(v1, null, '', 0.5, 1.0, 16, 16, 'port;image=/Content/dot.gif', true);
+            
+            port.geometry.offset = new mxPoint(-6, -6);
+        }
+        finally {
+            graph.getModel().endUpdate();
+        }
+    }
+
+    LoadStart = function (id, posx, posy, text) {
+        graph.getModel().beginUpdate();
+        try {
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, 100, 50);
+            v1.setStyle("Start");
+            v1.setConnectable(false);
+            var port = graph.insertVertex(v1, null, '', 0.5, 1.0, 16, 16, 'port;image=/Content/dot.gif', true);
             port.geometry.offset = new mxPoint(-6, -6);
         }
         finally {
@@ -1100,10 +1094,44 @@ var mxGraphStrategy = function () {
         }
     }
 
+    LoadStop = function (id, posx, posy, text) {
+        graph.getModel().beginUpdate();
+        try {
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, 100, 50);
+            v1.setStyle("Stop");
+            v1.setConnectable(false);
+            var port = graph.insertVertex(v1, null, '', 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
+            port.geometry.offset = new mxPoint(-6, -8);
+        }
+        finally {
+            // Updates the display
+            graph.getModel().endUpdate();
+        }
+    }
+
     this.AddDec = function (posx, posy, text) {
         graph.getModel().beginUpdate();
         try {
             var v1 = graph.insertVertex(parent, null, text, posx, posy, 100, 50);
+            v1.setStyle("Dec");
+            v1.setConnectable(false);
+            var port = graph.insertVertex(v1, null, '', 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
+            var port2 = graph.insertVertex(v1, null, '', 0, 0.5, 16, 16, 'port;image=/Content/dot.gif', true);
+            var port3 = graph.insertVertex(v1, null, '', 1, 0.5, 16, 16, 'port;image=/Content/dot.gif', true);
+            port.geometry.offset = new mxPoint(-8, -8);
+            port2.geometry.offset = new mxPoint(-8, -8);
+            port3.geometry.offset = new mxPoint(-8, -8);
+        }
+        finally {
+            // Updates the display
+            graph.getModel().endUpdate();
+        }
+    }
+    
+    LoadDec = function (id, posx, posy, text) {
+        graph.getModel().beginUpdate();
+        try {
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, 100, 50);
             v1.setStyle("Dec");
             v1.setConnectable(false);
             var port = graph.insertVertex(v1, null, '', 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
@@ -1142,6 +1170,7 @@ var mxGraphStrategy = function () {
             var v1 = graph.insertVertex(parent, id, text, posx, posy, 100, 50);
             v1.setConnectable(false);
             v1.setStyle("Act");
+            
             var port = graph.insertVertex(v1, null, '', 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
             var port2 = graph.insertVertex(v1, null, '', 0.5, 1, 16, 16, 'port;image=/Content/dot.gif', true);
             port.geometry.offset = new mxPoint(-8, -8);
@@ -1155,18 +1184,6 @@ var mxGraphStrategy = function () {
 
     this.Save = function () {
         var encoder = new mxCodec();
-        //var node = encoder.encode(graph.getModel());
-        //var xmlString = mxUtils.getXml(node);
-        //$.ajax({
-        //    type: "POST",
-        //    url: "/Home/SaveChart",
-        //    data: { path: "Charts/mxgChart.txt", chartJson: xmlString },
-        //});
-
-
-        //console.log(graph.getModel().getCell(0));
-        //console.log(graph.getModel().getCell(2));
-
         nodeData = [];
 
         nodes = graph.getChildVertices(graph.getDefaultParent())
@@ -1183,7 +1200,6 @@ var mxGraphStrategy = function () {
         for (var i = 0; i < edges.length; i++) {
             link = edges[i];
             linkData[i] = {sourceId: String(link.source.parent.id),targetId: String(link.target.parent.id), anchors:[[link.source.geometry.x,link.source.geometry.y],[link.target.geometry.x,link.target.geometry.y]]};
-            console.log(item);
         }
 
        
@@ -1193,7 +1209,6 @@ var mxGraphStrategy = function () {
         JSONObj += ",\"loadconnections\":";
         JSONObj += JSON.stringify(linkData);
         JSONObj += "}";
-        console.log(JSONObj);
 
 
         $.ajax({
@@ -1204,7 +1219,12 @@ var mxGraphStrategy = function () {
 
     }
 
+
+
     this.Load = function () {
+        this.Clear();
+
+
 
         $.ajax({
             dataType: "json",
@@ -1212,35 +1232,67 @@ var mxGraphStrategy = function () {
             data: { path: "Charts/jsplumChart.txt" },
             success: function (json) {
                 load_array = JSON.parse(json);
+                jsonToCanvas();
             }
         });
+    }
 
-        this.Clear();
-
+    jsonToCanvas = function(){
         var length = load_array.loadblocks.length;
-        for (i = 0; i < length; i++) {
+        for (var i = 0; i < length; i++) {
             switch (load_array.loadblocks[i].type) {
                 case "Dec":
-                    //LoadDec(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, load_array.loadblocks[i].text);
+                    LoadDec(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, load_array.loadblocks[i].text);
                     break;
                 case "Start":
-                    //LoadStart(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, "Start");
+                    LoadStart(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, "Start");
                     break;
                 case "Act":
-                    //ar efesfkiesfwhoa FASZ 1 = graph.insertVertex(parent, load_array.loadblocks[i].id, load_array.loadblocks[i].text, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, 100, 50);
-                    
                     LoadAct(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, load_array.loadblocks[i].text);
                     break;
                 case "Stop":
-                    //LoadStop(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, "Stop");
+                    LoadStop(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, "Stop");
                     break;
             }
         }
 
+        for(var i = 0; i<load_array.loadconnections.length; i++){
+            source = graph.getModel().getCell(load_array.loadconnections[i].sourceId);
+            target = graph.getModel().getCell(load_array.loadconnections[i].targetId);
+            var sourceCell, targetCell;
+            //megkeresi a source a megfelelő pont indexét
+            for(var j=0;j<source.children.length;j++){
+                if(
+                    source.children[j].geometry.x == load_array.loadconnections[i].anchors[0][0]
+                    && source.children[j].geometry.y == load_array.loadconnections[i].anchors[0][1]
+                  )
+                    sourceCell= j;
+            }
+            //megkeresi a target a megfelelő pont indexét
+            for(var j=0;j<target.children.length;j++){
+                if(
+                    target.children[j].geometry.x == load_array.loadconnections[i].anchors[1][0]
+                    && target.children[j].geometry.y == load_array.loadconnections[i].anchors[1][1]
+                  )
+                    targetCell= j;
+            }
+
+          
+            graph.getModel().beginUpdate();
+            try {
+                var e1 = graph.insertEdge(parent, null, "", source.children[sourceCell], target.children[targetCell]);
+            }
+            finally {
+                graph.getModel().endUpdate();
+            }
+        }
+
+
+
     }
 
     this.Clear = function () {
-        graph.removeCells(graph.getChildVertices(graph.getDefaultParent()))
+        var v1 = graph.removeCells(graph.getChildVertices(graph.getDefaultParent()))
         nodes = [];
     }
 }
