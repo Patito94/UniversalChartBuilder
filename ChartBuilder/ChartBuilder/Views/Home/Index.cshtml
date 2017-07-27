@@ -23,14 +23,20 @@
 	<script type="text/javascript" src="../Scripts/mxClient.js"></script>
 
 	@*goJS*@
-	<script src="../Scripts/go-1.7.15.js"></script>
+	<script type="text/javascript" src="../Scripts/go-1.7.15.js"></script>
+
+    <script type="text/javascript" src="../Scripts/JSPlumbStrategy.js"></script>
+
+    <script type="text/javascript" src="../Scripts/GoJsStrategy.js"></script>
+
+    <script type="text/javascript" src="../Scripts/mxGraphStrategy.js"></script>
 
 	<script>
 		var strategy;
 		function runOnLoad() {
-		     var library = new JSPlumbStrategy();
+		    //var library = new JSPlumbStrategy();
 		    //var library = new GoJsStrategy();
-		    //var library = new mxGraphStrategy();
+		    var library = new mxGraphStrategy();
 			strategy = new LibraryStrategy();
 			strategy.setStrategy(library);
 			strategy.Create();
