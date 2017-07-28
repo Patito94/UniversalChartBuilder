@@ -48,10 +48,24 @@
             }
         }
     }
-    $(document).on("dblclick", "div[category='Editable']", function () {
+    $(document).on("click", ".window.jtk-node", function () {
         thisid = this.id;
-        openModal();
+        //openModal();
     });
+
+
+    $('html').keyup(function (e) {
+        if (e.keyCode == 46 && thisid!=null) {
+            jsPlumb.remove(thisid);
+            for (i = 0; i < block_array.blocks.length; i++) {
+                if (thisid == block_array.blocks[i].id) {
+                    block_array.blocks.splice(i, 1);
+                }
+            }
+            thisid = null;
+        }
+    });
+
 
     ///NYÍL LEGYEN
     jsPlumb.bind('connection', function (e) {

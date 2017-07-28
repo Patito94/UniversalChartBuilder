@@ -4,11 +4,9 @@
         var $ = go.GraphObject.make;  // for conciseness in defining templates
         document.getElementById("palette").style.visibility = "visible";
         //Gombok látszódása
-        document.getElementById("clearbtn").style.visibility = "visible";
-        document.getElementById("startbtn").style.visibility = "visible";
-        document.getElementById("stopbtn").style.visibility = "visible";
-        document.getElementById("decbtn").style.visibility = "visible";
-        document.getElementById("actbtn").style.visibility = "visible";
+        document.getElementById("buttons").style.visibility = "visible";
+
+
         myDiagram =
           $(go.Diagram, "canvas",  // must name or refer to the DIV HTML element
             {

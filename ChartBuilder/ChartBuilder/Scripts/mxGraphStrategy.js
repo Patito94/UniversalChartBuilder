@@ -71,8 +71,11 @@
             var v1 = graph.insertVertex(parent, id, text, posx, posy, 100, 50);
             v1.setStyle("Start");
             v1.setConnectable(false);
+            
             var port = graph.insertVertex(v1, null, '', 0.5, 1.0, 16, 16, 'port;image=/Content/dot.gif', true);
             port.geometry.offset = new mxPoint(-6, -6);
+            port.setTerminal(v1, true);
+            
         }
         finally {
             graph.getModel().endUpdate();
@@ -148,6 +151,8 @@
         nodeData = [];
 
         nodes = graph.getChildVertices(graph.getDefaultParent())
+
+        console.log(nodes);
 
         for (var i = 0; i < nodes.length; i++) {
             item = nodes[i];
