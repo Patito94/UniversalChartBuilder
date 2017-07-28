@@ -40,9 +40,9 @@
 	<script>
 		var strategy;
 		function runOnLoad() {
-		    var library = new JSPlumbStrategy();
+		    //var library = new JSPlumbStrategy();
 		    //var library = new GoJsStrategy();
-		    //var library = new mxGraphStrategy();
+		    var library = new mxGraphStrategy();
 			strategy = new LibraryStrategy();
 			strategy.setStrategy(library);
 			strategy.Create();
