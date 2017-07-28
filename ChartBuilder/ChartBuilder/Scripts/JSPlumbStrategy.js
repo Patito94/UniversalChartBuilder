@@ -52,7 +52,11 @@
         thisid = this.id;
         openModal();
     });
-    //End Modalthings
+
+    ///NYÍL LEGYEN
+    jsPlumb.bind('connection', function (e) {
+        jsPlumb.select(e).addOverlay(["Arrow", { width: 20, length: 20, location: 1 }]);
+    });
 
     this.Create = function () {
         document.getElementById("buttons").style.visibility = "visible";
@@ -348,6 +352,9 @@
                 source: elem.sourceId,
                 target: elem.targetId,
                 anchors: elem.anchors
+                //overlays: [
+                //   ["Arrow", { width: 20, length: 20, location: 1 }]
+                //]
             });
         });
     }
