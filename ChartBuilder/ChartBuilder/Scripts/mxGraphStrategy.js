@@ -39,7 +39,13 @@
             graph.getStylesheet().getDefaultEdgeStyle()['edgeStyle'] = 'orthogonalEdgeStyle';
 
             new mxRubberband(graph);
-
+            // Removes cells when [DELETE] is pressed
+            var keyHandler = new mxKeyHandler(graph);
+            keyHandler.bindKey(46, function (evt) {
+                if (graph.isEnabled()) {
+                    graph.removeCells();
+                }
+            });
             parent = graph.getDefaultParent();
             OverrideAnchors();
         }
