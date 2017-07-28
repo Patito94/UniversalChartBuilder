@@ -48,7 +48,7 @@
             }
         }
     }
-    $(document).on("dblclick", "div[text='flowchartWindow']", function () {
+    $(document).on("dblclick", "div[category='Editable']", function () {
         thisid = this.id;
         openModal();
     });
@@ -148,7 +148,8 @@
             {
                 id: id,
                 class: 'window jtk-node',
-                text: "flowchartWindow"
+                text: "flowchartWindow",
+                category: "Editable"
             })
             .css(
             {
@@ -182,7 +183,8 @@
         {
             id: id,
             class: 'window jtk-node',
-            text: "flowchartWindow"
+            text: "flowchartWindow",
+            category: "Editable"
         })
         .css(
         {
@@ -225,7 +227,8 @@
                 var Div = $('<div>', {
                     id: id,
                     class: 'window jtk-node',
-                    text: "flowchartWindow"
+                    text: "flowchartWindow",
+                    category: "Editable"
                 })
             .css(
                 {
@@ -256,7 +259,8 @@
             var Div = $('<div>', {
                 id: id,
                 class: 'window jtk-node',
-                text: "flowchartWindow"
+                text: "flowchartWindow",
+                category: "Editable"
             })
         .css(
             {
