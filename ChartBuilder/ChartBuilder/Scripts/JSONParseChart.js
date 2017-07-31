@@ -1,7 +1,5 @@
-﻿JSONParseChart = function (blocks, connections) {
-    this.Encode = function () {
-        //id, type, x, y, text 
-
+﻿JSONParseChart = function () {
+    this.Encode = function (blocks, connections) {
         var JSONObj = "";
         JSONObj += "{\"loadblocks\":";
         JSONObj += JSON.stringify(blocks);
@@ -12,7 +10,7 @@
         $.ajax({
             type: "POST",
             url: "/Home/SaveChart",
-            data: { path: "Charts/jsplumChart.txt", chartJson: JSONObj }
+            data: { path: "Charts/chart.json", chartJson: JSONObj }
         });
 
     }
@@ -20,7 +18,15 @@
 
 
     this.Decode = function () {
-
+        $.ajax({
+            dataType: "json",
+            url: "/Home/GetChart",
+            data: { path: "Charts/chart.json" },
+            success: function (json) {
+                load_array = JSON.parse(json);
+                jsonToCanvas(load_array);
+            }
+        });
     }
 
 

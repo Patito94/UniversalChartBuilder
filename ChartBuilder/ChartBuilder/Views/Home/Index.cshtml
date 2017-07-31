@@ -37,6 +37,8 @@
 
     <script type="text/javascript" src="../Scripts/mxGraphStrategy.js"></script>
 
+    <script type="text/javascript" src="../Scripts/JSONParseChart.js"></script>
+
 	<script>
 		var strategy;
 		function runOnLoad() {
@@ -47,6 +49,7 @@
 			strategy.setStrategy(library);
 			strategy.Create();
 		}
+
 		function AddStart(x,y,text) {
 			strategy.AddStart(x, y, text);
 		}

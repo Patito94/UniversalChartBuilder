@@ -1,5 +1,7 @@
 ﻿var GoJsStrategy = function () {
-    var JSONObj;
+
+    var parser = new JSONParseChart();
+
     this.Create = function () {
         var $ = go.GraphObject.make;  // for conciseness in defining templates
         document.getElementById("palette").style.visibility = "visible";
@@ -290,62 +292,46 @@
             linkData[i] = {sourceId: String(link.from),targetId: String(link.to), anchors:[portToCoordinate(link.fromPort),portToCoordinate(link.toPort)]};
         }
 
-        var JSONObj = "";
-        JSONObj += "{\"loadblocks\":";
-        JSONObj += JSON.stringify(nodeData);
-        JSONObj += ",\"loadconnections\":";
-        JSONObj += JSON.stringify(linkData);
-        JSONObj += "}";
+        
 
-        $.ajax({
-            type: "POST",
-            url: "/Home/SaveChart",
-            data: { path: "Charts/jsplumChart.txt", chartJson: JSONObj }
-        });
+        parser.Encode(nodeData, linkData);
     }
 
     this.Load = function () {
         Clear();
-        $.ajax({
-            dataType: "json",
-            url: "/Home/GetChart",
-            data: { path: "Charts/jsplumChart.txt" },
-            success: function (json) {
-                load_array = JSON.parse(json);
-                jsonToCanvas();
-            }
-        });
+        parser.Decode();
+    }
 
-        jsonToCanvas = function () {
-            myDiagram.model.nodeDataArray=[];
-            var length = load_array.loadblocks.length;
-            for (i = 0; i < length; i++) {
-                x = parseFloat(load_array.loadblocks[i].position.posX)-(myDiagram.documentBounds.width/2);
-                y=parseFloat(load_array.loadblocks[i].position.posY)-(myDiagram.documentBounds.height/2);
+    jsonToCanvas = function (load_array) {
+        myDiagram.model.nodeDataArray=[];
+        var length = load_array.loadblocks.length;
+        for (i = 0; i < length; i++) {
+            x = parseFloat(load_array.loadblocks[i].position.posX)-(myDiagram.documentBounds.width/2);
+            y=parseFloat(load_array.loadblocks[i].position.posY)-(myDiagram.documentBounds.height/2);
 
-                myDiagram.model.addNodeData({       
-                    key: load_array.loadblocks[i].id,
-                    category: load_array.loadblocks[i].type,
-                    text: load_array.loadblocks[i].text,                   
-                    loc: x + " " + y           
-                });
+            myDiagram.model.addNodeData({       
+                key: load_array.loadblocks[i].id,
+                category: load_array.loadblocks[i].type,
+                text: load_array.loadblocks[i].text,                   
+                loc: x + " " + y           
+            });
 
-            }
-            for (i = 0; i < load_array.loadconnections.length; i++) {
-                myDiagram.model.addLinkData({
-                    from:load_array.loadconnections[i].sourceId,
-                    to:load_array.loadconnections[i].targetId,
-                    fromPort: coordinateToPort(String(load_array.loadconnections[i].anchors[0])),
-                    toPort:coordinateToPort(String(load_array.loadconnections[i].anchors[1]))
+        }
+        for (i = 0; i < load_array.loadconnections.length; i++) {
+            myDiagram.model.addLinkData({
+                from:load_array.loadconnections[i].sourceId,
+                to:load_array.loadconnections[i].targetId,
+                fromPort: coordinateToPort(String(load_array.loadconnections[i].anchors[0])),
+                toPort:coordinateToPort(String(load_array.loadconnections[i].anchors[1]))
 
-                });
-            }
+            });
         }
     }
 
-    this.Clear = function()
-    {
-        myDiagram.model.nodeDataArray = [];
-        myDiagram.model.linkDataArray = [];
-    }
+
+this.Clear = function()
+{
+    myDiagram.model.nodeDataArray = [];
+    myDiagram.model.linkDataArray = [];
+}
 }

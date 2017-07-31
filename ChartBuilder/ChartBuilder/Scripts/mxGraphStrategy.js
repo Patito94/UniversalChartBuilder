@@ -6,6 +6,8 @@
     var graph;
     var parent;
 
+    var parser = new JSONParseChart();
+
     //Set Anchors:
     var topCenter = new mxConnectionConstraint(new mxPoint(0.5, 0), true);
     var leftCenter = new mxConnectionConstraint(new mxPoint(0, 0.5), true);
@@ -168,38 +170,18 @@
             linkData[i] = { sourceId: String(link.source.parent.id), targetId: String(link.target.parent.id), anchors: [[link.source.geometry.x, link.source.geometry.y], [link.target.geometry.x, link.target.geometry.y]] };
         }
 
+        var parser = new JSONParseChart();
 
-        var JSONObj = "";
-        JSONObj += "{\"loadblocks\":";
-        JSONObj += JSON.stringify(nodeData);
-        JSONObj += ",\"loadconnections\":";
-        JSONObj += JSON.stringify(linkData);
-        JSONObj += "}";
-
-
-        $.ajax({
-            type: "POST",
-            url: "/Home/SaveChart",
-            data: { path: "Charts/jsplumChart.txt", chartJson: JSONObj }
-        });
+        parser.Encode(nodeData, linkData);
 
     }
 
     this.Load = function () {
         this.Clear();
-
-        $.ajax({
-            dataType: "json",
-            url: "/Home/GetChart",
-            data: { path: "Charts/jsplumChart.txt" },
-            success: function (json) {
-                load_array = JSON.parse(json);
-                jsonToCanvas();
-            }
-        });
+        parser.Decode();
     }
 
-    jsonToCanvas = function () {
+    jsonToCanvas = function (load_array) {
         var length = load_array.loadblocks.length;
         for (var i = 0; i < length; i++) {
             switch (load_array.loadblocks[i].type) {
