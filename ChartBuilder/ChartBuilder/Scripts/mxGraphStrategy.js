@@ -5,8 +5,11 @@
     // from the onLoad event handler of the document (see below).
     var graph;
     var parent;
+    var sourceNode;
+    var targetNode;
 
     var parser = new JSONParseChart();
+
 
     //Set Anchors:
     var topCenter = new mxConnectionConstraint(new mxPoint(0.5, 0), true);
@@ -33,10 +36,31 @@
             graph.setAllowDanglingEdges(false);
             graph.setDisconnectOnMove(false);
 
+
             style = new Object();
             style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_IMAGE;
+            //port label ne látszódjon
+            style[mxConstants.STYLE_NOLABEL] = 1;
+
             graph.getStylesheet().putCellStyle('port', style);
             graph.getStylesheet().getDefaultEdgeStyle()['edgeStyle'] = 'orthogonalEdgeStyle';
+
+            var xmlDocument = mxUtils.createXmlDocument();
+            sourceNode = xmlDocument.createElement('Source');
+            targetNode = xmlDocument.createElement('Target');
+
+            // Source node does not want any incoming connections
+            graph.multiplicities.push(new mxMultiplicity(
+               false, 'Source', null, null, 0, 0, null,
+               'Source Must Have No Incoming Edge',
+               null));
+
+            // Target node does not want any outgoing connections
+            graph.multiplicities.push(new mxMultiplicity(
+               true, 'Target', null, null, 0, 0, null,
+               'Target Must Have No Outgoing edge',
+               null));
+
 
             new mxRubberband(graph);
             // Removes cells when [DELETE] is pressed
@@ -100,9 +124,8 @@
             v1.setStyle("Start");
             v1.setConnectable(false);
             
-            var port = graph.insertVertex(v1, null, '', 0.5, 1.0, 16, 16, 'port;image=/Content/dot.gif', true);
+            var port = graph.insertVertex(v1, null, sourceNode, 0.5, 1.0, 16, 16, 'port;image=/Content/dot.gif', true);
             port.geometry.offset = new mxPoint(-6, -6);
-            port.setTerminal(v1, true);
             
             
         }
@@ -121,7 +144,7 @@
             var v1 = graph.insertVertex(parent, id, text, posx, posy, 100, 50);
             v1.setStyle("Stop");
             v1.setConnectable(false);
-            var port = graph.insertVertex(v1, null, '', 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
+            var port = graph.insertVertex(v1, null, targetNode, 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
             port.geometry.offset = new mxPoint(-6, -8);
         }
         finally {
@@ -140,9 +163,9 @@
             var v1 = graph.insertVertex(parent, id, text, posx, posy, 100, 50);
             v1.setStyle("Dec");
             v1.setConnectable(false);
-            var port = graph.insertVertex(v1, null, '', 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
-            var port2 = graph.insertVertex(v1, null, '', 0, 0.5, 16, 16, 'port;image=/Content/dot.gif', true);
-            var port3 = graph.insertVertex(v1, null, '', 1, 0.5, 16, 16, 'port;image=/Content/dot.gif', true);
+            var port = graph.insertVertex(v1, null, targetNode, 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
+            var port2 = graph.insertVertex(v1, null, sourceNode, 0, 0.5, 16, 16, 'port;image=/Content/dot.gif', true);
+            var port3 = graph.insertVertex(v1, null, sourceNode, 1, 0.5, 16, 16, 'port;image=/Content/dot.gif', true);
             port.geometry.offset = new mxPoint(-8, -8);
             port2.geometry.offset = new mxPoint(-8, -8);
             port3.geometry.offset = new mxPoint(-8, -8);
@@ -164,8 +187,8 @@
             v1.setConnectable(false);
             v1.setStyle("Act");
 
-            var port = graph.insertVertex(v1, null, '', 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
-            var port2 = graph.insertVertex(v1, null, '', 0.5, 1, 16, 16, 'port;image=/Content/dot.gif', true);
+            var port = graph.insertVertex(v1, null, targetNode, 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
+            var port2 = graph.insertVertex(v1, null, sourceNode, 0.5, 1, 16, 16, 'port;image=/Content/dot.gif', true);
             port.geometry.offset = new mxPoint(-8, -8);
             port2.geometry.offset = new mxPoint(-8, -8);
         }
@@ -181,7 +204,6 @@
 
         nodes = graph.getChildVertices(graph.getDefaultParent())
 
-        console.log(nodes);
 
         for (var i = 0; i < nodes.length; i++) {
             item = nodes[i];
