@@ -97,6 +97,16 @@
         LoadStart(null,posx,posy,text);
     }
 
+    var vertexHandlerUnion = mxVertexHandler.prototype.union;
+    mxVertexHandler.prototype.union = function (bounds, dx, dy, index, gridEnabled, scale, tr) {
+        var result = vertexHandlerUnion.apply(this, arguments);
+
+        result.width = Math.max(result.width, mxUtils.getNumber(this.state.style, 'minWidth', 100));
+        result.height = Math.max(result.height, mxUtils.getNumber(this.state.style, 'minHeight', 50));
+
+        return result;
+    };
+
     LoadStart = function (id, posx, posy, text) {
         graph.getModel().beginUpdate();
         try {

@@ -121,7 +121,7 @@
         myDiagram.nodeTemplateMap.add("Act",
           $(go.Node, "Spot", nodeStyle(),
             $(go.Panel, "Auto",
-              $(go.Shape, "Rectangle",{ fill: "#00A9C9", stroke: null }),
+              $(go.Shape, "Rectangle", { fill: "#00A9C9", stroke: null }),
               $(go.TextBlock, "Action",
                 {
                     font: "bold 11pt Helvetica, Arial, sans-serif",
@@ -172,9 +172,11 @@
           ));
 
         //A port ne ugráljon
-        myDiagram.model =  $(go.GraphLinksModel,
-      { linkFromPortIdProperty: "fromPort",  // required information:
-          linkToPortIdProperty: "toPort"});
+        myDiagram.model = $(go.GraphLinksModel,
+      {
+          linkFromPortIdProperty: "fromPort",  // required information:
+          linkToPortIdProperty: "toPort"
+      });
 
         // replace the default Link template in the linkTemplateMap
         myDiagram.linkTemplate =
@@ -203,7 +205,7 @@
                 nodeTemplateMap: myDiagram.nodeTemplateMap,  // share the templates used by myDiagram
                 model: new go.GraphLinksModel([  // specify the contents of the Palette
                   { category: "Start", text: "Start" },
-                  { category: "Act", text: "Action"},
+                  { category: "Act", text: "Action" },
                   { category: "Dec", text: "???", figure: "Diamond" },
                   { category: "Stop", text: "Stop" }
                 ])
@@ -247,26 +249,31 @@
         CreateNode(posx, posy, text, "Act");
     }
 
-    CreateNode = function(posx,posy,text,cat)
-    {
+    CreateNode = function (posx, posy, text, cat) {
+        var canvas = document.getElementById("canvas");
+        //var locx = posx - (myDiagram.documentBounds.width / 2);
+        //var locy = posy - (myDiagram.documentBounds.height / 2);
+        var locx = posx - (canvas.offsetWidth / 2);
+        var locy = posy - (canvas.offsetHeight / 2);
         myDiagram.model.addNodeData({
             category: cat,
             text: text,
-            loc: posx + " " + posy
+            loc: locx + " " + locy
         });
+        console.log("x: " + locx + ", y: " + locy);
     }
 
-    portToCoordinate = function(s){
-        switch(s){
-            case "R": return [1,0.5];
-            case "L": return [0,0.5]; 
-            case "T": return [0.5,0];
-            case "B": return [0.5,1];
+    portToCoordinate = function (s) {
+        switch (s) {
+            case "R": return [1, 0.5];
+            case "L": return [0, 0.5];
+            case "T": return [0.5, 0];
+            case "B": return [0.5, 1];
         }
     }
 
-    coordinateToPort = function(s){
-        switch(s){
+    coordinateToPort = function (s) {
+        switch (s) {
             case "1,0.5": return "R";
             case "0,0.5": return "L";
             case "0.5,0": return "T";
@@ -280,16 +287,21 @@
         for (var i = 0; i < myDiagram.model.nodeDataArray.length; i++) {
             item = myDiagram.model.nodeDataArray[i];
             //a koordináta itt lehet negatív is, ezért eltoljuk
-            x = parseFloat(item.loc.split(" ")[0]) + (myDiagram.documentBounds.width/2);
-            y = parseFloat(item.loc.split(" ")[1])+(myDiagram.documentBounds.height/2);
-            nodeData[i] = { id: String(item.key), type: item.category, text: item.text, position: {posX: + x, posY: y} };
+            var canvas = document.getElementById("canvas");
+            var width = canvas.offsetWidth / 2;
+            var height = canvas.offsetHeight / 2;
+            //x = parseFloat(item.loc.split(" ")[0]) + (myDiagram.documentBounds.width/2);
+            //y = parseFloat(item.loc.split(" ")[1]) + (myDiagram.documentBounds.height/2);
+            x = parseFloat(item.loc.split(" ")[0]) + (width);
+            y = parseFloat(item.loc.split(" ")[1]) + (height);
+            nodeData[i] = { id: String(item.key), type: item.category, text: item.text, position: { posX: +x, posY: y } };
         }
 
         linkData = [];
 
         for (var i = 0; i < myDiagram.model.linkDataArray.length; i++) {
             link = myDiagram.model.linkDataArray[i];
-            linkData[i] = {sourceId: String(link.from),targetId: String(link.to), anchors:[portToCoordinate(link.fromPort),portToCoordinate(link.toPort)]};
+            linkData[i] = { sourceId: String(link.from), targetId: String(link.to), anchors: [portToCoordinate(link.fromPort), portToCoordinate(link.toPort)] };
         }
 
         
@@ -302,31 +314,43 @@
         parser.Decode();
     }
 
+
     jsonToCanvas = function (load_array) {
-        myDiagram.model.nodeDataArray=[];
-        var length = load_array.loadblocks.length;
-        for (i = 0; i < length; i++) {
-            x = parseFloat(load_array.loadblocks[i].position.posX)-(myDiagram.documentBounds.width/2);
-            y=parseFloat(load_array.loadblocks[i].position.posY)-(myDiagram.documentBounds.height/2);
+            myDiagram.model.nodeDataArray = [];
+            var length = load_array.loadblocks.length;
+            for (i = 0; i < length; i++) {
+                var canvas = document.getElementById("canvas");
+                var width = canvas.offsetWidth / 2;
+                var height = canvas.offsetHeight / 2;
+                //x = parseFloat(load_array.loadblocks[i].position.posX)-(myDiagram.documentBounds.width/2);
+                //y = parseFloat(load_array.loadblocks[i].position.posY)-(myDiagram.documentBounds.height/2);
+                x = parseFloat(load_array.loadblocks[i].position.posX) - (width);
+                y = parseFloat(load_array.loadblocks[i].position.posY) - (height);
 
-            myDiagram.model.addNodeData({       
-                key: load_array.loadblocks[i].id,
-                category: load_array.loadblocks[i].type,
-                text: load_array.loadblocks[i].text,                   
-                loc: x + " " + y           
-            });
-
+                myDiagram.model.addNodeData({
+                    key: load_array.loadblocks[i].id,
+                    category: load_array.loadblocks[i].type,
+                    text: load_array.loadblocks[i].text,
+                    loc: x + " " + y
+                });
+            }
+            for (i = 0; i < load_array.loadconnections.length; i++) {
+                myDiagram.model.addLinkData({
+                    from: load_array.loadconnections[i].sourceId,
+                    to: load_array.loadconnections[i].targetId,
+                    fromPort: coordinateToPort(String(load_array.loadconnections[i].anchors[0])),
+                    toPort: coordinateToPort(String(load_array.loadconnections[i].anchors[1]))
+                });
+            }
         }
-        for (i = 0; i < load_array.loadconnections.length; i++) {
-            myDiagram.model.addLinkData({
-                from:load_array.loadconnections[i].sourceId,
-                to:load_array.loadconnections[i].targetId,
-                fromPort: coordinateToPort(String(load_array.loadconnections[i].anchors[0])),
-                toPort:coordinateToPort(String(load_array.loadconnections[i].anchors[1]))
+    
 
-            });
-        }
+    this.Clear = function () {
+        myDiagram.model.nodeDataArray = [];
+        myDiagram.model.linkDataArray = [];
     }
+
+
 
 
 this.Clear = function()
@@ -334,4 +358,5 @@ this.Clear = function()
     myDiagram.model.nodeDataArray = [];
     myDiagram.model.linkDataArray = [];
 }
+
 }
