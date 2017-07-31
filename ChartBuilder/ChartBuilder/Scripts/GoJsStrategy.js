@@ -1,5 +1,7 @@
 ﻿var GoJsStrategy = function () {
-    var JSONObj;
+
+    var parser = new JSONParseChart();
+
     this.Create = function () {
         var $ = go.GraphObject.make;  // for conciseness in defining templates
         document.getElementById("palette").style.visibility = "visible";
@@ -302,33 +304,18 @@
             linkData[i] = { sourceId: String(link.from), targetId: String(link.to), anchors: [portToCoordinate(link.fromPort), portToCoordinate(link.toPort)] };
         }
 
-        var JSONObj = "";
-        JSONObj += "{\"loadblocks\":";
-        JSONObj += JSON.stringify(nodeData);
-        JSONObj += ",\"loadconnections\":";
-        JSONObj += JSON.stringify(linkData);
-        JSONObj += "}";
+        
 
-        $.ajax({
-            type: "POST",
-            url: "/Home/SaveChart",
-            data: { path: "Charts/jsplumChart.txt", chartJson: JSONObj }
-        });
+        parser.Encode(nodeData, linkData);
     }
 
     this.Load = function () {
         Clear();
-        $.ajax({
-            dataType: "json",
-            url: "/Home/GetChart",
-            data: { path: "Charts/jsplumChart.txt" },
-            success: function (json) {
-                load_array = JSON.parse(json);
-                jsonToCanvas();
-            }
-        });
+        parser.Decode();
+    }
 
-        jsonToCanvas = function () {
+
+    jsonToCanvas = function (load_array) {
             myDiagram.model.nodeDataArray = [];
             var length = load_array.loadblocks.length;
             for (i = 0; i < length; i++) {
@@ -356,10 +343,20 @@
                 });
             }
         }
-    }
+    
 
     this.Clear = function () {
         myDiagram.model.nodeDataArray = [];
         myDiagram.model.linkDataArray = [];
     }
+
+
+
+
+this.Clear = function()
+{
+    myDiagram.model.nodeDataArray = [];
+    myDiagram.model.linkDataArray = [];
+}
+
 }

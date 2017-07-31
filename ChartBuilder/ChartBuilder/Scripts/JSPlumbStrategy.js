@@ -7,10 +7,12 @@
     var connections_array = {
         connections: []
     }
-    var load_array = {
-        loadblocks: [],
-        loadconnections: []
-    }
+    //var load_array = {
+    //    loadblocks: [],
+    //    loadconnections: []
+    //}
+
+    var parser = new JSONParseChart();
 
     var indexer = 0;
     //Modalthings
@@ -320,34 +322,21 @@
                 })
             });
         });
-        var JSONObj = "";
-        JSONObj += "{\"loadblocks\":";
-        JSONObj += JSON.stringify(block_array.blocks);
-        JSONObj += ",\"loadconnections\":";
-        JSONObj += JSON.stringify(connections_array.connections);
-        JSONObj += "}";
 
-        $.ajax({
-            type: "POST",
-            url: "/Home/SaveChart",
-            data: { path: "Charts/jsplumChart.txt", chartJson: JSONObj }
-        });
+        
+
+        parser.Encode(block_array.blocks, connections_array.connections);
+
     }
 
     this.Load = function () {
-        $.ajax({
-            dataType: "json",
-            url: "/Home/GetChart",
-            data: { path: "Charts/jsplumChart.txt" },
-            success: function (json) {
-                load_array = JSON.parse(json);
-                jsonToCanvas();
-            }
-        });
+        Clear();
+        parser.Decode();
     }
 
     jsonToCanvas = function () {
-        this.Clear();
+        
+        console.log(load_array.loadblocks);
         var length = load_array.loadblocks.length;
         for (i = 0; i < length; i++) {
             switch (load_array.loadblocks[i].type) {
@@ -375,6 +364,7 @@
                 //]
             });
         });
+        console.log("fesfsefes");
     }
 
     Clear = function () {
