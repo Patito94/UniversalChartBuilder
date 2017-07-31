@@ -26,8 +26,6 @@
             mxUtils.error('Browser is not supported!', 200, false);
         }
         else {
-
-
             graph = new mxGraph(container);
             graph.setConnectable(true);
             graph.setPortsEnabled(false);
@@ -45,11 +43,23 @@
             var keyHandler = new mxKeyHandler(graph);
             keyHandler.bindKey(46, function (evt) {
                 if (graph.isEnabled()) {
-                    graph.removeCells();
+                    RemCells();
                 }
             });
             parent = graph.getDefaultParent();
             OverrideAnchors();
+        }
+    }
+
+    RemCells = function()
+    {
+        selection = graph.getSelectionCells();
+        for(var i=0;i<graph.getSelectionCells().length;i++)
+        {
+            if (selection[i] != null) {
+                if (selection[i].parent != parent) graph.removeCells([selection[i].parent]);
+                else graph.removeCells([selection[i]]);
+            }
         }
     }
 
@@ -93,6 +103,7 @@
             var port = graph.insertVertex(v1, null, '', 0.5, 1.0, 16, 16, 'port;image=/Content/dot.gif', true);
             port.geometry.offset = new mxPoint(-6, -6);
             port.setTerminal(v1, true);
+            
             
         }
         finally {
