@@ -50,9 +50,9 @@
             }
         }
     }
-    $(document).on("click", ".window.jtk-node", function () {
+    $(document).on("dblclick", ".window.jtk-node", function () {
         thisid = this.id;
-        //openModal();
+        openModal();
     });
 
 
