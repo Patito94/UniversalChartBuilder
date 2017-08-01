@@ -79,7 +79,7 @@
     }
 
     this.AddStart = function (posx, posy, text) {
-        LoadStart("flowchartWindow" + indexer, posx, posy, text);
+        LoadStart("" + indexer, posx, posy, text);
         indexer++;
     }
 
@@ -115,7 +115,7 @@
     }
 
     this.AddStop = function (posx, posy, text) {
-        LoadStop("flowchartWindow" + indexer, posx, posy, text);
+        LoadStop("" + indexer, posx, posy, text);
         indexer++;
     }
 
@@ -151,7 +151,7 @@
     }
 
     this.AddDec = function (posx, posy, text) {
-        LoadDec("flowchartWindow" + indexer,posx,posy,text);
+        LoadDec("" + indexer,posx,posy,text);
         indexer++;
     }
 
@@ -231,7 +231,7 @@
     }
 
     this.AddAct = function (posx, posy, text) {
-        LoadAct("flowchartWindow" + indexer,posx,posy,text);
+        LoadAct("" + indexer,posx,posy,text);
         indexer++;
     }
 
@@ -332,13 +332,19 @@
     this.Load = function () {
         Clear();
         parser.Decode();
+        console.log("indexer: " + indexer);
     }
 
     jsonToCanvas = function () {
         
         console.log(load_array.loadblocks);
         var length = load_array.loadblocks.length;
+        var bestid = -100000;
         for (i = 0; i < length; i++) {
+            if (parseInt(load_array.loadblocks[i].id) > parseInt(bestid)) { bestid = parseInt(load_array.loadblocks[i].id) };
+            //console.log("id: " + load_array.loadblocks[i].id);
+            console.log("bestid after: "+bestid);
+            console.log("actualid: "+load_array.loadblocks[i].id);
             switch (load_array.loadblocks[i].type) {
                 case "Dec":
                     LoadDec(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, load_array.loadblocks[i].text);
@@ -354,6 +360,8 @@
                     break;
             }
         }
+        indexer = parseInt(bestid) + 1;
+        console.log("indexer:" + indexer);
         $.each(load_array.loadconnections, function (index, elem) {
             var connection1 = jsPlumb.connect({
                 source: elem.sourceId,
