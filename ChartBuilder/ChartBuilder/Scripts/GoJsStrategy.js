@@ -31,8 +31,6 @@
                 if (idx >= 0) document.title = document.title.substr(0, idx);
             }
         });
-
-
         // helper definitions for node templates
 
         function nodeStyle() {
@@ -131,7 +129,7 @@
                     wrap: go.TextBlock.WrapFit,
                     editable: true
                 },
-                new go.Binding("text"))
+                new go.Binding("text").makeTwoWay())
             ),
             makePort("T", go.Spot.Top, false, true),
             makePort("B", go.Spot.Bottom, true, false)
@@ -151,7 +149,7 @@
                     wrap: go.TextBlock.WrapFit,
                     editable: true
                 },
-                new go.Binding("text"))
+                new go.Binding("text").makeTwoWay())
             ),
             makePort("T", go.Spot.Top, false, true),
             makePort("L", go.Spot.Left, true, false),
@@ -286,6 +284,7 @@
 
         for (var i = 0; i < myDiagram.model.nodeDataArray.length; i++) {
             item = myDiagram.model.nodeDataArray[i];
+            console.log("text: "+item.text);
             //a koordináta itt lehet negatív is, ezért eltoljuk
             var canvas = document.getElementById("canvas");
             var width = canvas.offsetWidth / 2;
