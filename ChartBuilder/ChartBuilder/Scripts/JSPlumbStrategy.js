@@ -50,7 +50,7 @@
             }
         }
     }
-    $(document).on("dblclick", ".window.jtk-node", function () {
+    $(document).on("dblclick", "div[category='Editable']", function () {
         thisid = this.id;
         openModal();
     });
