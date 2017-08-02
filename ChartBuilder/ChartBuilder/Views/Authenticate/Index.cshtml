@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+@*<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+    var sample = {};
+    sample.loginUser = function () {
+        $.ajax({
+            type: "POST", url: "@Url.Action("LoginUser")",
+            success: function (data) { alert('data: ' + data); },
+            data: {
+                
+                "UserName": "admin",
+                "Password": "admin",
+                "provider": "credentials"
+            },
+            accept: 'application/json'
+        });
+    };
+    $(document).ready(function () {
+        sample.loginUser();
+    });
+</script>*@
+
+
+<h2>Index</h2>
+
+
+
+<p>@ViewData["textResult"].ToString()</p>
+
