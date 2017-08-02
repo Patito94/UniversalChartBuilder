@@ -131,7 +131,8 @@
 
             var port = graph.insertVertex(v1, null, sourceNode, 0.5, 1.0, 16, 16, 'port;image=/Content/dot.gif', true);
             port.geometry.offset = new mxPoint(-6, -6);
-            //graph.updateCellSize(v1);
+            v1.setStyle("editable=0");
+            v1.type = "Start";
         }
         finally {
             graph.getModel().endUpdate();
@@ -148,10 +149,11 @@
             var v1 = graph.insertVertex(parent, id, text, posx, posy, 100, 50);
             v1.setStyle("Stop");
             v1.setConnectable(false);
+
             var port = graph.insertVertex(v1, null, targetNode, 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
             port.geometry.offset = new mxPoint(-6, -8);
-            //graph.updateCellSize(v1);
-            
+            v1.setStyle("editable=0");
+            v1.type = "Stop";
         }
         finally {
             // Updates the display
@@ -166,16 +168,17 @@
     LoadDec = function (id, posx, posy, text) {
         graph.getModel().beginUpdate();
         try {
-            var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 20, 50);
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 40, 50);
             v1.setStyle("Dec");
             v1.setConnectable(false);
+
             var port = graph.insertVertex(v1, null, targetNode, 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
             var port2 = graph.insertVertex(v1, null, sourceNode, 0, 0.5, 16, 16, 'port;image=/Content/dot.gif', true);
             var port3 = graph.insertVertex(v1, null, sourceNode, 1, 0.5, 16, 16, 'port;image=/Content/dot.gif', true);
             port.geometry.offset = new mxPoint(-8, -8);
             port2.geometry.offset = new mxPoint(-8, -8);
             port3.geometry.offset = new mxPoint(-8, -8);
-            //graph.updateCellSize(v1);
+            v1.type = "Dec";
         }
         finally {
             // Updates the display
@@ -190,7 +193,7 @@
     LoadAct = function (id, posx, posy, text) {
         graph.getModel().beginUpdate();
         try {
-            var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 20, 50);
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 40, 50);
             v1.setConnectable(false);
             v1.setStyle("Act");
 
@@ -198,7 +201,7 @@
             var port2 = graph.insertVertex(v1, null, sourceNode, 0.5, 1, 16, 16, 'port;image=/Content/dot.gif', true);
             port.geometry.offset = new mxPoint(-8, -8);
             port2.geometry.offset = new mxPoint(-8, -8);
-            //graph.updateCellSize(v1);
+            v1.type = "Act";
         }
         finally {
             // Updates the display
@@ -215,7 +218,7 @@
 
         for (var i = 0; i < nodes.length; i++) {
             item = nodes[i];
-            nodeData[i] = { id: String(item.id), type: item.style, text: item.value, position: { posX: item.geometry.x, posY: item.geometry.y } };
+            nodeData[i] = { id: String(item.id), type: item.type, text: item.value, position: { posX: item.geometry.x, posY: item.geometry.y } };
         }
 
         linkData = [];
