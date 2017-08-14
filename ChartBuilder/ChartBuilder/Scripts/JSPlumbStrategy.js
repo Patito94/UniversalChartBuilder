@@ -36,8 +36,8 @@
     }
     this.EditNode = function () {
         modal.style.display = "none";
-        var text = prompt("Action name: ", document.getElementById(thisid).innerHTML);
-        document.getElementById(thisid).innerHTML = text;
+        var text = prompt("Action name: ", document.getElementById(thisid).getElementsByTagName('p')[0].innerHTML);
+        document.getElementById(thisid).getElementsByTagName('p')[0].innerHTML = text;
     }
 
     this.DeleteNode = function () {
@@ -75,7 +75,7 @@
     });
 
     this.Create = function () {
-        document.getElementById("buttons").style.visibility = "visible";
+        //document.getElementById("buttons").style.visibility = "visible";
     }
 
     this.AddStart = function (posx, posy, text) {
@@ -96,8 +96,10 @@
         left: posx,
         height: '100px',
         width: '100px',
-        border: 'solid 1px'
-    });
+        border: 'solid 1px',
+        background: 'green',
+        'border-radius': '50px'
+            });
         Div.appendTo("#canvas");
         document.getElementById(id).innerHTML = text;
         jsPlumb.draggable($(Div));
@@ -132,8 +134,11 @@
             left: posx,
             height: '100px',
             width: '100px',
-            border: 'solid 1px'
-        });
+            border: 'solid 1px',
+            background: 'red',
+            raius: '2',
+            'border-radius': '50px'
+            });
         Div.appendTo("#canvas");
         document.getElementById(id).innerHTML = text;
         jsPlumb.draggable($(Div));
@@ -173,7 +178,12 @@
                 left: posx,
                 height: '100px',
                 width: '100px',
-                border: 'solid 1px'
+                border: 'solid 1px',
+                background: '#4286f4',
+                //'-webkit - transform': 'rotate(-45deg)',
+                //'transform': 'rotate(-45deg)',
+                //'-webkit - transform - origin': '0 100%',
+                //'transform - origin': '0 100%'
             }
             );
                 Div.appendTo("#canvas");
@@ -208,11 +218,13 @@
             left: posx,
             height: '100px',
             width: '100px',
-            border: 'solid 1px'
+            border: 'solid 1px',
+            background: '#4286f4',
+            'transform': 'rotate(45deg)'
         }
         );
             Div.appendTo("#canvas");
-            document.getElementById(id).innerHTML = text;
+            document.getElementById(id).innerHTML = "<p style='transform: rotate(-45deg)'>"+text+"</p>";
             jsPlumb.draggable($(Div));
             $(Div).addClass('window');
             jsPlumb.addEndpoint($(Div), { anchor: "TopCenter" }, { isSource: false, isTarget: true, maxConnections: -1 });
@@ -252,7 +264,8 @@
                     left: posx,
                     height: '100px',
                     width: '100px',
-                    border: 'solid 1px'
+                    border: 'solid 1px',
+                    background: 'lightblue'
                 });
                 Div.appendTo("#canvas");
                 document.getElementById(id).innerHTML = text;
@@ -284,7 +297,8 @@
                 left: posx,
                 height: '100px',
                 width: '100px',
-                border: 'solid 1px'
+                border: 'solid 1px',
+                background: 'lightblue'
             });
             Div.appendTo("#canvas");
             document.getElementById(id).innerHTML = text;

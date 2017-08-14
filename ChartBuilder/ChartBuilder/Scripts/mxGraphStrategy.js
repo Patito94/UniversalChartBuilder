@@ -11,7 +11,6 @@
 
     var parser = new JSONParseChart();
 
-
     //Set Anchors:
     var topCenter = new mxConnectionConstraint(new mxPoint(0.5, 0), true);
     var leftCenter = new mxConnectionConstraint(new mxPoint(0, 0.5), true);
@@ -24,7 +23,8 @@
     }
 
     this.Create = function () {
-        document.getElementById("buttons").style.visibility = "visible";
+        //Gombok Látszódása
+        //document.getElementById("buttons").style.visibility = "visible";
         var container = document.getElementById('canvas');
         if (!mxClient.isBrowserSupported()) {
             mxUtils.error('Browser is not supported!', 200, false);
@@ -50,18 +50,27 @@
             sourceNode = xmlDocument.createElement('Source');
             targetNode = xmlDocument.createElement('Target');
 
+            //style = new Object();
+            //style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_IMAGE;
+            //graph.getStylesheet().putCellStyle('node', style);
+
+            //Áthelyeztük a hibakidobást más változóba, így ha rossz helyre/helyről húzunk nyilat, nem fog alertet dobni
+            window.nativeAlert = window.alert;
+            window.alert = function () { };
+            //Próba hibaüzenet
+            //window.nativeAlert("Próba");
+
             // Source node does not want any incoming connections
             graph.multiplicities.push(new mxMultiplicity(
-               false, 'Source', null, null, 0, 0, null,
+                false, 'Source', null, null, 0, 0, null,
                'Source Must Have No Incoming Edge',
                null));
 
             // Target node does not want any outgoing connections
             graph.multiplicities.push(new mxMultiplicity(
-               true, 'Target', null, null, 0, 0, null,
+                true, 'Target', null, null, 0, 0, null,
                'Target Must Have No Outgoing edge',
                null));
-
 
             new mxRubberband(graph);
             // Removes cells when [DELETE] is pressed
@@ -108,10 +117,7 @@
         };
     }
 
-    this.AddStart = function (posx, posy, text) {
-        LoadStart(null,posx,posy,text);
-    }
-
+    //Minimum width és height
     var vertexHandlerUnion = mxVertexHandler.prototype.union;
     mxVertexHandler.prototype.union = function (bounds, dx, dy, index, gridEnabled, scale, tr) {
         var result = vertexHandlerUnion.apply(this, arguments);
@@ -122,16 +128,19 @@
         return result;
     };
 
+    this.AddStart = function (posx, posy, text) {
+        LoadStart(null,posx,posy,text);
+    }
+
     LoadStart = function (id, posx, posy, text) {
         graph.getModel().beginUpdate();
         try {
-            var v1 = graph.insertVertex(parent, id, text, posx, posy, 100, 50);
-            v1.setStyle("Start");
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, 100, 50, "editable=0;shape=ellipse;fillColor=lightgreen"); //vagy 'doubleEllipse'
             v1.setConnectable(false);
+            v1.scale = false;
 
             var port = graph.insertVertex(v1, null, sourceNode, 0.5, 1.0, 16, 16, 'port;image=/Content/dot.gif', true);
             port.geometry.offset = new mxPoint(-6, -6);
-            v1.setStyle("editable=0");
             v1.type = "Start";
         }
         finally {
@@ -146,13 +155,11 @@
     LoadStop = function (id, posx, posy, text) {
         graph.getModel().beginUpdate();
         try {
-            var v1 = graph.insertVertex(parent, id, text, posx, posy, 100, 50);
-            v1.setStyle("Stop");
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, 100, 50, "editable=0;shape=ellipse;fillColor=red");
             v1.setConnectable(false);
 
             var port = graph.insertVertex(v1, null, targetNode, 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
             port.geometry.offset = new mxPoint(-6, -8);
-            v1.setStyle("editable=0");
             v1.type = "Stop";
         }
         finally {
@@ -168,8 +175,7 @@
     LoadDec = function (id, posx, posy, text) {
         graph.getModel().beginUpdate();
         try {
-            var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 40, 50);
-            v1.setStyle("Dec");
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 40, 50, "shape=rhombus;fillColor=#4286f4");
             v1.setConnectable(false);
 
             var port = graph.insertVertex(v1, null, targetNode, 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
@@ -193,9 +199,8 @@
     LoadAct = function (id, posx, posy, text) {
         graph.getModel().beginUpdate();
         try {
-            var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 40, 50);
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 40, 50, "shape=rectangle;fillColor=lightblue");
             v1.setConnectable(false);
-            v1.setStyle("Act");
 
             var port = graph.insertVertex(v1, null, targetNode, 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
             var port2 = graph.insertVertex(v1, null, sourceNode, 0.5, 1, 16, 16, 'port;image=/Content/dot.gif', true);
