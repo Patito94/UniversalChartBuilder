@@ -38,6 +38,12 @@
         modal.style.display = "none";
         var text = prompt("Action name: ", document.getElementById(thisid).getElementsByTagName('p')[0].innerHTML);
         document.getElementById(thisid).getElementsByTagName('p')[0].innerHTML = text;
+
+        for (i = 0; i < block_array.blocks.length; i++) {
+            if (thisid == block_array.blocks[i].id) {
+                block_array.blocks[i].text = text;
+            }
+        }
     }
 
     this.DeleteNode = function () {
