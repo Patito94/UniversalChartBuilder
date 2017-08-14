@@ -54,7 +54,9 @@
         thisid = this.id;
         openModal();
     });
-
+    $(document).on("click", "div[category='Deletable']", function () {
+        thisid = this.id;
+    });
 
     $('html').keyup(function (e) {
         if (e.keyCode == 46 && thisid!=null) {
@@ -88,7 +90,8 @@
         var Div = $('<div>', {
             id: id,
             class: 'window jtk-node',
-            text: "flowchartWindow"
+            text: "flowchartWindow",
+            category: "Deletable"
         })
 .css(
     {
@@ -126,7 +129,8 @@
         var Div = $('<div>', {
             id: id,
             class: 'window jtk-node',
-            text: "flowchartWindow"
+            text: "flowchartWindow",
+            category: "Deletable"
         })
     .css(
         {
@@ -180,14 +184,12 @@
                 width: '100px',
                 border: 'solid 1px',
                 background: '#4286f4',
-                //'-webkit - transform': 'rotate(-45deg)',
-                //'transform': 'rotate(-45deg)',
-                //'-webkit - transform - origin': '0 100%',
-                //'transform - origin': '0 100%'
+                'transform': 'rotate(45deg)'
             }
             );
                 Div.appendTo("#canvas");
-                document.getElementById(id).innerHTML = text;
+                //document.getElementById(id).innerHTML = text;
+                document.getElementById(id).innerHTML = "<p style='transform: rotate(-45deg)'>" + text + "</p>";
                 jsPlumb.draggable($(Div));
                 $(Div).addClass('window');
                 jsPlumb.addEndpoint($(Div), { anchor: "TopCenter" }, { isSource: false, isTarget: true, maxConnections: -1 });
@@ -268,7 +270,8 @@
                     background: 'lightblue'
                 });
                 Div.appendTo("#canvas");
-                document.getElementById(id).innerHTML = text;
+                //document.getElementById(id).innerHTML = text;
+                document.getElementById(id).innerHTML = "<p>" + text + "</p>";
                 jsPlumb.draggable($(Div));
                 $(Div).addClass('window');
                 jsPlumb.addEndpoint($(Div), { anchor: "TopCenter" }, { isSource: false, isTarget: true, maxConnections: -1 });
@@ -301,7 +304,8 @@
                 background: 'lightblue'
             });
             Div.appendTo("#canvas");
-            document.getElementById(id).innerHTML = text;
+            //document.getElementById(id).innerHTML = text;
+            document.getElementById(id).innerHTML = "<p>" + text + "</p>";
             jsPlumb.draggable($(Div));
             $(Div).addClass('window');
             jsPlumb.addEndpoint($(Div), { anchor: "TopCenter" }, { isSource: false, isTarget: true, maxConnections: -1 });
@@ -337,10 +341,7 @@
             });
         });
 
-        
-
         parser.Encode(block_array.blocks, connections_array.connections);
-
     }
 
     this.Load = function () {
