@@ -135,7 +135,7 @@
     LoadStart = function (id, posx, posy, text) {
         graph.getModel().beginUpdate();
         try {
-            var v1 = graph.insertVertex(parent, id, text, posx, posy, 100, 50, "editable=0;shape=ellipse;fillColor=lightgreen"); //vagy 'doubleEllipse'
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, 100, 50, "editable=0;shape=ellipse;fillColor=" + startcolor); //vagy 'doubleEllipse'
             v1.setConnectable(false);
             v1.scale = false;
 
@@ -155,7 +155,7 @@
     LoadStop = function (id, posx, posy, text) {
         graph.getModel().beginUpdate();
         try {
-            var v1 = graph.insertVertex(parent, id, text, posx, posy, 100, 50, "editable=0;shape=ellipse;fillColor=red");
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, 100, 50, "editable=0;shape=ellipse;fillColor=" + stopcolor);
             v1.setConnectable(false);
 
             var port = graph.insertVertex(v1, null, targetNode, 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
@@ -175,7 +175,7 @@
     LoadDec = function (id, posx, posy, text) {
         graph.getModel().beginUpdate();
         try {
-            var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 40, 50, "shape=rhombus;fillColor=#4286f4");
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 40, 50, "shape=rhombus;fillColor=" + deccolor);
             v1.setConnectable(false);
 
             var port = graph.insertVertex(v1, null, targetNode, 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
@@ -199,7 +199,7 @@
     LoadAct = function (id, posx, posy, text) {
         graph.getModel().beginUpdate();
         try {
-            var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 40, 50, "shape=rectangle;fillColor=lightblue");
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 40, 50, "shape=rectangle;fillColor=" + actcolor);
             v1.setConnectable(false);
 
             var port = graph.insertVertex(v1, null, targetNode, 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);

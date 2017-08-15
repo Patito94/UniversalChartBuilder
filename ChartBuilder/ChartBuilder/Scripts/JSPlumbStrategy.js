@@ -103,10 +103,13 @@
     {
         top: posy,
         left: posx,
+        //'min-height': '50px',
         height: '100px',
         width: '100px',
+        //height: '50px',
+        //width: '50px',
         border: 'solid 1px',
-        background: 'green',
+        background: startcolor,
         'border-radius': '50px'
             });
         Div.appendTo("#canvas");
@@ -143,9 +146,10 @@
             top: posy,
             left: posx,
             height: '100px',
+            //'min-height': '50px',
             width: '100px',
             border: 'solid 1px',
-            background: 'red',
+            background: stopcolor,
             raius: '2',
             'border-radius': '50px'
             });
@@ -187,9 +191,10 @@
                 top: posy,
                 left: posx,
                 height: '100px',
+                //'min-height': '50px',
                 width: '100px',
                 border: 'solid 1px',
-                background: '#4286f4',
+                background: deccolor,
                 'transform': 'rotate(45deg)'
             }
             );
@@ -225,9 +230,10 @@
             top: posy,
             left: posx,
             height: '100px',
+            //'min-height': '50px',
             width: '100px',
             border: 'solid 1px',
-            background: '#4286f4',
+            background: deccolor,
             'transform': 'rotate(45deg)'
         }
         );
@@ -270,10 +276,13 @@
                 {
                     top: posy,
                     left: posx,
+                    //'min-height': '50px',
                     height: '100px',
-                    width: '100px',
+                    //width: '100px',
+                    width: 'auto',
+                    'min-width': '100px',
                     border: 'solid 1px',
-                    background: 'lightblue'
+                    background: actcolor
                 });
                 Div.appendTo("#canvas");
                 //document.getElementById(id).innerHTML = text;
@@ -304,10 +313,13 @@
             {
                 top: posy,
                 left: posx,
+                //'min-height': '50px',
                 height: '100px',
-                width: '100px',
+                //width: '100px',
+                width: 'auto',
+                'min-width': '100px',
                 border: 'solid 1px',
-                background: 'lightblue'
+                background: actcolor
             });
             Div.appendTo("#canvas");
             //document.getElementById(id).innerHTML = text;

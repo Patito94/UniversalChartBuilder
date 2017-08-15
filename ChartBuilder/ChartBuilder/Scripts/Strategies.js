@@ -2,6 +2,12 @@
     this.library = "";
 };
 
+var startcolor = '#36BA45';
+//var startcolor = "#FFDC00";
+var stopcolor = '#FF1D23';
+var actcolor = '#6CCFFF';
+var deccolor = '#7FB2F0';
+
 LibraryStrategy.prototype = {
     setStrategy: function (library) {
         this.library = library;

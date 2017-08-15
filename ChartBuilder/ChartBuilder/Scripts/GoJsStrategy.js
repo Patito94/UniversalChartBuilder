@@ -105,8 +105,8 @@
 
           $(go.Node, "Spot", nodeStyle(),
             $(go.Panel, "Auto",
-              $(go.Shape, "Circle",
-                { minSize: new go.Size(40, 40), fill: "#79C900", stroke: null }),
+                $(go.Shape, "Circle",
+                    { minSize: new go.Size(40, 40), fill: /*"#79C900"*/startcolor, stroke: null }),
               $(go.TextBlock, "Start",
                 { font: "bold 11pt Helvetica, Arial, sans-serif", stroke: lightText },
                 new go.Binding("text"))
@@ -117,8 +117,8 @@
 
         myDiagram.nodeTemplateMap.add("Act",
           $(go.Node, "Spot", nodeStyle(),
-            $(go.Panel, "Auto",
-              $(go.Shape, "Rectangle", { fill: "#00A9C9", stroke: null }),
+              $(go.Panel, "Auto",
+                  $(go.Shape, "Rectangle", { fill: /*"#00A9C9"*/actcolor, stroke: null }),
               $(go.TextBlock, "Action",
                 {
                     font: "bold 11pt Helvetica, Arial, sans-serif",
@@ -137,8 +137,8 @@
         myDiagram.nodeTemplateMap.add("Dec",
           $(go.Node, "Spot", nodeStyle(),
             $(go.Panel, "Auto",
-              $(go.Shape, "Diamond",
-                { fill: "#00A9C9", stroke: null }),
+                $(go.Shape, "Diamond",
+                    { fill: /*"#00A9C9"*/deccolor, stroke: null }),
               $(go.TextBlock, "Decision",
                 {
                     font: "bold 11pt Helvetica, Arial, sans-serif",
@@ -159,7 +159,7 @@
           $(go.Node, "Spot", nodeStyle(),
             $(go.Panel, "Auto",
               $(go.Shape, "Circle",
-                { minSize: new go.Size(40, 40), fill: "#DC3C00", stroke: null }),
+                  { minSize: new go.Size(40, 40), fill: /*"#DC3C00"*/stopcolor, stroke: null }),
               $(go.TextBlock, "End",
                 { font: "bold 11pt Helvetica, Arial, sans-serif", stroke: lightText },
                 new go.Binding("text"))
