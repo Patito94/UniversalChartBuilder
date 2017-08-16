@@ -7,6 +7,7 @@ var startcolor = '#36BA45';
 var stopcolor = '#FF1D23';
 var actcolor = '#6CCFFF';
 var deccolor = '#7FB2F0';
+var gatecolor = '#7FB2FF';
 var fontcolor = '#000000';
 
 LibraryStrategy.prototype = {
@@ -27,6 +28,9 @@ LibraryStrategy.prototype = {
     },
     AddAct: function (posx, posy, text) {
         return this.library.AddAct(posx, posy, text);
+    },
+    AddGate: function (posx, posy, text) {
+        return this.library.AddGate(posx, posy, text);
     },
 
     Save: function () {

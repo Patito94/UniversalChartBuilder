@@ -70,7 +70,7 @@
     });
 
     $('html').keyup(function (e) {
-        if (e.keyCode == 46 && thisid!=null) {
+        if (e.keyCode == 46 && thisid != null) {
             jsPlumb.remove(thisid);
             for (i = 0; i < block_array.blocks.length; i++) {
                 if (thisid == block_array.blocks[i].id) {
@@ -104,20 +104,17 @@
             text: "flowchartWindow",
             category: "Deletable"
         })
-.css(
-    {
-        top: posy,
-        left: posx,
-        //'min-height': '50px',
-        height: '100px',
-        width: '100px',
-        //height: '50px',
-        //width: '50px',
-        border: 'solid 1px',
-        background: startcolor,
-        'border-color': 'black',
-        color: fontcolor,
-        'border-radius': '50px'
+            .css(
+            {
+                top: posy,
+                left: posx,
+                height: '100px',
+                width: '100px',
+                border: 'solid 1px',
+                background: startcolor,
+                'border-color': 'black',
+                color: fontcolor,
+                'border-radius': '50px'
             });
         Div.appendTo("#canvas");
         document.getElementById(id).innerHTML = text;
@@ -148,19 +145,18 @@
             text: "flowchartWindow",
             category: "Deletable"
         })
-    .css(
-        {
-            top: posy,
-            left: posx,
-            height: '100px',
-            //'min-height': '50px',
-            width: '100px',
-            border: 'solid 1px',
-            background: stopcolor,
-            raius: '2',
-            'border-color': 'black',
-            color: fontcolor,
-            'border-radius': '50px'
+            .css(
+            {
+                top: posy,
+                left: posx,
+                height: '100px',
+                width: '100px',
+                border: 'solid 1px',
+                background: stopcolor,
+                raius: '2',
+                'border-color': 'black',
+                color: fontcolor,
+                'border-radius': '50px'
             });
         Div.appendTo("#canvas");
         document.getElementById(id).innerHTML = text;
@@ -179,7 +175,7 @@
     }
 
     this.AddDec = function (posx, posy, text) {
-        LoadDec("" + indexer,posx,posy,text);
+        LoadDec("" + indexer, posx, posy, text);
         indexer++;
     }
 
@@ -187,71 +183,30 @@
         id = String(id);
         if (text == null) {
             text = prompt("Decision name: ", "Some Decision");
-            if (text != null) {
-                var Div = $('<div>',
-            {
-                id: id,
-                class: 'window jtk-node',
-                text: "flowchartWindow",
-                category: "Editable"
-            })
-            .css(
-            {
-                top: posy,
-                left: posx,
-                height: '100px',
-                //'min-height': '50px',
-                width: '100px',
-                border: 'solid 1px',
-                background: deccolor,
-                'border-color': 'black',
-                color: fontcolor,
-                'transform': 'rotate(45deg)'
-            }
-            );
-                Div.appendTo("#canvas");
-                //document.getElementById(id).innerHTML = text;
-                document.getElementById(id).innerHTML = "<p style='transform: rotate(-45deg)'>" + text + "</p>";
-                jsPlumb.draggable($(Div));
-                $(Div).addClass('window');
-                jsPlumb.addEndpoint($(Div), { anchor: "TopCenter" }, { isSource: false, isTarget: true, maxConnections: -1 });
-                jsPlumb.addEndpoint($(Div), { anchor: "Right" }, { isSource: true, isTarget: false });
-                jsPlumb.addEndpoint($(Div), { anchor: "Left" }, { isSource: true, isTarget: false });
-                block_array.blocks.push({
-                    "id": id,
-                    "type": "Dec",
-                    "text": text,
-                    "position": {
-                        "posX": posx,
-                        "posY": posy
-                    }
-                });
-            }
         }
-        else if (text != null) {
+        if (text != null) {
             var Div = $('<div>',
-        {
-            id: id,
-            class: 'window jtk-node',
-            text: "flowchartWindow",
-            category: "Editable"
-        })
-        .css(
-        {
-            top: posy,
-            left: posx,
-            height: '100px',
-            //'min-height': '50px',
-            width: '100px',
-            border: 'solid 1px',
-            background: deccolor,
-            'border-color': 'black',
-            color: fontcolor,
-            'transform': 'rotate(45deg)'
-        }
-        );
+                {
+                    id: id,
+                    class: 'window jtk-node',
+                    text: "flowchartWindow",
+                    category: "Editable"
+                })
+                .css(
+                {
+                    top: posy,
+                    left: posx,
+                    height: '100px',
+                    width: '100px',
+                    border: 'solid 1px',
+                    background: deccolor,
+                    'border-color': 'black',
+                    color: fontcolor,
+                    'border-radius': '50px'
+                }
+                );
             Div.appendTo("#canvas");
-            document.getElementById(id).innerHTML = "<p style='transform: rotate(-45deg)'>"+text+"</p>";
+            document.getElementById(id).innerHTML = "<p>" + text + "</p>";
             jsPlumb.draggable($(Div));
             $(Div).addClass('window');
             jsPlumb.addEndpoint($(Div), { anchor: "TopCenter" }, { isSource: false, isTarget: true, maxConnections: -1 });
@@ -270,28 +225,28 @@
     }
 
     this.AddAct = function (posx, posy, text) {
-        LoadAct("" + indexer,posx,posy,text);
+        LoadAct("" + indexer, posx, posy, text);
         indexer++;
     }
 
     LoadAct = function (id, posx, posy, text) {
         id = String(id);
+        text = null;
         if (text == null) {
             text = prompt("Action name: ", "Some Action");
-            if (text != null) {
-                var Div = $('<div>', {
-                    id: id,
-                    class: 'window jtk-node',
-                    text: "flowchartWindow",
-                    category: "Editable"
-                })
-            .css(
+        }
+        if (text != null) {
+            var Div = $('<div>', {
+                id: id,
+                class: 'window jtk-node',
+                text: "flowchartWindow",
+                category: "Editable"
+            })
+                .css(
                 {
                     top: posy,
                     left: posx,
-                    //'min-height': '50px',
                     height: '100px',
-                    //width: '100px',
                     width: 'auto',
                     'min-width': '100px',
                     border: 'solid 1px',
@@ -299,47 +254,7 @@
                     color: fontcolor,
                     background: actcolor
                 });
-                Div.appendTo("#canvas");
-                //document.getElementById(id).innerHTML = text;
-                document.getElementById(id).innerHTML = "<p>" + text + "</p>";
-                jsPlumb.draggable($(Div));
-                $(Div).addClass('window');
-                jsPlumb.addEndpoint($(Div), { anchor: "TopCenter" }, { isSource: false, isTarget: true, maxConnections: -1 });
-                jsPlumb.addEndpoint($(Div), { anchor: "BottomCenter" }, { isSource: true, isTarget: false });
-                block_array.blocks.push({
-                    "id": id,
-                    "type": "Act",
-                    "text": text,
-                    "position": {
-                        "posX": posx,
-                        "posY": posy
-                    }
-                });
-            }
-        }
-        else if (text != null) {
-            var Div = $('<div>', {
-                id: id,
-                class: 'window jtk-node',
-                text: "flowchartWindow",
-                category: "Editable"
-            })
-        .css(
-            {
-                top: posy,
-                left: posx,
-                //'min-height': '50px',
-                height: '100px',
-                //width: '100px',
-                width: 'auto',
-                'min-width': '100px',
-                border: 'solid 1px',
-                'border-color': 'black',
-                color: fontcolor,
-                background: actcolor
-            });
             Div.appendTo("#canvas");
-            //document.getElementById(id).innerHTML = text;
             document.getElementById(id).innerHTML = "<p>" + text + "</p>";
             jsPlumb.draggable($(Div));
             $(Div).addClass('window');
@@ -348,6 +263,57 @@
             block_array.blocks.push({
                 "id": id,
                 "type": "Act",
+                "text": text,
+                "position": {
+                    "posX": posx,
+                    "posY": posy
+                }
+            });
+        }
+    }
+
+    this.AddGate = function (posx, posy, text) {
+        LoadGate("" + indexer, posx, posy, text);
+        indexer++;
+    }
+
+    LoadGate = function (id, posx, posy, text) {
+        id = String(id);
+        console.log('Gateway');
+        if (text == null) {
+            text = prompt("Gateway name: ", "Some Gateway");
+        }
+        if (text != null) {
+            var Div = $('<div>',
+                {
+                    id: id,
+                    class: 'window jtk-node',
+                    text: "flowchartWindow",
+                    category: "Editable"
+                })
+                .css(
+                {
+                    top: posy,
+                    left: posx,
+                    height: '100px',
+                    width: '100px',
+                    border: 'solid 1px',
+                    background: gatecolor,
+                    'border-color': 'black',
+                    color: fontcolor,
+                    'transform': 'rotate(45deg)'
+                }
+                );
+            Div.appendTo("#canvas");
+            document.getElementById(id).innerHTML = "<p style='transform: rotate(-45deg)'>" + text + "</p>";
+            jsPlumb.draggable($(Div));
+            $(Div).addClass('window');
+            jsPlumb.addEndpoint($(Div), { anchor: "TopCenter" }, { isSource: false, isTarget: true, maxConnections: -1 });
+            jsPlumb.addEndpoint($(Div), { anchor: "Right" }, { isSource: true, isTarget: false });
+            jsPlumb.addEndpoint($(Div), { anchor: "Left" }, { isSource: true, isTarget: false });
+            block_array.blocks.push({
+                "id": id,
+                "type": "Gate",
                 "text": text,
                 "position": {
                     "posX": posx,
@@ -386,7 +352,7 @@
     }
 
     jsonToCanvas = function () {
-        
+
         //console.log(load_array.loadblocks);
         var length = load_array.loadblocks.length;
         var bestid = -100000;
@@ -404,6 +370,9 @@
                     break;
                 case "Act":
                     LoadAct(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, load_array.loadblocks[i].text);
+                    break;
+                case "Gate":
+                    LoadGate(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, load_array.loadblocks[i].text);
                     break;
                 case "Stop":
                     LoadStop(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, "Stop");
