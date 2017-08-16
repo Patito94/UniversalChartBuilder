@@ -23,12 +23,12 @@
         myDiagram.addDiagramListener("Modified", function (e) {
             var button = document.getElementById("SaveButton");
             if (button) button.disabled = !myDiagram.isModified;
-            var idx = document.title.indexOf("*");
-            if (myDiagram.isModified) {
-                if (idx < 0) document.title += "*";
-            } else {
-                if (idx >= 0) document.title = document.title.substr(0, idx);
-            }
+            //var idx = document.title.indexOf("*");
+            //if (myDiagram.isModified) {
+            //    if (idx < 0) document.title += "*";
+            //} else {
+            //    if (idx >= 0) document.title = document.title.substr(0, idx);
+            //}
         });
         // helper definitions for node templates
 
@@ -72,8 +72,6 @@
 
         // define the Node templates for regular nodes
 
-        //var fontcolor = 'whitesmoke';
-
         myDiagram.nodeTemplateMap.add("",  // the default category
           $(go.Node, "Spot", nodeStyle(),
             // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
@@ -98,8 +96,6 @@
             makePort("R", go.Spot.Right, true, true),
             makePort("B", go.Spot.Bottom, true, false)
           ));
-
-
 
         myDiagram.nodeTemplateMap.add("Start",
 
@@ -137,7 +133,7 @@
         myDiagram.nodeTemplateMap.add("Dec",
           $(go.Node, "Spot", nodeStyle(),
             $(go.Panel, "Auto",
-                $(go.Shape, "Diamond",
+                $(go.Shape, "Circle",
                     { fill: /*"#00A9C9"*/deccolor, stroke: null }),
               $(go.TextBlock, "Decision",
                 {
@@ -167,6 +163,27 @@
             // three named ports, one on each side except the bottom, all input only:
             makePort("T", go.Spot.Top, false, true)
           ));
+
+        myDiagram.nodeTemplateMap.add("Gate",
+            $(go.Node, "Spot", nodeStyle(),
+                $(go.Panel, "Auto",
+                    $(go.Shape, "Diamond",
+                        { fill: gatecolor, stroke: null }),
+                    $(go.TextBlock, "Decision",
+                        {
+                            font: "bold 11pt Helvetica, Arial, sans-serif",
+                            stroke: fontcolor,
+                            margin: 8,
+                            maxSize: new go.Size(160, NaN),
+                            wrap: go.TextBlock.WrapFit,
+                            editable: true
+                        },
+                        new go.Binding("text").makeTwoWay())
+                ),
+                makePort("T", go.Spot.Top, false, true),
+                makePort("L", go.Spot.Left, true, false),
+                makePort("R", go.Spot.Right, true, false)
+            ));
 
         //A port ne ugráljon
         myDiagram.model = $(go.GraphLinksModel,
@@ -204,7 +221,8 @@
                   { category: "Start", text: "Start" },
                   { category: "Act", text: "Action" },
                   { category: "Dec", text: "???", figure: "Diamond" },
-                  { category: "Stop", text: "Stop" }
+                  { category: "Stop", text: "Stop" },
+                  { category: "Gate", text: "gate" }
                 ])
             });
 
@@ -244,6 +262,10 @@
 
     this.AddAct = function (posx, posy, text) {
         CreateNode(posx, posy, text, "Act");
+    }
+
+    this.AddGate = function (posx, posy, text) {
+        CreateNode(posx, posy, text, "Gate");
     }
 
     CreateNode = function (posx, posy, text, cat) {

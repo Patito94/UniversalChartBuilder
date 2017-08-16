@@ -179,7 +179,7 @@
     LoadDec = function (id, posx, posy, text) {
         graph.getModel().beginUpdate();
         try {
-            var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 40, 50, "shape=rhombus;fillColor=" + deccolor);
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 40, 50, "shape=ellipse;fillColor=" + deccolor);
             v1.setConnectable(false);
 
             var port = graph.insertVertex(v1, null, targetNode, 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
@@ -211,6 +211,30 @@
             port.geometry.offset = new mxPoint(-8, -8);
             port2.geometry.offset = new mxPoint(-8, -8);
             v1.type = "Act";
+        }
+        finally {
+            // Updates the display
+            graph.getModel().endUpdate();
+        }
+    }
+
+    this.AddGate = function (posx, posy, text) {
+        LoadGate(null, posx, posy, text);
+    }
+
+    LoadGate = function (id, posx, posy, text) {
+        graph.getModel().beginUpdate();
+        try {
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 40, 50, "shape=rhombus;fillColor=" + gatecolor);
+            v1.setConnectable(false);
+
+            var port = graph.insertVertex(v1, null, targetNode, 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
+            var port2 = graph.insertVertex(v1, null, sourceNode, 0, 0.5, 16, 16, 'port;image=/Content/dot.gif', true);
+            var port3 = graph.insertVertex(v1, null, sourceNode, 1, 0.5, 16, 16, 'port;image=/Content/dot.gif', true);
+            port.geometry.offset = new mxPoint(-8, -8);
+            port2.geometry.offset = new mxPoint(-8, -8);
+            port3.geometry.offset = new mxPoint(-8, -8);
+            v1.type = "Gate";
         }
         finally {
             // Updates the display
@@ -262,6 +286,9 @@
                     break;
                 case "Act":
                     LoadAct(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, load_array.loadblocks[i].text);
+                    break;
+                case "Gate":
+                    LoadGate(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, load_array.loadblocks[i].text);
                     break;
                 case "Stop":
                     LoadStop(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, "Stop");
