@@ -139,7 +139,7 @@
     LoadStart = function (id, posx, posy, text) {
         graph.getModel().beginUpdate();
         try {
-            var v1 = graph.insertVertex(parent, id, text, posx, posy, 100, 50, "editable=0;shape=ellipse;fillColor=" + startcolor); //vagy 'doubleEllipse'
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, 100, 50, 'port;image=/Content/Images/ball.png'); //vagy 'doubleEllipse'
             v1.setConnectable(false);
             v1.scale = false;
 
