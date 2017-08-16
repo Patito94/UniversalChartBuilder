@@ -72,7 +72,7 @@
 
         // define the Node templates for regular nodes
 
-        var lightText = 'whitesmoke';
+        //var fontcolor = 'whitesmoke';
 
         myDiagram.nodeTemplateMap.add("",  // the default category
           $(go.Node, "Spot", nodeStyle(),
@@ -84,7 +84,7 @@
               $(go.TextBlock,
                 {
                     font: "bold 11pt Helvetica, Arial, sans-serif",
-                    stroke: lightText,
+                    stroke: fontcolor,
                     margin: 8,
                     maxSize: new go.Size(160, NaN),
                     wrap: go.TextBlock.WrapFit,
@@ -108,7 +108,7 @@
                 $(go.Shape, "Circle",
                     { minSize: new go.Size(40, 40), fill: /*"#79C900"*/startcolor, stroke: null }),
               $(go.TextBlock, "Start",
-                { font: "bold 11pt Helvetica, Arial, sans-serif", stroke: lightText },
+                { font: "bold 11pt Helvetica, Arial, sans-serif", stroke: fontcolor },
                 new go.Binding("text"))
             ),
             // three named ports, one on each side except the top, all output only:
@@ -122,7 +122,7 @@
               $(go.TextBlock, "Action",
                 {
                     font: "bold 11pt Helvetica, Arial, sans-serif",
-                    stroke: lightText,
+                    stroke: fontcolor,
                     margin: 8,
                     maxSize: new go.Size(160, NaN),
                     wrap: go.TextBlock.WrapFit,
@@ -142,7 +142,7 @@
               $(go.TextBlock, "Decision",
                 {
                     font: "bold 11pt Helvetica, Arial, sans-serif",
-                    stroke: lightText,
+                    stroke: fontcolor,
                     margin: 8,
                     maxSize: new go.Size(160, NaN),
                     wrap: go.TextBlock.WrapFit,
@@ -161,7 +161,7 @@
               $(go.Shape, "Circle",
                   { minSize: new go.Size(40, 40), fill: /*"#DC3C00"*/stopcolor, stroke: null }),
               $(go.TextBlock, "End",
-                { font: "bold 11pt Helvetica, Arial, sans-serif", stroke: lightText },
+                { font: "bold 11pt Helvetica, Arial, sans-serif", stroke: fontcolor },
                 new go.Binding("text"))
             ),
             // three named ports, one on each side except the bottom, all input only:

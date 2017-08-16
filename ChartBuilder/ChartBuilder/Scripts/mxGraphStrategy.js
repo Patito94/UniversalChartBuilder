@@ -86,6 +86,10 @@
             //A node-ok a szöveg méretével együtt nőnek
             graph.setAutoSizeCells(true);
             graph.setCellsResizable(true);
+
+            var style = graph.getStylesheet().getDefaultVertexStyle();
+            style[mxConstants.STYLE_FONTCOLOR] = fontcolor;
+            graph.getStylesheet().putCellStyle('vertexesDefault', style);
         }
     }
 

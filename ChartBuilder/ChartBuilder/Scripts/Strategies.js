@@ -7,6 +7,7 @@ var startcolor = '#36BA45';
 var stopcolor = '#FF1D23';
 var actcolor = '#6CCFFF';
 var deccolor = '#7FB2F0';
+var fontcolor = '#000000';
 
 LibraryStrategy.prototype = {
     setStrategy: function (library) {

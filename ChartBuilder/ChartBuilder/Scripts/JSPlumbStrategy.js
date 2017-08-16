@@ -32,6 +32,8 @@
         }
     }
     function openModal() {
+        //Előre hozom a Modal-t, így az a node-ok előtt jelenik meg
+        modal.style.zIndex = 100001;
         modal.style.display = "block";
     }
     this.EditNode = function () {
@@ -42,6 +44,9 @@
         for (i = 0; i < block_array.blocks.length; i++) {
             if (thisid == block_array.blocks[i].id) {
                 block_array.blocks[i].text = text;
+                //block_array.blocks[i].anchors.style = { anchor: "BottomCenter" };
+                //jsPlumb.addEndpoint($(Div), { anchor: "BottomCenter" }, { isSource: true, isTarget: false });
+                //jsPlumb.endpoints(block_array.blocks[i], { anchor: "BottomCenter" });
             }
         }
     }
@@ -110,6 +115,8 @@
         //width: '50px',
         border: 'solid 1px',
         background: startcolor,
+        'border-color': 'black',
+        color: fontcolor,
         'border-radius': '50px'
             });
         Div.appendTo("#canvas");
@@ -151,6 +158,8 @@
             border: 'solid 1px',
             background: stopcolor,
             raius: '2',
+            'border-color': 'black',
+            color: fontcolor,
             'border-radius': '50px'
             });
         Div.appendTo("#canvas");
@@ -195,6 +204,8 @@
                 width: '100px',
                 border: 'solid 1px',
                 background: deccolor,
+                'border-color': 'black',
+                color: fontcolor,
                 'transform': 'rotate(45deg)'
             }
             );
@@ -234,6 +245,8 @@
             width: '100px',
             border: 'solid 1px',
             background: deccolor,
+            'border-color': 'black',
+            color: fontcolor,
             'transform': 'rotate(45deg)'
         }
         );
@@ -282,6 +295,8 @@
                     width: 'auto',
                     'min-width': '100px',
                     border: 'solid 1px',
+                    'border-color': 'black',
+                    color: fontcolor,
                     background: actcolor
                 });
                 Div.appendTo("#canvas");
@@ -319,6 +334,8 @@
                 width: 'auto',
                 'min-width': '100px',
                 border: 'solid 1px',
+                'border-color': 'black',
+                color: fontcolor,
                 background: actcolor
             });
             Div.appendTo("#canvas");
@@ -365,19 +382,19 @@
     this.Load = function () {
         Clear();
         parser.Decode();
-        console.log("indexer: " + indexer);
+        //console.log("indexer: " + indexer);
     }
 
     jsonToCanvas = function () {
         
-        console.log(load_array.loadblocks);
+        //console.log(load_array.loadblocks);
         var length = load_array.loadblocks.length;
         var bestid = -100000;
         for (i = 0; i < length; i++) {
             if (parseInt(load_array.loadblocks[i].id) > parseInt(bestid)) { bestid = parseInt(load_array.loadblocks[i].id) };
             //console.log("id: " + load_array.loadblocks[i].id);
-            console.log("bestid after: "+bestid);
-            console.log("actualid: "+load_array.loadblocks[i].id);
+            //console.log("bestid after: "+bestid);
+            //console.log("actualid: "+load_array.loadblocks[i].id);
             switch (load_array.loadblocks[i].type) {
                 case "Dec":
                     LoadDec(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, load_array.loadblocks[i].text);
@@ -394,7 +411,7 @@
             }
         }
         indexer = parseInt(bestid) + 1;
-        console.log("indexer:" + indexer);
+        //console.log("indexer:" + indexer);
         $.each(load_array.loadconnections, function (index, elem) {
             var connection1 = jsPlumb.connect({
                 source: elem.sourceId,
@@ -405,15 +422,17 @@
                 //]
             });
         });
-        console.log("fesfsefes");
+        //console.log("fesfsefes");
     }
 
     Clear = function () {
+        //jsPlumb.detachEveryConnection();
         var i = block_array.blocks.length - 1;
         while (i >= 0) {
             jsPlumb.remove(block_array.blocks[i].id);
             i--;
         }
+        //jsPlumb.remove(block_array.blocks);
         block_array.blocks.splice(0, block_array.blocks.length);
         connections_array.connections.splice(0, connections_array.connections.length);
         document.getElementById("startbtn").removeAttribute("disabled");
