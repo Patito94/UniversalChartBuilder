@@ -98,10 +98,11 @@
           })
             $("#palettestart, #palettestop, #paletteaction, #palettedecision, #palettegateway").draggable
             ({
-                helper: 'clone',
-                cursor: 'pointer',
-                tolerance: 'fit',
-                revert: true
+                helper : 'clone',
+                cursor : 'pointer',
+                tolerance : 'fit',
+                revert : false
+
             });
             $("#canvas").droppable
             ({
