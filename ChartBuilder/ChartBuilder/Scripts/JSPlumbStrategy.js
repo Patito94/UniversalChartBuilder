@@ -145,30 +145,30 @@
         });
     }
 
-    PaletteStart = function (posx, posy, text) {
-        id = null;
-        id = String(id);
-        var Div = $('<div>', {
-            id: id,
-            class: 'window jtk-node',
-            text: "Start",
-            //category: "Deletable"
-        })
-            .css(
-            {
-                top: posy,
-                left: posx,
-                height: '100px',
-                width: '100px',
-                border: 'solid 1px',
-                background: startcolor,
-                'border-color': 'black',
-                color: fontcolor,
-                'border-radius': '50px',
-                'text-align': 'center',
-                'background-image': 'url("Content/Images/ball.png")'
-            });
-        Div.appendTo(document.getElementById("palette"));
+    //PaletteStart = function (posx, posy, text) {
+    //    id = null;
+    //    id = String(id);
+    //    var Div = $('<div>', {
+    //        id: id,
+    //        class: 'window jtk-node',
+    //        text: "Start",
+    //        //category: "Deletable"
+    //    })
+    //        .css(
+    //        {
+    //            top: posy,
+    //            left: posx,
+    //            height: '100px',
+    //            width: '100px',
+    //            border: 'solid 1px',
+    //            background: startcolor,
+    //            'border-color': 'black',
+    //            color: fontcolor,
+    //            'border-radius': '50px',
+    //            'text-align': 'center',
+    //            'background-image': 'url("Content/Images/ball.png")'
+    //        });
+    //    Div.appendTo(document.getElementById("palette"));
         //Div.appendTo("#palette");
         //document.getElementById(id).innerHTML = text;
         //jsPlumb.draggable($(Div));
@@ -183,7 +183,7 @@
         //        "posY": posy
         //    }
         //});
-    }
+    //}
 
     this.AddStop = function (posx, posy, text) {
         LoadStop("" + indexer, posx, posy, text);
