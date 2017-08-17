@@ -124,11 +124,11 @@
                 height: '100px',
                 width: '100px',
                 border: 'solid 1px',
-                background: startcolor,
-                'border-color': 'black',
+                //background: startcolor,
+                //'border-color': 'black',
                 color: fontcolor,
                 'border-radius': '50px',
-                //'background-image': 'url("Content/Images/ball.png")'
+                'background-image': 'url("Content/Images/protocol_start_small.png")'
             });
         
         return Div;
@@ -168,12 +168,12 @@
                 left: posx,
                 height: '100px',
                 width: '100px',
-                border: 'solid 1px',
-                background: startcolor,
-                'border-color': 'black',
+                //border: 'solid 1px',
+                //background: startcolor,
+                //'border-color': 'black',
                 color: fontcolor,
                 'border-radius': '50px',
-                'background-image': 'url("Content/Images/ball.png")'
+                'background-image': 'url("Content/Images/protocol_start_alternative_small.png")'
             });
         return Div;
     }
@@ -225,12 +225,14 @@
                 left: posx,
                 height: '100px',
                 width: '100px',
-                border: 'solid 1px',
-                background: stopcolor,
+                //border: 'solid 1px',
+                //background: stopcolor,
                 raius: '2',
-                'border-color': 'black',
+                //'border-color': 'black',
                 color: fontcolor,
-                'border-radius': '50px'
+                'border-radius': '50px',
+                'background-image': 'url("Content/Images/protocol_end_small.png")'
+
             });
         return Div;
     }
@@ -281,11 +283,12 @@
                     left: posx,
                     height: '100px',
                     width: '100px',
-                    border: 'solid 1px',
-                    background: deccolor,
-                    'border-color': 'black',
-                    color: fontcolor,
-                    'border-radius': '50px'
+                    //border: 'solid 1px',
+                    //background: deccolor,
+                    //'border-color': 'black',
+                    //color: fontcolor,
+                    'border-radius': '50px',
+                    'background-image': 'url("Content/Images/decision_small.png")'
                 }
                 );
             return Div;
@@ -343,10 +346,11 @@
                     height: '100px',
                     width: 'auto',
                     'min-width': '100px',
-                    border: 'solid 1px',
-                    'border-color': 'black',
-                    color: fontcolor,
-                    background: actcolor
+                    //border: 'solid 1px',
+                    //'border-color': 'black',
+                    //color: fontcolor,
+                    //background: actcolor,
+                    'background-image': 'url("Content/Images/command_small.png")'
                 });
             return Div;
         }

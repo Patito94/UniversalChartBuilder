@@ -8,7 +8,7 @@ var altstartcolor = '#36BA45';
 var stopcolor = '#FF1D23';
 var actcolor = '#6CCFFF';
 var deccolor = '#7FB2F0';
-var gatecolor = '#7FB2FF';
+var gatecolor = '#2eb82e';
 var fontcolor = '#000000';
 
 LibraryStrategy.prototype = {
