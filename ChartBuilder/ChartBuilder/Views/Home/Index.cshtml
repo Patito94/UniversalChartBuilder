@@ -43,8 +43,8 @@
     <script>
         var strategy;
         function runOnLoad() {
-            var library = new JSPlumbStrategy();
-            //var library = new GoJsStrategy();
+            //var library = new JSPlumbStrategy();
+            var library = new GoJsStrategy();
             //var library = new mxGraphStrategy();
             strategy = new LibraryStrategy();
             strategy.setStrategy(library);
@@ -105,12 +105,12 @@
             $(document).on("mousedown", "div[category='PaletteItem']", function (e) {
                 paletteid = this.id;
             });
-            $("#palettestart,#palettealtstart, #palettestop, #paletteaction, #palettedecision, #palettegateway").draggable
-                ({
-                    helper: 'clone',
-                    cursor: 'pointer',
-                    tolerance: 'fit',
-                    revert: false});
+            //$("#palettestart,#palettealtstart, #palettestop, #paletteaction, #palettedecision, #palettegateway").draggable
+            //    ({
+            //        helper: 'clone',
+            //        cursor: 'pointer',
+            //        tolerance: 'fit',
+            //        revert: false});
             $("#canvas").droppable({
                 accept: '#palette div',
                 containment: 'canvas',
@@ -165,7 +165,7 @@
                 <h5 id="palettegateway" name="valami" class="ui-widget-header">Gateway</h5>*@
             </div>
         </span>
-        <span style="display: inline-block; vertical-align: top; width:800px">
+        <span style="display: inline-block; vertical-align: top; width:80%">
             <div class="jtk-demo-main">
                 <div class="jtk-demo-canvas canvas-wide flowchart-demo jtk-surface jtk-surface-nopan" id="canvas">
                 </div>
