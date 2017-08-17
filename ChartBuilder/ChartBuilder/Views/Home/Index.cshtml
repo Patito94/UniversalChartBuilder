@@ -51,6 +51,7 @@
             strategy.Create();
         }
 
+<<<<<<< .mine
         function AddStart(x, y, text) {
             strategy.AddStart(x, y, text);
         }
@@ -64,6 +65,21 @@
             strategy.AddDec(x, y, text);
         }
         function AddAct(x, y, text) {
+=======
+        function AddStart(x, y, text) {
+            strategy.AddStart(x, y, text);
+        }
+        function AddStop(x, y, text) {
+            strategy.AddStop(x, y, text);
+        }
+        function AddDec(x, y, text) {
+            strategy.AddDec(x, y, text);
+        }
+        function AddAct(x, y, text) {
+
+
+
+>>>>>>> .theirs
             strategy.AddAct(x, y, text);
         }
         function AddGate(x, y, text) {
@@ -106,12 +122,8 @@
                     tolerance: 'fit',
                     revert: false
 
-                });
             $("#canvas").droppable
-                ({
-                    accept: '#palettestart, #palettealtstart, #palettestop, #paletteaction, #palettedecision, #palettegateway',
-                    containment: 'canvas',
-
+                containment : 'canvas',
                     drop: function (e, ui) {
                         console.log(document.getElementById("canvas").getBoundingClientRect().left);
                         console.log(paletteid);
@@ -157,11 +169,19 @@
             <div id="palette">
 
                 <h5 id="palettestart" name="valami" class="ui-widget-header">Start</h5>
+<<<<<<< .mine
                 <h5 id="palettealtstart" name="valami" class="ui-widget-header">AltStart</h5>
                 <h5 id="palettestop" name="valami" class="ui-widget-header">Stop</h5>
                 <h5 id="paletteaction" name="valami" class="ui-widget-header">Action</h5>
                 <h5 id="palettedecision" name="valami" class="ui-widget-header">Decision</h5>
                 <h5 id="palettegateway" name="valami" class="ui-widget-header">Gateway</h5>
+=======
+                <h5 id="palettestop" name="valami" class="ui-widget-header">Stop</h5>
+                <h5 id="paletteaction" name="valami" class="ui-widget-header">Action</h5>
+                <h5 id="palettedecision" name="valami" class="ui-widget-header">Decision</h5>
+                <h5 id="palettegateway" name="valami" class="ui-widget-header">Gateway</h5>
+
+>>>>>>> .theirs
 
             </div>
         </span>
