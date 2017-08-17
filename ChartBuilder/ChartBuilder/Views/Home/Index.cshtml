@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="/Content/Site.css">
 
 	@*<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>*@
+   
 	<script src="/Scripts/jsplumb.js"></script>
 	<script src="~/Scripts/Strategies.js"></script>
 
@@ -42,8 +43,8 @@
 	<script>
 		var strategy;
 		function runOnLoad() {
-		    //var library = new JSPlumbStrategy();
-		    var library = new GoJsStrategy();
+		    var library = new JSPlumbStrategy();
+		    //var library = new GoJsStrategy();
 		    //var library = new mxGraphStrategy();
 			strategy = new LibraryStrategy();
 			strategy.setStrategy(library);
@@ -86,14 +87,53 @@
 		    strategy.EditNode();
 		}
 	</script>
+    <script>
+
+        //Drag and drop works for multiple objects but manipulating those objects within the canvas doesn't.
+        //Objects in the canvas are stagnant.
+        jsPlumb.ready(function(e)
+        {
+            $("#palette .window").draggable
+            ({
+                helper : 'clone',
+                cursor : 'pointer',
+                tolerance : 'fit',
+                revert : true
+
+            });
+
+            var canvasOffset = $('#canvas').offset();
+            console.log(canvasOffset);
+
+            $("#canvas").droppable
+            ({
+                accept : '#palette .window',
+                containment : 'canvas',
+
+                drop : function (e, ui) {
+                    droppedElement = ui.helper.clone();
+                    $(droppedElement).draggable({containment: "canvas"});   //Replicates everytime an object on the canvas is dragged.
+                    droppedElement.appendTo('#canvas');
+
+                }
+
+            });
+
+        });
+
+    </script>
 </head>
 <body data-demo-id="flowchart" onload="runOnLoad()">
     @Html.Partial("_Header")
 	<div style="width:100%; white-space:nowrap;">
-		<span style="display: inline-block; vertical-align: top; width:100px; visibility:hidden">
-			<div id="palette"></div>
+		<span style="display: inline-block; vertical-align: top; width:100px; ">
+			<div id="palette">
+
+                    <h5 class="ui-widget-header">High Tatras</h5>
+
+            </div>
 		</span>
-		<span style="display: inline-block; vertical-align: top; width:80%">
+		<span style="display: inline-block; vertical-align: top; width:800px">
 			<div class="jtk-demo-main">
 				<div class="jtk-demo-canvas canvas-wide flowchart-demo jtk-surface jtk-surface-nopan" id="canvas">
 				</div>
@@ -126,6 +166,7 @@
 	</div>
 
     @Scripts.Render("~/bundles/jquery")
+    <script type="text/javascript" src="../Scripts/jquery-ui.js"></script>
     @Scripts.Render("~/bundles/bootstrap")
 
 </body>
