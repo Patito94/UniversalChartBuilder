@@ -5,32 +5,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
     @*<link rel="stylesheet" href="/Content/main.css">*@
-	<link rel="stylesheet" href="/Content/jsplumbtoolkit-defaults.css">
-	<link rel="stylesheet" href="~/Content/canvasStyle.css">
-	<link rel="stylesheet" href="/Content/demo.css">
+    <link rel="stylesheet" href="/Content/jsplumbtoolkit-defaults.css">
+    <link rel="stylesheet" href="~/Content/canvasStyle.css">
+    <link rel="stylesheet" href="/Content/demo.css">
     <link rel="stylesheet" href="/Content/Site.css">
 
-	@*<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>*@
-   
-	<script src="/Scripts/jsplumb.js"></script>
-	<script src="~/Scripts/Strategies.js"></script>
+    @*<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>*@
 
-	@*mxGraph*@
-	<script type="text/javascript">
-		mxBasePath = '../Scripts/src';
-	</script>
-	<script type="text/javascript" src="../Scripts/mxClient.js"></script>
+    <script src="/Scripts/jsplumb.js"></script>
+    <script src="~/Scripts/Strategies.js"></script>
 
-	@*goJS*@
-	<script type="text/javascript" src="../Scripts/go-1.7.15.js"></script>
+    @*mxGraph*@
+    <script type="text/javascript">
+        mxBasePath = '../Scripts/src';
+    </script>
+    <script type="text/javascript" src="../Scripts/mxClient.js"></script>
+
+    @*goJS*@
+    <script type="text/javascript" src="../Scripts/go-1.7.15.js"></script>
 
     <script type="text/javascript" src="../Scripts/JSPlumbStrategy.js"></script>
 
@@ -40,133 +40,154 @@
 
     <script type="text/javascript" src="../Scripts/JSONParseChart.js"></script>
 
-	<script>
-		var strategy;
-		function runOnLoad() {
-		    var library = new JSPlumbStrategy();
-		    //var library = new GoJsStrategy();
-		    //var library = new mxGraphStrategy();
-			strategy = new LibraryStrategy();
-			strategy.setStrategy(library);
-			strategy.Create();
-		}
+    <script>
+        var strategy;
+        function runOnLoad() {
+            var library = new JSPlumbStrategy();
+            //var library = new GoJsStrategy();
+            //var library = new mxGraphStrategy();
+            strategy = new LibraryStrategy();
+            strategy.setStrategy(library);
+            strategy.Create();
+        }
 
-		function AddStart(x,y,text) {
-			strategy.AddStart(x, y, text);
-		}
-		function AddStop(x,y,text) {
-			strategy.AddStop(x,y,text);
-		}
-		function AddDec(x,y,text) {
-			strategy.AddDec(x,y,text);
-		}
-		function AddAct(x,y,text) {
+        function AddStart(x, y, text) {
+            strategy.AddStart(x, y, text);
+        }
+        function AddStop(x, y, text) {
+            strategy.AddStop(x, y, text);
+        }
+        function AddDec(x, y, text) {
+            strategy.AddDec(x, y, text);
+        }
+        function AddAct(x, y, text) {
             strategy.AddAct(x, y, text);
         }
-        function AddGate(x,y,text) {
+        function AddGate(x, y, text) {
             strategy.AddGate(x, y, text);
         }
 
-		function Save() {
-			strategy.Save();
-		}
+        function Save() {
+            strategy.Save();
+        }
 
-		function Load() {
-			strategy.Load();
-		}
+        function Load() {
+            strategy.Load();
+        }
 
-		function Clear() {
-			strategy.Clear();
-		}
+        function Clear() {
+            strategy.Clear();
+        }
 
-		//Ez csak JSPlumb esetén van:
-		function DeleteNode() {
-		    strategy.DeleteNode();
-		}
-		function EditNode() {
-		    strategy.EditNode();
-		}
-	</script>
+        //Ez csak JSPlumb esetén van:
+        function DeleteNode() {
+            strategy.DeleteNode();
+        }
+        function EditNode() {
+            strategy.EditNode();
+        }
+    </script>
     <script>
 
         //Drag and drop works for multiple objects but manipulating those objects within the canvas doesn't.
         //Objects in the canvas are stagnant.
-        jsPlumb.ready(function(e)
-        {
-            $("#palette h5").draggable
+        jsPlumb.ready(function (e) {
+          var paletteid;
+          $(document).on("mousedown","h5[name='valami']", function(e) {
+            paletteid=this.id;
+          })
+            $("#palettestart, #palettestop, #paletteaction, #palettedecision, #palettegateway").draggable
             ({
-                helper : 'clone',
-                cursor : 'pointer',
-                tolerance : 'fit',
-                revert : true
-
+                helper: 'clone',
+                cursor: 'pointer',
+                tolerance: 'fit',
+                revert: true
             });
-
             $("#canvas").droppable
             ({
-                accept : '#palette h5',
-                containment : 'canvas',
+                accept: '#palettestart, #palettestop, #paletteaction, #palettedecision, #palettegateway',
+                containment: 'canvas',
 
                 drop: function (e, ui) {
                     console.log(document.getElementById("canvas").getBoundingClientRect().left);
+                    console.log(paletteid);
                     var xx = document.getElementById("canvas").getBoundingClientRect().left;
                     var yy = document.getElementById("canvas").getBoundingClientRect().top;
                     var x = e.clientX - xx - 50;
                     var y = e.clientY - yy - 50;
-                    AddStart(x, y, "Start");
+                    switch (paletteid) {
+                      case "palettestart":
+                      AddStart(x,y,"Start");
+                        return ;
+                      case "palettestop":
+                      AddStop(x,y,"Stop");
+                        return ;
+                      case "paletteaction":
+                      AddAct(x,y,"Action");
+                        return ;
+                        case "palettedecision":
+                      AddDec(x,y,"Decision");
+                        return ;
+                        case "palettegateway":
+                      AddGate(x,y,"Gateway");
+                        return ;
+                      default:
+                        return;
+                    }
                     //droppedElement = ui.helper.clone();
                     //$(droppedElement).draggable({containment: "canvas"});   //Replicates everytime an object on the canvas is dragged.
                     //droppedElement.appendTo('#canvas');
-
                 }
-
             });
-
         });
 
     </script>
 </head>
 <body data-demo-id="flowchart" onload="runOnLoad()">
     @Html.Partial("_Header")
-	<div style="width:100%; white-space:nowrap;">
-		<span style="display: inline-block; vertical-align: top; width:100px; ">
-			<div id="palette">
+    <div style="width:100%; white-space:nowrap;">
+        <span style="display: inline-block; vertical-align: top; width:100px; ">
+            <div id="palette">
 
-                    <h5 class="ui-widget-header">High Tatras</h5>
+                <h5 id="palettestart" name="valami" class="ui-widget-header">Start</h5>
+                <h5 id="palettestop" name="valami" class="ui-widget-header">Stop</h5>
+                <h5 id="paletteaction" name="valami" class="ui-widget-header">Action</h5>
+                <h5 id="palettedecision" name="valami" class="ui-widget-header">Decision</h5>
+                <h5 id="palettegateway" name="valami" class="ui-widget-header">Gateway</h5>
 
             </div>
-		</span>
-		<span style="display: inline-block; vertical-align: top; width:800px">
-			<div class="jtk-demo-main">
-				<div class="jtk-demo-canvas canvas-wide flowchart-demo jtk-surface jtk-surface-nopan" id="canvas">
-				</div>
-			</div>
-		</span>
-	</div>
+        </span>
+        <span style="display: inline-block; vertical-align: top; width:800px">
+            <div class="jtk-demo-main">
+                <div class="jtk-demo-canvas canvas-wide flowchart-demo jtk-surface jtk-surface-nopan" id="canvas">
+                </div>
+            </div>
+        </span>
+    </div>
 
-	<!-- The Modal -->
-	<div id="myModal" class="modal">
-		<!-- Modal content -->
-		<div class="modal-content">
-			<span class="close">&times;</span>
-			<p></p>
-			<button id="modal_editbtn" onclick="EditNode();">Edit</button>
-			<button id="modal_deletebtn" onclick="DeleteNode();">Delete</button>
-		</div>
-	</div>
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p></p>
+            <button id="modal_editbtn" onclick="EditNode();">Edit</button>
+            <button id="modal_deletebtn" onclick="DeleteNode();">Delete</button>
+        </div>
+    </div>
 
-	<div id="buttons" style="text-align:center; visibility:visible">
-		<button id="startbtn" onClick="AddStart(0,0,'Start');">Add start</button>
-		<button id="stopbtn" onClick="AddStop(0,0,'Stop');">Add stop</button>
-		<button id="actbtn" onClick="AddAct(0,0,'Action');">Add action</button>
-		<button id="decbtn" onClick="AddDec(0,0,'Decision');">Add decision</button>
+    <div id="buttons" style="text-align:center; visibility:visible">
+        <button id="startbtn" onClick="AddStart(0,0,'Start');">Add start</button>
+        <button id="stopbtn" onClick="AddStop(0,0,'Stop');">Add stop</button>
+        <button id="actbtn" onClick="AddAct(0,0,'Action');">Add action</button>
+        <button id="decbtn" onClick="AddDec(0,0,'Decision');">Add decision</button>
         <button id="gatebtn" onClick="AddGate(0,0,'Gateway');">Add gateway</button>
-	</div>
-	<div style="text-align:center;">
-		<button id="savebtn" onclick="Save();">Save</button>
-		<button id="loadbtn" onclick="Load();">Load</button>
+    </div>
+    <div style="text-align:center;">
+        <button id="savebtn" onclick="Save();">Save</button>
+        <button id="loadbtn" onclick="Load();">Load</button>
         <button id="clearbtn" onclick="Clear();">Clear</button>
-	</div>
+    </div>
 
     @Scripts.Render("~/bundles/jquery")
     <script type="text/javascript" src="../Scripts/jquery-ui.js"></script>
