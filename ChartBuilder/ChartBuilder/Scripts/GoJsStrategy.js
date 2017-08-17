@@ -4,7 +4,7 @@
 
     this.Create = function () {
         var $ = go.GraphObject.make;  // for conciseness in defining templates
-        document.getElementById("palette").style.visibility = "visible";
+        //document.getElementById("palette").style.visibility = "visible";
         //Gombok látszódása
         //document.getElementById("buttons").style.visibility = "visible";
 
@@ -107,6 +107,10 @@
                 { font: "bold 11pt Helvetica, Arial, sans-serif", stroke: fontcolor },
                 new go.Binding("text"))
             ),
+            $(go.Picture, {
+                source: "Content/Images/ball.png", column: 4,
+                width: 50, height: 50, margin: 2
+            }),
             // three named ports, one on each side except the top, all output only:
             makePort("B", go.Spot.Bottom, true, false)
           ));
@@ -130,6 +134,9 @@
             makePort("B", go.Spot.Bottom, true, false)
           ));
 
+        var righttext = "True";
+        var lefttext = "False";
+
         myDiagram.nodeTemplateMap.add("Dec",
           $(go.Node, "Spot", nodeStyle(),
             $(go.Panel, "Auto",
@@ -146,9 +153,13 @@
                 },
                 new go.Binding("text").makeTwoWay())
             ),
+            $(go.TextBlock,
+                { text: "False", alignment: go.Spot.TopLeft }),
+            $(go.TextBlock,
+                { text: "True", alignment: go.Spot.TopRight }),
             makePort("T", go.Spot.Top, false, true),
             makePort("L", go.Spot.Left, true, false),
-            makePort("R", go.Spot.Right, true, false)
+            makePort("R", go.Spot.Right, true, false),
           ));
 
         myDiagram.nodeTemplateMap.add("Stop",

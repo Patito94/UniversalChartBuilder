@@ -90,6 +90,9 @@
             var style = graph.getStylesheet().getDefaultVertexStyle();
             style[mxConstants.STYLE_FONTCOLOR] = fontcolor;
             graph.getStylesheet().putCellStyle('vertexesDefault', style);
+
+            //Paletta
+            
         }
     }
 
@@ -182,12 +185,21 @@
             var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 40, 50, "shape=ellipse;fillColor=" + deccolor);
             v1.setConnectable(false);
 
+            var rightlabel = graph.insertVertex(v1, null, 'True', 1.1, 0.3, 0, 0, null, true);
+            rightlabel.setConnectable(false);
+            var leftlabel = graph.insertVertex(v1, null, 'False', 0, 0.3, 0, 0, null, true);
+            leftlabel.setConnectable(false);
+
             var port = graph.insertVertex(v1, null, targetNode, 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
             var port2 = graph.insertVertex(v1, null, sourceNode, 0, 0.5, 16, 16, 'port;image=/Content/dot.gif', true);
             var port3 = graph.insertVertex(v1, null, sourceNode, 1, 0.5, 16, 16, 'port;image=/Content/dot.gif', true);
             port.geometry.offset = new mxPoint(-8, -8);
             port2.geometry.offset = new mxPoint(-8, -8);
             port3.geometry.offset = new mxPoint(-8, -8);
+
+            rightlabel.geometry.offset = new mxPoint(-8, -8);
+            leftlabel.geometry.offset = new mxPoint(-8, -8);
+
             v1.type = "Dec";
         }
         finally {
@@ -227,7 +239,7 @@
         try {
             var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 40, 50, "shape=rhombus;fillColor=" + gatecolor);
             v1.setConnectable(false);
-
+            
             var port = graph.insertVertex(v1, null, targetNode, 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
             var port2 = graph.insertVertex(v1, null, sourceNode, 0, 0.5, 16, 16, 'port;image=/Content/dot.gif', true);
             var port3 = graph.insertVertex(v1, null, sourceNode, 1, 0.5, 16, 16, 'port;image=/Content/dot.gif', true);

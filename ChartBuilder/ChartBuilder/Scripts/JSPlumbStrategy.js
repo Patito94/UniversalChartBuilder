@@ -68,6 +68,17 @@
     $(document).on("click", "div[category='Deletable']", function () {
         thisid = this.id;
     });
+    $(document).on("mousedown", function (e) {
+
+    });
+    //$(document).on("mouseup", function (e) {
+    //    console.log(document.getElementById("canvas").getBoundingClientRect().left);
+    //    var xx = document.getElementById("canvas").getBoundingClientRect().left;
+    //    var yy = document.getElementById("canvas").getBoundingClientRect().top;
+    //    var x = e.clientX-xx-50;
+    //    var y = e.clientY-yy-50;
+    //    //AddStart(x, y, "Start");
+    //});
 
     $('html').keyup(function (e) {
         if (e.keyCode == 46 && thisid != null) {
@@ -88,6 +99,7 @@
     });
 
     this.Create = function () {
+        PaletteStart(0, 500, "Start");
         //document.getElementById("buttons").style.visibility = "visible";
     }
 
@@ -114,7 +126,8 @@
                 background: startcolor,
                 'border-color': 'black',
                 color: fontcolor,
-                'border-radius': '50px'
+                'border-radius': '50px',
+                'background-image': 'url("Content/Images/ball.png")'
             });
         Div.appendTo("#canvas");
         document.getElementById(id).innerHTML = text;
@@ -130,6 +143,46 @@
                 "posY": posy
             }
         });
+    }
+
+    PaletteStart = function (posx, posy, text) {
+        id = null;
+        id = String(id);
+        var Div = $('<div>', {
+            id: id,
+            class: 'window jtk-node',
+            text: "Start",
+            //category: "Deletable"
+        })
+            .css(
+            {
+                top: posy,
+                left: posx,
+                height: '100px',
+                width: '100px',
+                border: 'solid 1px',
+                background: startcolor,
+                'border-color': 'black',
+                color: fontcolor,
+                'border-radius': '50px',
+                'text-align': 'center',
+                'background-image': 'url("Content/Images/ball.png")'
+            });
+        Div.appendTo(document.getElementById("palette"));
+        //Div.appendTo("#palette");
+        //document.getElementById(id).innerHTML = text;
+        //jsPlumb.draggable($(Div));
+        //$(Div).addClass('window');
+        //jsPlumb.addEndpoint($(Div), { anchor: "BottomCenter" }, { isSource: true, isTarget: false });
+        //block_array.blocks.push({
+        //    "id": id,
+        //    "type": "Start",
+        //    "text": text,
+        //    "position": {
+        //        "posX": posx,
+        //        "posY": posy
+        //    }
+        //});
     }
 
     this.AddStop = function (posx, posy, text) {
@@ -210,8 +263,10 @@
             jsPlumb.draggable($(Div));
             $(Div).addClass('window');
             jsPlumb.addEndpoint($(Div), { anchor: "TopCenter" }, { isSource: false, isTarget: true, maxConnections: -1 });
-            jsPlumb.addEndpoint($(Div), { anchor: "Right" }, { isSource: true, isTarget: false });
-            jsPlumb.addEndpoint($(Div), { anchor: "Left" }, { isSource: true, isTarget: false });
+            var right = jsPlumb.addEndpoint($(Div), { anchor: "Right" }, { isSource: true, isTarget: false });
+            var left = jsPlumb.addEndpoint($(Div), { anchor: "Left" }, { isSource: true, isTarget: false });
+            left.addOverlay(["Label", { label: "False", location: [0, -1] }]);
+            right.addOverlay(["Label", { label: "True", location: [1, -1] }]);
             block_array.blocks.push({
                 "id": id,
                 "type": "Dec",
@@ -231,7 +286,6 @@
 
     LoadAct = function (id, posx, posy, text) {
         id = String(id);
-        text = null;
         if (text == null) {
             text = prompt("Action name: ", "Some Action");
         }
