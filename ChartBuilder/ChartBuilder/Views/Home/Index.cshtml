@@ -49,6 +49,12 @@
             strategy = new LibraryStrategy();
             strategy.setStrategy(library);
             strategy.Create();
+            library.AddPaletteStart();
+            library.AddPaletteAltStart();
+            library.AddPaletteStop();
+            library.AddPaletteDec();
+            library.AddPaletteAct();
+            library.AddPaletteGate();
         }
 
         function AddStart(x, y, text) {
@@ -96,7 +102,7 @@
         //Objects in the canvas are stagnant.
         jsPlumb.ready(function (e) {
             var paletteid;
-            $(document).on("mousedown", "h5[name='valami']", function (e) {
+            $(document).on("mousedown", "div[category='PaletteItem']", function (e) {
                 paletteid = this.id;
             });
             $("#palettestart,#palettealtstart, #palettestop, #paletteaction, #palettedecision, #palettegateway").draggable
@@ -106,7 +112,7 @@
                     tolerance: 'fit',
                     revert: false});
             $("#canvas").droppable({
-                accept: '#palettestart, #palettealtstart, #palettestop, #paletteaction, #palettedecision, #palettegateway',
+                accept: '#palette div',
                 containment: 'canvas',
                     drop: function (e, ui) {
                         console.log(document.getElementById("canvas").getBoundingClientRect().left);
@@ -151,12 +157,12 @@
     <div style="width:100%; white-space:nowrap;">
         <span style="display: inline-block; vertical-align: top; width:100px; ">
             <div id="palette">
-                <h5 id="palettestart" name="valami" class="ui-widget-header">Start</h5>
+                @*<h5 id="palettestart" name="valami" class="ui-widget-header">Start</h5>
                 <h5 id="palettealtstart" name="valami" class="ui-widget-header">AltStart</h5>
                 <h5 id="palettestop" name="valami" class="ui-widget-header">Stop</h5>
                 <h5 id="paletteaction" name="valami" class="ui-widget-header">Action</h5>
                 <h5 id="palettedecision" name="valami" class="ui-widget-header">Decision</h5>
-                <h5 id="palettegateway" name="valami" class="ui-widget-header">Gateway</h5>
+                <h5 id="palettegateway" name="valami" class="ui-widget-header">Gateway</h5>*@
             </div>
         </span>
         <span style="display: inline-block; vertical-align: top; width:800px">

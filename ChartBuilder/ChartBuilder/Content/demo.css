@@ -3,7 +3,8 @@
     touch-action:none;
 }
 
-.flowchart-demo .window {
+.flowchart-demo .window,
+#palette .window{
     border: 1px solid #346789;
     box-shadow: 2px 2px 19px #aaa;
     -o-box-shadow: 2px 2px 19px #aaa;
@@ -107,3 +108,7 @@ path, .jtk-endpoint {
 .jtk-overlay {
     background-color:transparent;
 }
+
+ #palette .jtk-node{
+     position:relative;
+ }

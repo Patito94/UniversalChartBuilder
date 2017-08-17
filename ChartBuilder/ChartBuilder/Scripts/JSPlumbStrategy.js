@@ -109,13 +109,13 @@
         indexer++;
     }
 
-    LoadStart = function (id, posx, posy, text) {
-        id = String(id);
+    createStartDiv = function (id, posx, posy, text, category) {
         var Div = $('<div>', {
-            id: id,
+            id: String(id),
             class: 'window jtk-node',
-            text: "flowchartWindow",
-            category: "Deletable"
+            text:  text,
+            category: category,
+
         })
             .css(
             {
@@ -130,10 +130,14 @@
                 'border-radius': '50px',
                 //'background-image': 'url("Content/Images/ball.png")'
             });
+        
+        return Div;
+    }
+
+    LoadStart = function (id, posx, posy, text) {
+        var Div = createStartDiv(id, posx, posy, text, "Deletable");
         Div.appendTo("#canvas");
-        document.getElementById(id).innerHTML = text;
         jsPlumb.draggable($(Div));
-        $(Div).addClass('window');
         jsPlumb.addEndpoint($(Div), { anchor: "BottomCenter" }, { isSource: true, isTarget: false });
         block_array.blocks.push({
             "id": id,
@@ -146,58 +150,17 @@
         });
     }
 
-    //PaletteStart = function (posx, posy, text) {
-    //    id = null;
-    //    id = String(id);
-    //    var Div = $('<div>', {
-    //        id: id,
-    //        class: 'window jtk-node',
-    //        text: "Start",
-    //        //category: "Deletable"
-    //    })
-    //        .css(
-    //        {
-    //            top: posy,
-    //            left: posx,
-    //            height: '100px',
-    //            width: '100px',
-    //            border: 'solid 1px',
-    //            background: startcolor,
-    //            'border-color': 'black',
-    //            color: fontcolor,
-    //            'border-radius': '50px',
-    //            'text-align': 'center',
-    //            'background-image': 'url("Content/Images/ball.png")'
-    //        });
-    //    Div.appendTo(document.getElementById("palette"));
-        //Div.appendTo("#palette");
-        //document.getElementById(id).innerHTML = text;
-        //jsPlumb.draggable($(Div));
-        //$(Div).addClass('window');
-        //jsPlumb.addEndpoint($(Div), { anchor: "BottomCenter" }, { isSource: true, isTarget: false });
-        //block_array.blocks.push({
-        //    "id": id,
-        //    "type": "Start",
-        //    "text": text,
-        //    "position": {
-        //        "posX": posx,
-        //        "posY": posy
-        //    }
-        //});
-    //}
-
-    this.AddAltStart = function (posx, posy, text) {
-        LoadAltStart("" + indexer, posx, posy, text);
-        indexer++;
+    this.AddPaletteStart = function (posx, posy, text) {
+        var Div = createStartDiv("palettestart", posx, posy, "Start", "PaletteItem");
+        Div.appendTo("#palette").draggable({helper: 'clone'});;
     }
 
-    LoadAltStart = function (id, posx, posy, text) {
-        id = String(id);
+    createAltStartDiv = function (id, posx, posy, text, category) {
         var Div = $('<div>', {
-            id: id,
+            id: String(id),
             class: 'window jtk-node',
-            text: "flowchartWindow",
-            category: "Deletable"
+            text: text,
+            category: category,
         })
             .css(
             {
@@ -212,10 +175,19 @@
                 'border-radius': '50px',
                 'background-image': 'url("Content/Images/ball.png")'
             });
+        return Div;
+    }
+
+
+    this.AddAltStart = function (posx, posy, text) {
+        LoadAltStart("" + indexer, posx, posy, text);
+        indexer++;
+    }
+
+    LoadAltStart = function (id, posx, posy, text) {
+        var Div = createAltStartDiv(id, posx,posy,text,"Deletable");
         Div.appendTo("#canvas");
-        document.getElementById(id).innerHTML = text;
         jsPlumb.draggable($(Div));
-        $(Div).addClass('window');
         jsPlumb.addEndpoint($(Div), { anchor: "BottomCenter" }, { isSource: true, isTarget: false });
         block_array.blocks.push({
             "id": id,
@@ -228,18 +200,24 @@
         });
     }
 
+    this.AddPaletteAltStart = function (posx, posy, text) {
+        var Div = createAltStartDiv("palettealtstart", posx, posy, "Start", "PaletteItem");
+        Div.appendTo("#palette").draggable({ helper: 'clone' });;
+    }
+
+
+
     this.AddStop = function (posx, posy, text) {
         LoadStop("" + indexer, posx, posy, text);
         indexer++;
     }
 
-    LoadStop = function (id, posx, posy, text) {
-        id = String(id);
+    createStopDiv = function (id, posx, posy, text, category) {
         var Div = $('<div>', {
-            id: id,
+            id: String(id),
             class: 'window jtk-node',
-            text: "flowchartWindow",
-            category: "Deletable"
+            text: text,
+            category: category,
         })
             .css(
             {
@@ -254,10 +232,13 @@
                 color: fontcolor,
                 'border-radius': '50px'
             });
+        return Div;
+    }
+
+    LoadStop = function (id, posx, posy, text) {
+        var Div = createStopDiv(id, posx, posy, "Stop", "Deletable");
         Div.appendTo("#canvas");
-        document.getElementById(id).innerHTML = text;
         jsPlumb.draggable($(Div));
-        $(Div).addClass('window');
         jsPlumb.addEndpoint($(Div), { anchor: "TopCenter" }, { isSource: false, isTarget: true, maxConnections: -1 });
         block_array.blocks.push({
             "id": id,
@@ -270,23 +251,29 @@
         });
     }
 
+    this.AddPaletteStop = function (posx, posy, text) {
+        var Div = createStopDiv("palettestop", posx, posy, "Stop", "PaletteItem");
+        Div.appendTo("#palette").draggable({ helper: 'clone' });;
+    }
+
+    
+
     this.AddDec = function (posx, posy, text) {
         LoadDec("" + indexer, posx, posy, text);
         indexer++;
     }
 
-    LoadDec = function (id, posx, posy, text) {
-        id = String(id);
+    createDecDiv = function (id, posx, posy, text, category) {
         if (text == null) {
             text = prompt("Decision name: ", "Some Decision");
         }
         if (text != null) {
             var Div = $('<div>',
                 {
-                    id: id,
+                    id: String(id),
                     class: 'window jtk-node',
-                    text: "flowchartWindow",
-                    category: "Editable"
+                    text:  text,
+                    category: category
                 })
                 .css(
                 {
@@ -301,8 +288,14 @@
                     'border-radius': '50px'
                 }
                 );
+            return Div;
+        }
+    }
+
+        LoadDec = function (id, posx, posy, text) {
+            var Div = createDecDiv(id, posx, posy, text, "Editable");
             Div.appendTo("#canvas");
-            document.getElementById(id).innerHTML = "<p>" + text + "</p>";
+            //document.getElementById(id).innerHTML = "<p>" + text + "</p>";
             jsPlumb.draggable($(Div));
             $(Div).addClass('window');
             jsPlumb.addEndpoint($(Div), { anchor: "TopCenter" }, { isSource: false, isTarget: true, maxConnections: -1 });
@@ -320,24 +313,28 @@
                 }
             });
         }
-    }
+
+        this.AddPaletteDec = function (posx, posy, text) {
+            var Div = createDecDiv("palettedecision", posx, posy, "Decision", "PaletteItem");
+            Div.appendTo("#palette").draggable({ helper: 'clone' });;
+        }
+    
 
     this.AddAct = function (posx, posy, text) {
         LoadAct("" + indexer, posx, posy, text);
         indexer++;
     }
 
-    LoadAct = function (id, posx, posy, text) {
-        id = String(id);
+    createActDiv = function (id, posx, posy, text, category) {
         if (text == null) {
             text = prompt("Action name: ", "Some Action");
         }
         if (text != null) {
             var Div = $('<div>', {
-                id: id,
+                id: String(id),
                 class: 'window jtk-node',
-                text: "flowchartWindow",
-                category: "Editable"
+                text: text,
+                category: category
             })
                 .css(
                 {
@@ -351,10 +348,15 @@
                     color: fontcolor,
                     background: actcolor
                 });
+            return Div;
+        }
+    }
+
+        LoadAct = function (id, posx, posy, text) {
+            var Div = createActDiv(id, posx, posy, text, "Editable");
             Div.appendTo("#canvas");
             document.getElementById(id).innerHTML = "<p>" + text + "</p>";
             jsPlumb.draggable($(Div));
-            $(Div).addClass('window');
             jsPlumb.addEndpoint($(Div), { anchor: "TopCenter" }, { isSource: false, isTarget: true, maxConnections: -1 });
             jsPlumb.addEndpoint($(Div), { anchor: "BottomCenter" }, { isSource: true, isTarget: false });
             block_array.blocks.push({
@@ -367,7 +369,41 @@
                 }
             });
         }
-    }
+    
+
+        this.AddPaletteAct = function (posx, posy, text) {
+            var Div = createActDiv("paletteaction", posx, posy, "Action", "PaletteItem");
+            Div.appendTo("#palette").draggable({ helper: 'clone' });
+        }
+
+        createGateDiv = function (id, posx, posy, text, category) {
+            if (text == null) {
+                text = prompt("Gateway name: ", "Some Gateway");
+            }
+            if (text != null) {
+                var Div = $('<div>',
+                    {
+                        id: String(id),
+                        class: 'window jtk-node',
+                        text: text,
+                        category: category
+                    })
+                    .css(
+                    {
+                        top: posy,
+                        left: posx,
+                        height: '100px',
+                        width: '100px',
+                        border: 'solid 1px',
+                        background: gatecolor,
+                        'border-color': 'black',
+                        color: fontcolor,
+                        'transform': 'rotate(45deg)'
+                    }
+                    );
+                return Div;
+            }
+        }
 
     this.AddGate = function (posx, posy, text) {
         LoadGate("" + indexer, posx, posy, text);
@@ -375,36 +411,10 @@
     }
 
     LoadGate = function (id, posx, posy, text) {
-        id = String(id);
-        console.log('Gateway');
-        if (text == null) {
-            text = prompt("Gateway name: ", "Some Gateway");
-        }
-        if (text != null) {
-            var Div = $('<div>',
-                {
-                    id: id,
-                    class: 'window jtk-node',
-                    text: "flowchartWindow",
-                    category: "Editable"
-                })
-                .css(
-                {
-                    top: posy,
-                    left: posx,
-                    height: '100px',
-                    width: '100px',
-                    border: 'solid 1px',
-                    background: gatecolor,
-                    'border-color': 'black',
-                    color: fontcolor,
-                    'transform': 'rotate(45deg)'
-                }
-                );
+        var Div = createGateDiv(id, posx, posy, text, "Editable");
             Div.appendTo("#canvas");
             document.getElementById(id).innerHTML = "<p style='transform: rotate(-45deg)'>" + text + "</p>";
             jsPlumb.draggable($(Div));
-            $(Div).addClass('window');
             jsPlumb.addEndpoint($(Div), { anchor: "TopCenter" }, { isSource: false, isTarget: true, maxConnections: -1 });
             jsPlumb.addEndpoint($(Div), { anchor: "Right" }, { isSource: true, isTarget: false });
             jsPlumb.addEndpoint($(Div), { anchor: "Left" }, { isSource: true, isTarget: false });
@@ -417,8 +427,13 @@
                     "posY": posy
                 }
             });
-        }
     }
+
+    this.AddPaletteGate = function (posx, posy, text) {
+        var Div = createGateDiv("palettegateway", posx, posy, "GateWay", "PaletteItem");
+        Div.appendTo("#palette").draggable({ helper: 'clone' });;
+    }
+    
 
     this.Save = function () {
         for (i = 0; i < block_array.blocks.length; i++) {
