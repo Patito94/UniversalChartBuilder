@@ -4,7 +4,7 @@
     // DOM node with the specified ID. This function is invoked
     // from the onLoad event handler of the document (see below).
     var graph;
-    var palette;
+    //var palette;
     var parent;
     var paletteparent;
     var sourceNode;
@@ -28,13 +28,13 @@
         //Gombok Látszódása
         //document.getElementById("buttons").style.visibility = "visible";
         var container = document.getElementById('canvas');
-        var pal = document.getElementById('palette');
+        //var pal = document.getElementById('palette');
         if (!mxClient.isBrowserSupported()) {
             mxUtils.error('Browser is not supported!', 200, false);
         }
         else {
             graph = new mxGraph(container);
-            palette = new mxGraph(pal);
+            //palette = new mxGraph(pal);
             graph.setConnectable(true);
             graph.setPortsEnabled(false);
             //edgek (vonalak) ne legyenek mozgathatóak
@@ -89,7 +89,7 @@
                 }
             });
             parent = graph.getDefaultParent();
-            paletteparent = palette.getDefaultParent();
+            //paletteparent = palette.getDefaultParent();
             OverrideAnchors();
 
             //A node-ok a szöveg méretével együtt nőnek
@@ -100,9 +100,9 @@
             style[mxConstants.STYLE_FONTCOLOR] = fontcolor;
             graph.getStylesheet().putCellStyle('vertexesDefault', style);
 
-            palette.cellsMovable = false;
-            palette.cellsEditable = false;
-            palette.cellsResizable = false;
+            //palette.cellsMovable = false;
+            //palette.cellsEditable = false;
+            //palette.cellsResizable = false;
         }
     }
 
@@ -152,7 +152,7 @@
     LoadStart = function (id, posx, posy, text) {
         graph.getModel().beginUpdate();
         try {
-            var v1 = graph.insertVertex(parent, id, text, posx, posy, 100, 50, 'editable=0;shape=ellipse;fillColor=' + startcolor); //vagy 'doubleEllipse'
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, 100, 100, 'editable=0;shape=ellipse;fillColor=' + startcolor); //vagy 'doubleEllipse'
             v1.setConnectable(false);
             v1.scale = false;
 
@@ -165,17 +165,47 @@
         }
     }
 
-    this.AddPaletteStart = function () {
-        palette.getModel().beginUpdate();
-        try {
-            var v1 = palette.insertVertex(paletteparent, null, "Start", 0, 0, 100, 50, 'editable=0;shape=ellipse;fillColor=' + startcolor); //vagy 'doubleEllipse'
-            v1.setConnectable(false);
-            v1.scale = false;
-            v1.type = "Start";
-        }
-        finally {
-            palette.getModel().endUpdate();
-        }
+    //this.AddPaletteStart = function () {
+    //    palette.getModel().beginUpdate();
+    //    try {
+    //        var v1 = palette.insertVertex(paletteparent, null, "Start", 0, 0, 100, 50, 'editable=0;shape=ellipse;fillColor=' + startcolor); //vagy 'doubleEllipse'
+    //        v1.setConnectable(false);
+    //        v1.scale = false;
+    //        v1.type = "Start";
+    //    }
+    //    finally {
+    //        palette.getModel().endUpdate();
+    //    }
+    //}
+
+    createStartDiv = function (id, posx, posy, text, category) {
+        var Div = $('<div>', {
+            id: String(id),
+            class: 'window jtk-node',
+            text: text,
+            category: category,
+
+        })
+            .css(
+            {
+                top: posy,
+                left: posx,
+                height: '100px',
+                width: '100px',
+                border: 'solid 1px',
+                background: startcolor,
+                'border-color': 'black',
+                color: fontcolor,
+                'border-radius': '50px',
+                //'background-image': 'url("Content/Images/ball.png")'
+            });
+
+        return Div;
+    }
+
+    this.AddPaletteStart = function (posx, posy, text) {
+        var Div = createStartDiv("palettestart", posx, posy, "Start", "PaletteItem");
+        Div.appendTo("#palette").draggable({ helper: 'clone' });;
     }
 
     this.AddAltStart = function (posx, posy, text) {
@@ -185,7 +215,7 @@
     LoadAltStart = function (id, posx, posy, text) {
         graph.getModel().beginUpdate();
         try {
-            var v1 = graph.insertVertex(parent, id, text, posx, posy, 100, 50, 'picture;editable=0;image=/Content/Images/ball.png'); //vagy 'doubleEllipse'
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, 100, 100, 'picture;editable=0;image=/Content/Images/ball.png'); //vagy 'doubleEllipse'
             v1.setConnectable(false);
             v1.scale = false;
 
@@ -198,6 +228,34 @@
         }
     }
 
+    createAltStartDiv = function (id, posx, posy, text, category) {
+        var Div = $('<div>', {
+            id: String(id),
+            class: 'window jtk-node',
+            text: text,
+            category: category,
+        })
+            .css(
+            {
+                top: posy,
+                left: posx,
+                height: '100px',
+                width: '100px',
+                border: 'solid 1px',
+                background: startcolor,
+                'border-color': 'black',
+                color: fontcolor,
+                'border-radius': '50px',
+                'background-image': 'url("Content/Images/ball.png")'
+            });
+        return Div;
+    }
+
+    this.AddPaletteAltStart = function (posx, posy, text) {
+        var Div = createAltStartDiv("palettealtstart", posx, posy, "Start", "PaletteItem");
+        Div.appendTo("#palette").draggable({ helper: 'clone' });;
+    }
+
     this.AddStop = function (posx, posy, text) {
         LoadStop(null,posx,posy,text);
     }
@@ -205,7 +263,7 @@
     LoadStop = function (id, posx, posy, text) {
         graph.getModel().beginUpdate();
         try {
-            var v1 = graph.insertVertex(parent, id, text, posx, posy, 100, 50, "editable=0;shape=ellipse;fillColor=" + stopcolor);
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, 100, 100, "editable=0;shape=ellipse;fillColor=" + stopcolor);
             v1.setConnectable(false);
 
             var port = graph.insertVertex(v1, null, targetNode, 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
@@ -218,6 +276,34 @@
         }
     }
 
+    createStopDiv = function (id, posx, posy, text, category) {
+        var Div = $('<div>', {
+            id: String(id),
+            class: 'window jtk-node',
+            text: text,
+            category: category,
+        })
+            .css(
+            {
+                top: posy,
+                left: posx,
+                height: '100px',
+                width: '100px',
+                border: 'solid 1px',
+                background: stopcolor,
+                raius: '2',
+                'border-color': 'black',
+                color: fontcolor,
+                'border-radius': '50px'
+            });
+        return Div;
+    }
+
+    this.AddPaletteStop = function (posx, posy, text) {
+        var Div = createStopDiv("palettestop", posx, posy, "Stop", "PaletteItem");
+        Div.appendTo("#palette").draggable({ helper: 'clone' });;
+    }
+
     this.AddDec = function (posx, posy, text) {
         LoadDec(null,posx,posy,text);
     }
@@ -225,7 +311,7 @@
     LoadDec = function (id, posx, posy, text) {
         graph.getModel().beginUpdate();
         try {
-            var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 40, 50, "shape=ellipse;fillColor=" + deccolor);
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 40, 100, "shape=ellipse;fillColor=" + deccolor);
             v1.setConnectable(false);
 
             var rightlabel = graph.insertVertex(v1, null, 'True', 1.1, 0.3, 0, 0, null, true);
@@ -251,6 +337,40 @@
         }
     }
 
+    createDecDiv = function (id, posx, posy, text, category) {
+        if (text == null) {
+            text = prompt("Decision name: ", "Some Decision");
+        }
+        if (text != null) {
+            var Div = $('<div>',
+                {
+                    id: String(id),
+                    class: 'window jtk-node',
+                    text: text,
+                    category: category
+                })
+                .css(
+                {
+                    top: posy,
+                    left: posx,
+                    height: '100px',
+                    width: '100px',
+                    border: 'solid 1px',
+                    background: deccolor,
+                    'border-color': 'black',
+                    color: fontcolor,
+                    'border-radius': '50px'
+                }
+                );
+            return Div;
+        }
+    }
+
+    this.AddPaletteDec = function (posx, posy, text) {
+        var Div = createDecDiv("palettedecision", posx, posy, "Decision", "PaletteItem");
+        Div.appendTo("#palette").draggable({ helper: 'clone' });;
+    }
+
     this.AddAct = function (posx, posy, text) {
         LoadAct(null,posx,posy,text);
     }
@@ -258,7 +378,7 @@
     LoadAct = function (id, posx, posy, text) {
         graph.getModel().beginUpdate();
         try {
-            var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 40, 50, "shape=rectangle;fillColor=" + actcolor);
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 40, 100, "shape=rectangle;fillColor=" + actcolor);
             v1.setConnectable(false);
 
             var port = graph.insertVertex(v1, null, targetNode, 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
@@ -273,6 +393,38 @@
         }
     }
 
+    createActDiv = function (id, posx, posy, text, category) {
+        if (text == null) {
+            text = prompt("Action name: ", "Some Action");
+        }
+        if (text != null) {
+            var Div = $('<div>', {
+                id: String(id),
+                class: 'window jtk-node',
+                text: text,
+                category: category
+            })
+                .css(
+                {
+                    top: posy,
+                    left: posx,
+                    height: '100px',
+                    width: 'auto',
+                    'min-width': '100px',
+                    border: 'solid 1px',
+                    'border-color': 'black',
+                    color: fontcolor,
+                    background: actcolor
+                });
+            return Div;
+        }
+    }
+
+    this.AddPaletteAct = function (posx, posy, text) {
+        var Div = createActDiv("paletteaction", posx, posy, "Action", "PaletteItem");
+        Div.appendTo("#palette").draggable({ helper: 'clone' });
+    }
+
     this.AddGate = function (posx, posy, text) {
         LoadGate(null, posx, posy, text);
     }
@@ -280,7 +432,7 @@
     LoadGate = function (id, posx, posy, text) {
         graph.getModel().beginUpdate();
         try {
-            var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 40, 50, "shape=rhombus;fillColor=" + gatecolor);
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 40, 100, "shape=rhombus;fillColor=" + gatecolor);
             v1.setConnectable(false);
             
             var port = graph.insertVertex(v1, null, targetNode, 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
@@ -295,6 +447,41 @@
             // Updates the display
             graph.getModel().endUpdate();
         }
+    }
+
+    createGateDiv = function (id, posx, posy, text, category) {
+        if (text == null) {
+            text = prompt("Gateway name: ", "Some Gateway");
+        }
+        if (text != null) {
+            var Div = $('<div>',
+                {
+                    id: String(id),
+                    class: 'window jtk-node',
+                    text: text,
+                    category: category
+                })
+                .css(
+                {
+                    top: posy,
+                    left: posx,
+                    height: '100px',
+                    width: '100px',
+                    border: 'solid 1px',
+                    background: gatecolor,
+                    'border-color': 'black',
+                    color: fontcolor,
+                    'transform': 'rotate(45deg)'
+                }
+                );
+            return Div;
+        }
+    }
+
+    this.AddPaletteGate = function (posx, posy, text) {
+        var Div = createGateDiv("palettegateway", posx, posy, "GateWay", "PaletteItem");
+        Div.appendTo("#palette").draggable({ helper: 'clone' });
+        document.getElementById("palettegateway").innerHTML = "<p style='transform: rotate(-45deg)'>" + "Gateway" + "</p>";
     }
 
     this.Save = function () {
