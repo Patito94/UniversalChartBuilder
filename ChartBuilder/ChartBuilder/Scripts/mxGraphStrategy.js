@@ -4,7 +4,9 @@
     // DOM node with the specified ID. This function is invoked
     // from the onLoad event handler of the document (see below).
     var graph;
+    var palette;
     var parent;
+    var paletteparent;
     var sourceNode;
     var targetNode;
     var font_size = 6;
@@ -26,11 +28,13 @@
         //Gombok Látszódása
         //document.getElementById("buttons").style.visibility = "visible";
         var container = document.getElementById('canvas');
+        var pal = document.getElementById('palette');
         if (!mxClient.isBrowserSupported()) {
             mxUtils.error('Browser is not supported!', 200, false);
         }
         else {
             graph = new mxGraph(container);
+            palette = new mxGraph(pal);
             graph.setConnectable(true);
             graph.setPortsEnabled(false);
             //edgek (vonalak) ne legyenek mozgathatóak
@@ -85,6 +89,7 @@
                 }
             });
             parent = graph.getDefaultParent();
+            paletteparent = palette.getDefaultParent();
             OverrideAnchors();
 
             //A node-ok a szöveg méretével együtt nőnek
@@ -95,8 +100,9 @@
             style[mxConstants.STYLE_FONTCOLOR] = fontcolor;
             graph.getStylesheet().putCellStyle('vertexesDefault', style);
 
-            //Paletta
-            
+            palette.cellsMovable = false;
+            palette.cellsEditable = false;
+            palette.cellsResizable = false;
         }
     }
 
@@ -140,7 +146,7 @@
     };
 
     this.AddStart = function (posx, posy, text) {
-        LoadStart(null,posx,posy,text);
+        LoadStart(null, posx, posy, text);
     }
 
     LoadStart = function (id, posx, posy, text) {
@@ -156,6 +162,19 @@
         }
         finally {
             graph.getModel().endUpdate();
+        }
+    }
+
+    this.AddPaletteStart = function () {
+        palette.getModel().beginUpdate();
+        try {
+            var v1 = palette.insertVertex(paletteparent, null, "Start", 0, 0, 100, 50, 'editable=0;shape=ellipse;fillColor=' + startcolor); //vagy 'doubleEllipse'
+            v1.setConnectable(false);
+            v1.scale = false;
+            v1.type = "Start";
+        }
+        finally {
+            palette.getModel().endUpdate();
         }
     }
 

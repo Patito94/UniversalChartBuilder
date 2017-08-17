@@ -396,18 +396,8 @@
         }
     }
 
-
     this.Clear = function () {
         myDiagram.model.nodeDataArray = [];
         myDiagram.model.linkDataArray = [];
     }
-
-
-
-
-    this.Clear = function () {
-        myDiagram.model.nodeDataArray = [];
-        myDiagram.model.linkDataArray = [];
-    }
-
 }

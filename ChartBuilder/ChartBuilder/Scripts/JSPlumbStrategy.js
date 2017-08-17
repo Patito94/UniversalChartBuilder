@@ -431,7 +431,8 @@
 
     this.AddPaletteGate = function (posx, posy, text) {
         var Div = createGateDiv("palettegateway", posx, posy, "GateWay", "PaletteItem");
-        Div.appendTo("#palette").draggable({ helper: 'clone' });;
+        Div.appendTo("#palette").draggable({ helper: 'clone' });
+        document.getElementById("palettegateway").innerHTML = "<p style='transform: rotate(-45deg)'>" + "Gateway" + "</p>";
     }
     
 
