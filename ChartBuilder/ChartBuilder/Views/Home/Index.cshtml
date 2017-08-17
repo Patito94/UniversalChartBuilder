@@ -93,7 +93,7 @@
         //Objects in the canvas are stagnant.
         jsPlumb.ready(function(e)
         {
-            $("#palette .window").draggable
+            $("#palette h5").draggable
             ({
                 helper : 'clone',
                 cursor : 'pointer',
@@ -102,18 +102,21 @@
 
             });
 
-            var canvasOffset = $('#canvas').offset();
-            console.log(canvasOffset);
-
             $("#canvas").droppable
             ({
-                accept : '#palette .window',
+                accept : '#palette h5',
                 containment : 'canvas',
 
-                drop : function (e, ui) {
-                    droppedElement = ui.helper.clone();
-                    $(droppedElement).draggable({containment: "canvas"});   //Replicates everytime an object on the canvas is dragged.
-                    droppedElement.appendTo('#canvas');
+                drop: function (e, ui) {
+                    console.log(document.getElementById("canvas").getBoundingClientRect().left);
+                    var xx = document.getElementById("canvas").getBoundingClientRect().left;
+                    var yy = document.getElementById("canvas").getBoundingClientRect().top;
+                    var x = e.clientX - xx - 50;
+                    var y = e.clientY - yy - 50;
+                    AddStart(x, y, "Start");
+                    //droppedElement = ui.helper.clone();
+                    //$(droppedElement).draggable({containment: "canvas"});   //Replicates everytime an object on the canvas is dragged.
+                    //droppedElement.appendTo('#canvas');
 
                 }
 
