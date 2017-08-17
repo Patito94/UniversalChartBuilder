@@ -46,6 +46,10 @@
             graph.getStylesheet().putCellStyle('port', style);
             graph.getStylesheet().getDefaultEdgeStyle()['edgeStyle'] = 'orthogonalEdgeStyle';
 
+            var styleimage  = new Object();
+            styleimage[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_IMAGE;
+            graph.getStylesheet().putCellStyle('picture', style);
+
             var xmlDocument = mxUtils.createXmlDocument();
             sourceNode = xmlDocument.createElement('Source');
             targetNode = xmlDocument.createElement('Target');
@@ -142,13 +146,33 @@
     LoadStart = function (id, posx, posy, text) {
         graph.getModel().beginUpdate();
         try {
-            var v1 = graph.insertVertex(parent, id, text, posx, posy, 100, 50, 'port;image=/Content/Images/ball.png'); //vagy 'doubleEllipse'
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, 100, 50, 'editable=0;shape=ellipse;fillColor=' + startcolor); //vagy 'doubleEllipse'
             v1.setConnectable(false);
             v1.scale = false;
 
             var port = graph.insertVertex(v1, null, sourceNode, 0.5, 1.0, 16, 16, 'port;image=/Content/dot.gif', true);
             port.geometry.offset = new mxPoint(-6, -6);
             v1.type = "Start";
+        }
+        finally {
+            graph.getModel().endUpdate();
+        }
+    }
+
+    this.AddAltStart = function (posx, posy, text) {
+        LoadAltStart(null, posx, posy, text);
+    }
+
+    LoadAltStart = function (id, posx, posy, text) {
+        graph.getModel().beginUpdate();
+        try {
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, 100, 50, 'picture;editable=0;image=/Content/Images/ball.png'); //vagy 'doubleEllipse'
+            v1.setConnectable(false);
+            v1.scale = false;
+
+            var port = graph.insertVertex(v1, null, sourceNode, 0.5, 1.0, 16, 16, 'port;image=/Content/dot.gif', true);
+            port.geometry.offset = new mxPoint(-6, -6);
+            v1.type = "AltStart";
         }
         finally {
             graph.getModel().endUpdate();

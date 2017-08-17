@@ -99,8 +99,9 @@
     });
 
     this.Create = function () {
-        PaletteStart(0, 500, "Start");
+        //PaletteStart(0, 500, "Start");
         //document.getElementById("buttons").style.visibility = "visible";
+        document.getElementById("Start");
     }
 
     this.AddStart = function (posx, posy, text) {
@@ -127,7 +128,7 @@
                 'border-color': 'black',
                 color: fontcolor,
                 'border-radius': '50px',
-                'background-image': 'url("Content/Images/ball.png")'
+                //'background-image': 'url("Content/Images/ball.png")'
             });
         Div.appendTo("#canvas");
         document.getElementById(id).innerHTML = text;
@@ -184,6 +185,48 @@
         //    }
         //});
     //}
+
+    this.AddAltStart = function (posx, posy, text) {
+        LoadAltStart("" + indexer, posx, posy, text);
+        indexer++;
+    }
+
+    LoadAltStart = function (id, posx, posy, text) {
+        id = String(id);
+        var Div = $('<div>', {
+            id: id,
+            class: 'window jtk-node',
+            text: "flowchartWindow",
+            category: "Deletable"
+        })
+            .css(
+            {
+                top: posy,
+                left: posx,
+                height: '100px',
+                width: '100px',
+                border: 'solid 1px',
+                background: startcolor,
+                'border-color': 'black',
+                color: fontcolor,
+                'border-radius': '50px',
+                'background-image': 'url("Content/Images/ball.png")'
+            });
+        Div.appendTo("#canvas");
+        document.getElementById(id).innerHTML = text;
+        jsPlumb.draggable($(Div));
+        $(Div).addClass('window');
+        jsPlumb.addEndpoint($(Div), { anchor: "BottomCenter" }, { isSource: true, isTarget: false });
+        block_array.blocks.push({
+            "id": id,
+            "type": "AltStart",
+            "text": text,
+            "position": {
+                "posX": posx,
+                "posY": posy
+            }
+        });
+    }
 
     this.AddStop = function (posx, posy, text) {
         LoadStop("" + indexer, posx, posy, text);

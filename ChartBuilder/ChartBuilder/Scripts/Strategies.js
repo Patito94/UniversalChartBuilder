@@ -3,6 +3,7 @@
 };
 
 var startcolor = '#36BA45';
+var altstartcolor = '#36BA45';
 //var startcolor = "#FFDC00";
 var stopcolor = '#FF1D23';
 var actcolor = '#6CCFFF';
@@ -19,6 +20,9 @@ LibraryStrategy.prototype = {
     },
     AddStart: function (posx, posy, text) { //param: position {posx,posy}, text
         return this.library.AddStart(posx, posy, text);
+    },
+    AddAltStart: function (posx, posy, text) { 
+        return this.library.AddAltStart(posx, posy, text);
     },
     AddStop: function (posx, posy, text) {
         return this.library.AddStop(posx, posy, text);
