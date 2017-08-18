@@ -223,6 +223,7 @@
 
             var port = graph.insertVertex(v1, null, sourceNode, 0.5, 1.0, 16, 16, 'port;image=/Content/dot.gif', true);
             port.geometry.offset = new mxPoint(-6, -6);
+
             v1.type = "AltStart";
         }
         finally {
@@ -396,6 +397,11 @@
             var port2 = graph.insertVertex(v1, null, sourceNode, 0.5, 1, 16, 16, 'port;image=/Content/dot.gif', true);
             port.geometry.offset = new mxPoint(-8, -8);
             port2.geometry.offset = new mxPoint(-8, -8);
+
+            var icon = graph.insertVertex(v1, null, sourceNode, 0, 0.25, 50, 50, 'port;image=/Content/Images/gateway_small.png', true);
+            icon.geometry.offset = new mxPoint(-6, -6);
+            icon.setConnectable(false);
+
             v1.type = "Act";
         }
         finally {

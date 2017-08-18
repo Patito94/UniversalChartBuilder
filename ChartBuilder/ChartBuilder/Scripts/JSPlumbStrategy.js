@@ -366,6 +366,7 @@
             var Div = createActDiv(id, posx, posy, text, "Editable");
             Div.appendTo("#canvas");
             document.getElementById(id).innerHTML = "<p>" + text + "</p>";
+            document.getElementById(id).innerHTML = '<img src="Content/Images/ball.png" height="42" width="42">';
             jsPlumb.draggable($(Div));
             jsPlumb.addEndpoint($(Div), { anchor: "TopCenter" }, { isSource: false, isTarget: true, maxConnections: -1 });
             jsPlumb.addEndpoint($(Div), { anchor: "BottomCenter" }, { isSource: true, isTarget: false });

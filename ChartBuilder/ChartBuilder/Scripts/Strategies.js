@@ -12,18 +12,18 @@ var gatecolor = '#7FB2FF';
 //Betűszín
 var fontcolor = '#000000';
 //Méretek
-var startwidth = 50;
-var startheight = 50;
-var altstartwidth = 50;
-var altstartheight = 50;
-var stopwidth = 50;
-var stopheight = 50;
-var actwidth = 50;
-var actheight = 50;
-var decwidth = 50;
-var decheight = 50;
-var gatewidth = 50;
-var gateheight = 50;
+var startwidth = 100;
+var startheight = 100;
+var altstartwidth = 100;
+var altstartheight = 100;
+var stopwidth = 100;
+var stopheight = 100;
+var actwidth = 100;
+var actheight = 100;
+var decwidth = 100;
+var decheight = 100;
+var gatewidth = 100;
+var gateheight = 100;
 
 LibraryStrategy.prototype = {
     setStrategy: function (library) {

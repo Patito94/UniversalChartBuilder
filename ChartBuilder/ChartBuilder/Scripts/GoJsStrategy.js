@@ -147,6 +147,10 @@
                         },
                         new go.Binding("text").makeTwoWay())
                 ),
+                $(go.Picture, {
+                    source: "Content/Images/command_small.png", column: 4,
+                    minSize: new go.Size(/*40, 40*/altstartwidth, altstartheight), margin: 2
+                }),
                 makePort("T", go.Spot.Top, false, true),
                 makePort("B", go.Spot.Bottom, true, false)
             ));
