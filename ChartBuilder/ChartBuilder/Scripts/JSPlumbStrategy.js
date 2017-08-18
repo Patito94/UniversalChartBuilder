@@ -38,8 +38,10 @@
     }
     this.EditNode = function () {
         modal.style.display = "none";
-        var text = prompt("Action name: ", document.getElementById(thisid).getElementsByTagName('p')[0].innerHTML);
-        document.getElementById(thisid).getElementsByTagName('p')[0].innerHTML = text;
+        //var text = prompt("Action name: ", document.getElementById(thisid).getElementsByTagName('p')[0].innerHTML);
+        var text = $("#"+thisid).find(".actionName");
+        console.log(text);
+        //document.getElementById(thisid).getElementsByTagName('p')[0].innerHTML = text;
 
         for (i = 0; i < block_array.blocks.length; i++) {
             if (thisid == block_array.blocks[i].id) {
@@ -355,7 +357,6 @@
                     border: 'solid 1px',
                     'border-color': 'black',
                     color: fontcolor,
-                    'line-height': (actheight / 2) + 'px',
                     background: actcolor
                 });
             return Div;
@@ -365,8 +366,9 @@
         LoadAct = function (id, posx, posy, text) {
             var Div = createActDiv(id, posx, posy, text, "Editable");
             Div.appendTo("#canvas");
-            document.getElementById(id).innerHTML = "<p>" + text + "</p>";
-            document.getElementById(id).innerHTML = '<img src="Content/Images/ball.png" height="42" width="42">';
+            //document.getElementById(id).innerHTML = "<p>" + text + "</p>";
+            //document.getElementById(id).innerHTML = '<img src="Content/Images/ball.png" height="42" width="42">';
+            Div.load('Content/action.html');
             jsPlumb.draggable($(Div));
             jsPlumb.addEndpoint($(Div), { anchor: "TopCenter" }, { isSource: false, isTarget: true, maxConnections: -1 });
             jsPlumb.addEndpoint($(Div), { anchor: "BottomCenter" }, { isSource: true, isTarget: false });
