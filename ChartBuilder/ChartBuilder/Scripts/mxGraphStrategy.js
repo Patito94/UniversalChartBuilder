@@ -152,7 +152,7 @@
     LoadStart = function (id, posx, posy, text) {
         graph.getModel().beginUpdate();
         try {
-            var v1 = graph.insertVertex(parent, id, text, posx, posy, 100, 100, 'editable=0;shape=ellipse;fillColor=' + startcolor); //vagy 'doubleEllipse'
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, startwidth, startheight, 'editable=0;shape=ellipse;fillColor=' + startcolor); //vagy 'doubleEllipse'
             v1.setConnectable(false);
             v1.scale = false;
 
@@ -190,16 +190,18 @@
             {
                 top: posy,
                 left: posx,
-                height: '100px',
-                width: '100px',
+                'min-height': startheight + 'px',
+                'min-width': startwidth + 'px',
+                //width: 'auto',
+                //height: 'auto',
                 border: 'solid 1px',
                 background: startcolor,
+                'line-height': (startheight / 2) + 'px',
                 'border-color': 'black',
                 color: fontcolor,
-                'border-radius': '50px',
+                'border-radius': startheight + 'px',
                 //'background-image': 'url("Content/Images/ball.png")'
             });
-
         return Div;
     }
 
@@ -215,7 +217,7 @@
     LoadAltStart = function (id, posx, posy, text) {
         graph.getModel().beginUpdate();
         try {
-            var v1 = graph.insertVertex(parent, id, text, posx, posy, 100, 100, 'picture;editable=0;image=/Content/Images/ball.png'); //vagy 'doubleEllipse'
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, altstartwidth, altstartheight, 'picture;editable=0;image=/Content/Images/ball.png'); //vagy 'doubleEllipse'
             v1.setConnectable(false);
             v1.scale = false;
 
@@ -239,13 +241,16 @@
             {
                 top: posy,
                 left: posx,
-                height: '100px',
-                width: '100px',
+                'min-height': altstartheight + 'px',
+                'min-width': altstartwidth + 'px',
+                //width: 'auto',
+                //height: 'auto',
                 border: 'solid 1px',
                 background: startcolor,
                 'border-color': 'black',
                 color: fontcolor,
-                'border-radius': '50px',
+                'line-height': (altstartheight / 2) + 'px',
+                'border-radius': altstartheight + 'px',
                 'background-image': 'url("Content/Images/ball.png")'
             });
         return Div;
@@ -263,7 +268,7 @@
     LoadStop = function (id, posx, posy, text) {
         graph.getModel().beginUpdate();
         try {
-            var v1 = graph.insertVertex(parent, id, text, posx, posy, 100, 100, "editable=0;shape=ellipse;fillColor=" + stopcolor);
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, stopwidth, stopheight, "editable=0;shape=ellipse;fillColor=" + stopcolor);
             v1.setConnectable(false);
 
             var port = graph.insertVertex(v1, null, targetNode, 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
@@ -287,14 +292,17 @@
             {
                 top: posy,
                 left: posx,
-                height: '100px',
-                width: '100px',
+                'min-height': stopheight + 'px',
+                'min-width': stopwidth + 'px',
+                //width: 'auto',
+                //height: 'auto',
                 border: 'solid 1px',
                 background: stopcolor,
                 raius: '2',
                 'border-color': 'black',
                 color: fontcolor,
-                'border-radius': '50px'
+                'line-height': (stopheight / 2) + 'px',
+                'border-radius': stopheight + 'px'
             });
         return Div;
     }
@@ -311,7 +319,7 @@
     LoadDec = function (id, posx, posy, text) {
         graph.getModel().beginUpdate();
         try {
-            var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 40, 100, "shape=ellipse;fillColor=" + deccolor);
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 40, decheight, "shape=ellipse;fillColor=" + deccolor);
             v1.setConnectable(false);
 
             var rightlabel = graph.insertVertex(v1, null, 'True', 1.1, 0.3, 0, 0, null, true);
@@ -353,13 +361,16 @@
                 {
                     top: posy,
                     left: posx,
-                    height: '100px',
-                    width: '100px',
+                    'min-height': decheight + 'px',
+                    'min-width': decwidth + 'px',
+                    width: 'auto',
+                    height: 'auto',
                     border: 'solid 1px',
                     background: deccolor,
                     'border-color': 'black',
                     color: fontcolor,
-                    'border-radius': '50px'
+                    'line-height': (decheight / 2) + 'px',
+                    'border-radius': decheight + 'px'
                 }
                 );
             return Div;
@@ -378,7 +389,7 @@
     LoadAct = function (id, posx, posy, text) {
         graph.getModel().beginUpdate();
         try {
-            var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 40, 100, "shape=rectangle;fillColor=" + actcolor);
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 40, actheight, "shape=rectangle;fillColor=" + actcolor);
             v1.setConnectable(false);
 
             var port = graph.insertVertex(v1, null, targetNode, 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
@@ -408,12 +419,14 @@
                 {
                     top: posy,
                     left: posx,
-                    height: '100px',
+                    'min-height': actheight + 'px',
+                    'min-width': actwidth + 'px',
                     width: 'auto',
-                    'min-width': '100px',
+                    height: 'auto',
                     border: 'solid 1px',
                     'border-color': 'black',
                     color: fontcolor,
+                    'line-height': (actheight / 2) + 'px',
                     background: actcolor
                 });
             return Div;
@@ -432,7 +445,7 @@
     LoadGate = function (id, posx, posy, text) {
         graph.getModel().beginUpdate();
         try {
-            var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 40, 100, "shape=rhombus;fillColor=" + gatecolor);
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 40, gateheight, "shape=rhombus;fillColor=" + gatecolor);
             v1.setConnectable(false);
             
             var port = graph.insertVertex(v1, null, targetNode, 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
@@ -465,12 +478,15 @@
                 {
                     top: posy,
                     left: posx,
-                    height: '100px',
-                    width: '100px',
+                    'min-height': gateheight + 'px',
+                    'min-width': gatewidth + 'px',
+                    width: 'auto',
+                    height: 'auto',
                     border: 'solid 1px',
                     background: gatecolor,
                     'border-color': 'black',
                     color: fontcolor,
+                    'line-height': ((gateheight / 2) + 40) + 'px',
                     'transform': 'rotate(45deg)'
                 }
                 );

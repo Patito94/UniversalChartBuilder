@@ -43,8 +43,8 @@
     <script>
         var strategy;
         function runOnLoad() {
-            //var library = new JSPlumbStrategy();
-            var library = new GoJsStrategy();
+            var library = new JSPlumbStrategy();
+            //var library = new GoJsStrategy();
             //var library = new mxGraphStrategy();
             strategy = new LibraryStrategy();
             strategy.setStrategy(library);
@@ -119,8 +119,8 @@
                         console.log(paletteid);
                         var xx = document.getElementById("canvas").getBoundingClientRect().left;
                         var yy = document.getElementById("canvas").getBoundingClientRect().top;
-                        var x = e.clientX - xx - 50;
-                        var y = e.clientY - yy - 50;
+                        var x = e.clientX - xx - startwidth / 2;
+                        var y = e.clientY - yy - startheight/2;
                         switch (paletteid) {
                             case "palettestart":
                                 AddStart(x, y, "Start");

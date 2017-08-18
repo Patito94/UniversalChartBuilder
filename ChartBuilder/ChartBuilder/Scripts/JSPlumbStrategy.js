@@ -121,16 +121,18 @@
             {
                 top: posy,
                 left: posx,
-                height: '100px',
-                width: '100px',
+                'min-height': startheight + 'px',
+                'min-width': startwidth + 'px',
+                //width: 'auto',
+                //height: 'auto',
                 border: 'solid 1px',
                 background: startcolor,
+                'line-height': (startheight / 2) + 'px',
                 'border-color': 'black',
                 color: fontcolor,
-                'border-radius': '50px',
+                'border-radius': startheight + 'px',
                 //'background-image': 'url("Content/Images/ball.png")'
             });
-        
         return Div;
     }
 
@@ -166,18 +168,20 @@
             {
                 top: posy,
                 left: posx,
-                height: '100px',
-                width: '100px',
+                'min-height': altstartheight + 'px',
+                'min-width': altstartwidth + 'px',
+                //width: 'auto',
+                //height: 'auto',
                 border: 'solid 1px',
                 background: startcolor,
                 'border-color': 'black',
                 color: fontcolor,
-                'border-radius': '50px',
+                'line-height': (altstartheight / 2) + 'px',
+                'border-radius': altstartheight + 'px',
                 'background-image': 'url("Content/Images/ball.png")'
             });
         return Div;
     }
-
 
     this.AddAltStart = function (posx, posy, text) {
         LoadAltStart("" + indexer, posx, posy, text);
@@ -223,14 +227,17 @@
             {
                 top: posy,
                 left: posx,
-                height: '100px',
-                width: '100px',
+                'min-height': stopheight + 'px',
+                'min-width': stopwidth + 'px',
+                //width: 'auto',
+                //height: 'auto',
                 border: 'solid 1px',
                 background: stopcolor,
                 raius: '2',
                 'border-color': 'black',
                 color: fontcolor,
-                'border-radius': '50px'
+                'line-height': (stopheight / 2) + 'px',
+                'border-radius': stopheight + 'px'
             });
         return Div;
     }
@@ -256,8 +263,6 @@
         Div.appendTo("#palette").draggable({ helper: 'clone' });;
     }
 
-    
-
     this.AddDec = function (posx, posy, text) {
         LoadDec("" + indexer, posx, posy, text);
         indexer++;
@@ -279,13 +284,16 @@
                 {
                     top: posy,
                     left: posx,
-                    height: '100px',
-                    width: '100px',
+                    'min-height': decheight + 'px',
+                    'min-width': decwidth + 'px',
+                    width: 'auto',
+                    height: 'auto',
                     border: 'solid 1px',
                     background: deccolor,
                     'border-color': 'black',
                     color: fontcolor,
-                    'border-radius': '50px'
+                    'line-height': (decheight / 2) + 'px',
+                    'border-radius': decheight+'px'
                 }
                 );
             return Div;
@@ -295,7 +303,7 @@
         LoadDec = function (id, posx, posy, text) {
             var Div = createDecDiv(id, posx, posy, text, "Editable");
             Div.appendTo("#canvas");
-            //document.getElementById(id).innerHTML = "<p>" + text + "</p>";
+            document.getElementById(id).innerHTML = "<p>" + text + "</p>";
             jsPlumb.draggable($(Div));
             $(Div).addClass('window');
             jsPlumb.addEndpoint($(Div), { anchor: "TopCenter" }, { isSource: false, isTarget: true, maxConnections: -1 });
@@ -340,12 +348,14 @@
                 {
                     top: posy,
                     left: posx,
-                    height: '100px',
+                    'min-height': actheight + 'px',
+                    'min-width': actwidth + 'px',
                     width: 'auto',
-                    'min-width': '100px',
+                    height: 'auto',
                     border: 'solid 1px',
                     'border-color': 'black',
                     color: fontcolor,
+                    'line-height': (actheight / 2) + 'px',
                     background: actcolor
                 });
             return Div;
@@ -392,12 +402,17 @@
                     {
                         top: posy,
                         left: posx,
-                        height: '100px',
-                        width: '100px',
+                        //'min-height': gateheight + 'px',
+                        //'min-width': gatewidth + 'px',
+                        //width: 'auto',
+                        //height: 'auto',
+                        width: gatewidth + 'px',
+                        height: gateheight+'px',
                         border: 'solid 1px',
                         background: gatecolor,
                         'border-color': 'black',
                         color: fontcolor,
+                        'line-height': ((gateheight / 2)+20) + 'px',
                         'transform': 'rotate(45deg)'
                     }
                     );

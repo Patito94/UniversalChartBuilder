@@ -101,7 +101,7 @@
             $(go.Node, "Spot", nodeStyle(),
                 $(go.Panel, "Auto",
                     $(go.Shape, "Circle",
-                        { minSize: new go.Size(40, 40), fill: /*"#79C900"*/startcolor, stroke: null }),
+                        { minSize: new go.Size(/*40, 40*/startwidth, startheight), fill: /*"#79C900"*/startcolor, stroke: null }),
                     $(go.TextBlock, "Start",
                         { font: "bold 11pt Helvetica, Arial, sans-serif", stroke: fontcolor },
                         new go.Binding("text"))
@@ -118,14 +118,14 @@
             $(go.Node, "Spot", nodeStyle(),
                 $(go.Panel, "Auto",
                     $(go.Shape, "Circle",
-                        { minSize: new go.Size(40, 40), maxSize: new go.Size(40, 40), fill: /*"#79C900"*/altstartcolor, stroke: null }),
+                        { minSize: new go.Size(/*40, 40*/altstartwidth, altstartheight), /*maxSize: new go.Size(40, 40),*/ fill: /*"#79C900"*/altstartcolor, stroke: null }),
                     $(go.TextBlock, "AltStart",
                         { font: "bold 11pt Helvetica, Arial, sans-serif", stroke: fontcolor },
                         new go.Binding("text"))
                 ),
                 $(go.Picture, {
                     source: "Content/Images/ball.png", column: 4,
-                    width: 50, height: 50, margin: 2
+                    minSize: new go.Size(/*40, 40*/altstartwidth, altstartheight), margin: 2
                 }),
                 // three named ports, one on each side except the top, all output only:
                 makePort("B", go.Spot.Bottom, true, false)
@@ -140,7 +140,8 @@
                             font: "bold 11pt Helvetica, Arial, sans-serif",
                             stroke: fontcolor,
                             margin: 8,
-                            maxSize: new go.Size(160, NaN),
+                            //maxSize: new go.Size(160, NaN),
+                            minSize: new go.Size(/*40, 40*/actwidth, actheight),
                             wrap: go.TextBlock.WrapFit,
                             editable: true
                         },
@@ -163,7 +164,8 @@
                             font: "bold 11pt Helvetica, Arial, sans-serif",
                             stroke: fontcolor,
                             margin: 8,
-                            maxSize: new go.Size(160, NaN),
+                            //maxSize: new go.Size(160, NaN),
+                            minSize: new go.Size(/*40, 40*/decwidth, decheight),
                             wrap: go.TextBlock.WrapFit,
                             editable: true
                         },
@@ -182,7 +184,7 @@
             $(go.Node, "Spot", nodeStyle(),
                 $(go.Panel, "Auto",
                     $(go.Shape, "Circle",
-                        { minSize: new go.Size(40, 40), fill: /*"#DC3C00"*/stopcolor, stroke: null }),
+                        { minSize: new go.Size(stopwidth, stopheight), fill: /*"#DC3C00"*/stopcolor, stroke: null }),
                     $(go.TextBlock, "End",
                         { font: "bold 11pt Helvetica, Arial, sans-serif", stroke: fontcolor },
                         new go.Binding("text"))
@@ -201,7 +203,8 @@
                             font: "bold 11pt Helvetica, Arial, sans-serif",
                             stroke: fontcolor,
                             margin: 8,
-                            maxSize: new go.Size(160, NaN),
+                            //maxSize: new go.Size(160, NaN),
+                            minSize: new go.Size(gatewidth, gateheight),
                             wrap: go.TextBlock.WrapFit,
                             editable: true
                         },
