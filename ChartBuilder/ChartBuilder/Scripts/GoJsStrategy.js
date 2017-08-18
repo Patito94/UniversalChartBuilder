@@ -133,24 +133,31 @@
 
         myDiagram.nodeTemplateMap.add("Act",
             $(go.Node, "Spot", nodeStyle(),
-                $(go.Panel, "Auto",
-                    $(go.Shape, "Rectangle", { fill: /*"#00A9C9"*/actcolor, stroke: null }),
-                    $(go.TextBlock, "Action",
-                        {
-                            font: "bold 11pt Helvetica, Arial, sans-serif",
-                            stroke: fontcolor,
-                            margin: 8,
-                            //maxSize: new go.Size(160, NaN),
-                            minSize: new go.Size(/*40, 40*/actwidth, actheight),
-                            wrap: go.TextBlock.WrapFit,
-                            editable: true
-                        },
-                        new go.Binding("text").makeTwoWay())
+                $(go.Panel, "Horizontal",
+                    { background: actcolor, minSize: new go.Size(200,80)},
+                    //$(go.Shape, "Rectangle", { fill: /*"#00A9C9"*/actcolor, stroke: null }),
+                    $(go.Picture,
+                      { source: "Content/Images/command_small.png", width: 80, height: 80 }),
+                    $(go.Panel, "Vertical",
+                        { margin: 5},
+                         $(go.TextBlock, "Utasítás",
+                            {
+                                editable: false
+                            }),
+                        $(go.TextBlock, "Action",
+                            {
+                                font: "bold 11pt Helvetica, Arial, sans-serif",
+                                stroke: fontcolor,
+                                width: 200,
+                                //margin: 8,
+                                //maxSize: new go.Size(160, NaN),
+                                //minSize: new go.Size(/*40, 40*/actwidth, actheight),
+                                wrap: go.TextBlock.WrapFit,
+                                editable: true
+                            },
+                            new go.Binding("text").makeTwoWay())
+                   )
                 ),
-                $(go.Picture, {
-                    source: "Content/Images/command_small.png", column: 4,
-                    minSize: new go.Size(/*40, 40*/altstartwidth, altstartheight), margin: 2
-                }),
                 makePort("T", go.Spot.Top, false, true),
                 makePort("B", go.Spot.Bottom, true, false)
             ));
