@@ -38,19 +38,26 @@
     }
     this.EditNode = function () {
         modal.style.display = "none";
-        //var text = prompt("Action name: ", document.getElementById(thisid).getElementsByTagName('p')[0].innerHTML);
-        var text = $("#"+thisid).find(".actionName");
-        console.log(text);
-        //document.getElementById(thisid).getElementsByTagName('p')[0].innerHTML = text;
-
-        for (i = 0; i < block_array.blocks.length; i++) {
-            if (thisid == block_array.blocks[i].id) {
-                block_array.blocks[i].text = text;
-                //block_array.blocks[i].anchors.style = { anchor: "BottomCenter" };
-                //jsPlumb.addEndpoint($(Div), { anchor: "BottomCenter" }, { isSource: true, isTarget: false });
-                //jsPlumb.endpoints(block_array.blocks[i], { anchor: "BottomCenter" });
-            }
-        }
+        //var text = prompt("Action name: ", document.getElementById(thisid).getElementsByTagName('p')[1].innerHTML);
+        var text = prompt("Action name: ", document.getElementById(thisid).getElementsByClassName('text')[0].innerHTML);
+        //var text = $("#" + thisid).find(".actionName");
+        //console.log("id: "+thisid);
+        //console.log(text);
+        document.getElementById(thisid).getElementsByClassName('text')[0].innerHTML = text;
+        //document.getElementsByClassName('actionName').innerHTML = text;
+        block_array.blocks[thisid].text = text;
+        //console.log("bl text: " + block_array.blocks[thisid].text);
+        //for (i = 0; i < block_array.blocks.length; i++) {
+        //    if (thisid == block_array.blocks[i].id) {
+        //        block_array.blocks[i].text = text;
+        //        console.log("bl text: "+block_array.blocks[i].text);
+        //        //block_array.blocks[i].text = text;
+        //        //block_array.blocks[i].anchors.style = { anchor: "BottomCenter" };
+        //        //jsPlumb.addEndpoint($(Div), { anchor: "BottomCenter" }, { isSource: true, isTarget: false });
+        //        //jsPlumb.endpoints(block_array.blocks[i], { anchor: "BottomCenter" });
+        //    }
+        //}
+        jsPlumb.repaintEverything();
     }
 
     this.DeleteNode = function () {
@@ -70,8 +77,15 @@
     $(document).on("click", "div[category='Deletable']", function () {
         thisid = this.id;
     });
-    $(document).on("mousedown", function (e) {
-
+    $(document).on("mousemove", function (e) {
+        //if (document.getElementsByName('valami')[0] != undefined) document.getElementsByName('valami')[0].innerHTML = "Sas";
+        //if (document.getElementsByName('valami')[1] != undefined) document.getElementsByName('valami')[1].innerHTML = "Lol";
+        //if (document.getElementsByName('valami')[2] != undefined) document.getElementsByName('valami')[2].innerHTML = "Olvas";
+        //for (i = 0; i < block_array.blocks.length; i++) {
+        //    if ("Act" == block_array.blocks[i].type) {
+        //        document.getElementsByName('valami')[i].innerHTML = block_array.blocks[i].text;
+        //    }
+        //}
     });
     //$(document).on("mouseup", function (e) {
     //    console.log(document.getElementById("canvas").getBoundingClientRect().left);
@@ -103,7 +117,7 @@
     this.Create = function () {
         //PaletteStart(0, 500, "Start");
         //document.getElementById("buttons").style.visibility = "visible";
-        document.getElementById("Start");
+        //document.getElementById("Start");
     }
 
     this.AddStart = function (posx, posy, text) {
@@ -115,7 +129,7 @@
         var Div = $('<div>', {
             id: String(id),
             class: 'window jtk-node',
-            text:  text,
+            text: text,
             category: category,
 
         })
@@ -125,13 +139,19 @@
                 left: posx,
                 'min-height': startheight + 'px',
                 'min-width': startwidth + 'px',
+                width: startheight + 'px',
+                height: startwidth + 'px',
                 //width: 'auto',
                 //height: 'auto',
-                border: 'solid 1px',
+                //border: 'solid 1px',
                 background: startcolor,
-                'line-height': (startheight / 2) + 'px',
+                'line-height': (startheight-11) + 'px',
                 'border-color': 'black',
                 color: fontcolor,
+                'background-image': 'url("/Content/Images/protocol_start_small.png")',
+                'background-size': 'cover',
+                'background-repeat': 'no-repeat',
+                'background-position': 'center center',
                 'border-radius': startheight + 'px',
                 //'background-image': 'url("Content/Images/ball.png")'
             });
@@ -156,7 +176,7 @@
 
     this.AddPaletteStart = function (posx, posy, text) {
         var Div = createStartDiv("palettestart", posx, posy, "Start", "PaletteItem");
-        Div.appendTo("#palette").draggable({helper: 'clone'});;
+        Div.appendTo("#palette").draggable({ helper: 'clone' });;
     }
 
     createAltStartDiv = function (id, posx, posy, text, category) {
@@ -172,15 +192,20 @@
                 left: posx,
                 'min-height': altstartheight + 'px',
                 'min-width': altstartwidth + 'px',
+                width: altstartheight + 'px',
+                height: altstartwidth + 'px',
                 //width: 'auto',
                 //height: 'auto',
-                border: 'solid 1px',
-                background: startcolor,
+                //border: 'solid 1px',
+                background: altstartcolor,
                 'border-color': 'black',
                 color: fontcolor,
-                'line-height': (altstartheight / 2) + 'px',
+                'line-height': (altstartheight-11) + 'px',
                 'border-radius': altstartheight + 'px',
-                'background-image': 'url("Content/Images/ball.png")'
+                'background-image': 'url("/Content/Images/protocol_start_alternative_small.png")',
+                'background-size': 'cover',
+                'background-repeat': 'no-repeat',
+                'background-position': 'center center',
             });
         return Div;
     }
@@ -191,7 +216,7 @@
     }
 
     LoadAltStart = function (id, posx, posy, text) {
-        var Div = createAltStartDiv(id, posx,posy,text,"Deletable");
+        var Div = createAltStartDiv(id, posx, posy, text, "Deletable");
         Div.appendTo("#canvas");
         jsPlumb.draggable($(Div));
         jsPlumb.addEndpoint($(Div), { anchor: "BottomCenter" }, { isSource: true, isTarget: false });
@@ -207,11 +232,68 @@
     }
 
     this.AddPaletteAltStart = function (posx, posy, text) {
-        var Div = createAltStartDiv("palettealtstart", posx, posy, "Start", "PaletteItem");
+        var Div = createAltStartDiv("palettealtstart", posx, posy, "AltStart", "PaletteItem");
         Div.appendTo("#palette").draggable({ helper: 'clone' });;
     }
 
+    this.AddTimerStart = function (posx, posy, text) {
+        LoadTimerStart("" + indexer, posx, posy, text);
+        indexer++;
+    }
 
+    createTimerStartDiv = function (id, posx, posy, text, category) {
+        var Div = $('<div>', {
+            id: String(id),
+            class: 'window jtk-node',
+            text: text,
+            category: category,
+
+        })
+            .css(
+            {
+                top: posy,
+                left: posx,
+                'min-height': timerstartheight + 'px',
+                'min-width': timerstartwidth + 'px',
+                width: timerstartheight + 'px',
+                height: timerstartwidth + 'px',
+                //width: 'auto',
+                //height: 'auto',
+                //border: 'solid 1px',
+                background: timerstartcolor,
+                'line-height': (timerstartheight-11) + 'px',
+                'border-color': 'black',
+                color: fontcolor,
+                'background-image': 'url("/Content/Images/protocol_start_timed_small.png")',
+                'background-size': 'cover',
+                'background-repeat': 'no-repeat',
+                'background-position': 'center center',
+                'border-radius': timerstartheight + 'px',
+                //'background-image': 'url("Content/Images/ball.png")'
+            });
+        return Div;
+    }
+
+    LoadTimerStart = function (id, posx, posy, text) {
+        var Div = createTimerStartDiv(id, posx, posy, text, "Deletable");
+        Div.appendTo("#canvas");
+        jsPlumb.draggable($(Div));
+        jsPlumb.addEndpoint($(Div), { anchor: "BottomCenter" }, { isSource: true, isTarget: false });
+        block_array.blocks.push({
+            "id": id,
+            "type": "TimerStart",
+            "text": text,
+            "position": {
+                "posX": posx,
+                "posY": posy
+            }
+        });
+    }
+
+    this.AddPaletteTimerStart = function (posx, posy, text) {
+        var Div = createTimerStartDiv("palettetimerstart", posx, posy, "TimerStart", "PaletteItem");
+        Div.appendTo("#palette").draggable({ helper: 'clone' });;
+    }
 
     this.AddStop = function (posx, posy, text) {
         LoadStop("" + indexer, posx, posy, text);
@@ -231,14 +313,20 @@
                 left: posx,
                 'min-height': stopheight + 'px',
                 'min-width': stopwidth + 'px',
+                width: stopheight + 'px',
+                height: stopwidth + 'px',
                 //width: 'auto',
                 //height: 'auto',
-                border: 'solid 1px',
+                //border: 'solid 1px',
                 background: stopcolor,
                 raius: '2',
                 'border-color': 'black',
                 color: fontcolor,
-                'line-height': (stopheight / 2) + 'px',
+                'background-image': 'url("/Content/Images/protocol_end_small.png")',
+                'background-size': 'cover',
+                'background-repeat': 'no-repeat',
+                'background-position': 'center center',
+                'line-height': (stopheight-11) + 'px',
                 'border-radius': stopheight + 'px'
             });
         return Div;
@@ -279,7 +367,7 @@
                 {
                     id: String(id),
                     class: 'window jtk-node',
-                    text:  text,
+                    text: text,
                     category: category
                 })
                 .css(
@@ -290,45 +378,46 @@
                     'min-width': decwidth + 'px',
                     width: 'auto',
                     height: 'auto',
-                    border: 'solid 1px',
+                    //border: 'solid 1px',
                     background: deccolor,
+                    //'background-image': 'url("/Content/Images/decision_small.png")',
                     'border-color': 'black',
                     color: fontcolor,
-                    'line-height': (decheight / 2) + 'px',
-                    'border-radius': decheight+'px'
+                    //'line-height': (decheight / 2) + 'px',
+                    //'border-radius': decheight + 'px'
                 }
                 );
             return Div;
         }
     }
 
-        LoadDec = function (id, posx, posy, text) {
-            var Div = createDecDiv(id, posx, posy, text, "Editable");
-            Div.appendTo("#canvas");
-            document.getElementById(id).innerHTML = "<p>" + text + "</p>";
-            jsPlumb.draggable($(Div));
-            $(Div).addClass('window');
-            jsPlumb.addEndpoint($(Div), { anchor: "TopCenter" }, { isSource: false, isTarget: true, maxConnections: -1 });
-            var right = jsPlumb.addEndpoint($(Div), { anchor: "Right" }, { isSource: true, isTarget: false });
-            var left = jsPlumb.addEndpoint($(Div), { anchor: "Left" }, { isSource: true, isTarget: false });
-            left.addOverlay(["Label", { label: "False", location: [0, -1] }]);
-            right.addOverlay(["Label", { label: "True", location: [1, -1] }]);
-            block_array.blocks.push({
-                "id": id,
-                "type": "Dec",
-                "text": text,
-                "position": {
-                    "posX": posx,
-                    "posY": posy
-                }
-            });
-        }
+    LoadDec = function (id, posx, posy, text) {
+        var Div = createDecDiv(id, posx, posy, text, "Editable");
+        Div.appendTo("#canvas");
+        //document.getElementById(id).innerHTML = "<p class='text'>" + text + "</p>";
+        document.getElementById(id).innerHTML = '<div style="display: inline - block; float:left"><img src="/Content/Images/decision_small.png" height="80" width="80"></div><div style="display: inline-block"><p class="title">Decision</p><p class="text">' + text + '</p></div>';
+        jsPlumb.draggable($(Div));
+        $(Div).addClass('window');
+        jsPlumb.addEndpoint($(Div), { anchor: "TopCenter" }, { isSource: false, isTarget: true, maxConnections: -1 });
+        var right = jsPlumb.addEndpoint($(Div), { anchor: "Right" }, { isSource: true, isTarget: false });
+        var left = jsPlumb.addEndpoint($(Div), { anchor: "Left" }, { isSource: true, isTarget: false });
+        left.addOverlay(["Label", { label: "False", location: [-0.5, -1] }]);
+        right.addOverlay(["Label", { label: "True", location: [1.5, -1] }]);
+        block_array.blocks.push({
+            "id": id,
+            "type": "Dec",
+            "text": text,
+            "position": {
+                "posX": posx,
+                "posY": posy
+            }
+        });
+    }
 
-        this.AddPaletteDec = function (posx, posy, text) {
-            var Div = createDecDiv("palettedecision", posx, posy, "Decision", "PaletteItem");
-            Div.appendTo("#palette").draggable({ helper: 'clone' });;
-        }
-    
+    this.AddPaletteDec = function (posx, posy, text) {
+        var Div = createDecDiv("palettedecision", posx, posy, "Decision", "PaletteItem");
+        Div.appendTo("#palette").draggable({ helper: 'clone' });;
+    }
 
     this.AddAct = function (posx, posy, text) {
         LoadAct("" + indexer, posx, posy, text);
@@ -354,7 +443,7 @@
                     'min-width': actwidth + 'px',
                     width: 'auto',
                     height: 'auto',
-                    border: 'solid 1px',
+                    //border: 'solid 1px',
                     'border-color': 'black',
                     color: fontcolor,
                     background: actcolor
@@ -363,65 +452,99 @@
         }
     }
 
-        LoadAct = function (id, posx, posy, text) {
-            var Div = createActDiv(id, posx, posy, text, "Editable");
-            Div.appendTo("#canvas");
-            //document.getElementById(id).innerHTML = "<p>" + text + "</p>";
-            //document.getElementById(id).innerHTML = '<img src="Content/Images/ball.png" height="42" width="42">';
-            Div.load('Content/action.html');
-            jsPlumb.draggable($(Div));
-            jsPlumb.addEndpoint($(Div), { anchor: "TopCenter" }, { isSource: false, isTarget: true, maxConnections: -1 });
-            jsPlumb.addEndpoint($(Div), { anchor: "BottomCenter" }, { isSource: true, isTarget: false });
-            block_array.blocks.push({
-                "id": id,
-                "type": "Act",
-                "text": text,
-                "position": {
-                    "posX": posx,
-                    "posY": posy
+    LoadAct = function (id, posx, posy, text) {
+        var Div = createActDiv(id, posx, posy, text, "Editable");
+        Div.appendTo("#canvas");
+        //document.getElementById(id).innerHTML = "<p>" + text + "</p>";
+        //console.log("id: " + id);
+        //document.getElementById(id).innerHTML = '<img src="Content/Images/ball.png" height="42" width="42">';
+        //console.log(Div);
+        //Div.load('/Content/action.html');
+        //$('#refresh').html(Div);
+        //Div.style='<div style="display: inline - block"><img src="/Content/Images/command_small.png" height="80" width="80" ></div><div style="display: inline-block"><p class="title">Utasítás</p><p class="actionName">' + text + "Asd" + '</p></div>';
+        document.getElementById(id).innerHTML = '<div style="display: inline - block; float:left"><img src="/Content/Images/command_small.png" height="80" width="80"></div><div style="display: inline-block"><p class="title">Action</p><p class="text">' + text + '</p></div>';
+        //console.log(Div);
+        //var x = Div;
+        //console.log(x);
+        jsPlumb.draggable($(Div));
+        jsPlumb.addEndpoint($(Div), { anchor: "TopCenter" }, { isSource: false, isTarget: true, maxConnections: -1 });
+        jsPlumb.addEndpoint($(Div), { anchor: "BottomCenter" }, { isSource: true, isTarget: false });
+        block_array.blocks.push({
+            "id": id,
+            "type": "Act",
+            "text": text,
+            "position": {
+                "posX": posx,
+                "posY": posy
+            }
+        });
+        block_array.blocks[id].text = text;
+        //console.log("bl text: " + block_array.blocks[id].text);
+        //console.log("doc: " + document.getElementById(indexer).innerHTML);
+        //document.getElementById(indexer).innerHTML = text;
+        //console.log("docdocdoc: " + document.getElementById(indexer).getElementsByClassName("actionName"));
+        //document.getElementById(indexer).getElementsByClassName("actionName").innerHTML = text;
+        //document.getElementById(indexer).getElementsByClassName("actionName").innerHTML = text;
+        //Div.getElementsByClassName = text;
+        //console.log("Asd: "+Div.getElementsByClassName);
+        //console.log("docdoc: " + document.getElementById(indexer)['title']);
+        //document.getElementById(indexer).getElementsByClassName('actionName').innerHTML = text;
+        //document.getElementById(id).getElementsByClassName('actionName')[0].innerHTML = text;
+        //console.log("loadact: " + document.getElementById(id).getElementsByClassName('actionName'));
+        //document.getElementById(id).getElementsByClassName('actionName').innerHTML = text;
+        //console.log(document.getElementById(id).innerHTML);
+        //document.getElementById(id).innerHTML = text;
+        //document.getElementById(id).innerHTML = "<p class='actionName'>" + text + "</p>";
+        //console.log(document.getElementsByClassName("actionName")[0]);
+        //console.log();
+        //document.getElementById(id).getElementsByClassName('actionName')[0].innerHTML = text;
+        //console.log(document.getElementsByName('valami')[0]);
+        //Div = '<div style="display: inline - block"><img src="/Content/Images/command_small.png" height="80" width="80" ></div><div style="display: inline-block"><p class="title">Utasítás</p><p class="actionName">' + text + '</p></div>';
+        //console.log(Div);
+        //Div += '<div name="valami"><img src="/Content/Images/command_small.png" height="80" width="80" ></div>';
+        //document.getElementsByName('valami')[0].innerHTML = block_array.blocks[0].text;
+    }
+
+    this.AddPaletteAct = function (posx, posy, text) {
+        var Div = createActDiv("paletteaction", posx, posy, "Action", "PaletteItem");
+        Div.appendTo("#palette").draggable({ helper: 'clone' });
+    }
+
+    createGateDiv = function (id, posx, posy, text, category) {
+        if (text == null) {
+            text = prompt("Gateway name: ", "Some Gateway");
+        }
+        if (text != null) {
+            var Div = $('<div>',
+                {
+                    id: String(id),
+                    class: 'window jtk-node',
+                    text: text,
+                    category: category
+                })
+                .css(
+                {
+                    top: posy,
+                    left: posx,
+                    //'min-height': gateheight + 'px',
+                    //'min-width': gatewidth + 'px',
+                    //width: 'auto',
+                    //height: 'auto',
+                    'min-width': gatewidth + 'px',
+                    'min-height': gateheight + 'px',
+                    width: 'auto',
+                    height: 'auto',
+                    //border: 'solid 1px',
+                    background: gatecolor,
+                    'border-color': 'black',
+                    color: fontcolor,
+                    'line-height': ((gateheight) - 11) + 'px',
+                    //'transform': 'rotate(45deg)'
                 }
-            });
+                );
+            return Div;
         }
-    
-
-        this.AddPaletteAct = function (posx, posy, text) {
-            var Div = createActDiv("paletteaction", posx, posy, "Action", "PaletteItem");
-            Div.appendTo("#palette").draggable({ helper: 'clone' });
-        }
-
-        createGateDiv = function (id, posx, posy, text, category) {
-            if (text == null) {
-                text = prompt("Gateway name: ", "Some Gateway");
-            }
-            if (text != null) {
-                var Div = $('<div>',
-                    {
-                        id: String(id),
-                        class: 'window jtk-node',
-                        text: text,
-                        category: category
-                    })
-                    .css(
-                    {
-                        top: posy,
-                        left: posx,
-                        //'min-height': gateheight + 'px',
-                        //'min-width': gatewidth + 'px',
-                        //width: 'auto',
-                        //height: 'auto',
-                        width: gatewidth + 'px',
-                        height: gateheight+'px',
-                        border: 'solid 1px',
-                        background: gatecolor,
-                        'border-color': 'black',
-                        color: fontcolor,
-                        'line-height': ((gateheight / 2)+20) + 'px',
-                        'transform': 'rotate(45deg)'
-                    }
-                    );
-                return Div;
-            }
-        }
+    }
 
     this.AddGate = function (posx, posy, text) {
         LoadGate("" + indexer, posx, posy, text);
@@ -430,29 +553,29 @@
 
     LoadGate = function (id, posx, posy, text) {
         var Div = createGateDiv(id, posx, posy, text, "Editable");
-            Div.appendTo("#canvas");
-            document.getElementById(id).innerHTML = "<p style='transform: rotate(-45deg)'>" + text + "</p>";
-            jsPlumb.draggable($(Div));
-            jsPlumb.addEndpoint($(Div), { anchor: "TopCenter" }, { isSource: false, isTarget: true, maxConnections: -1 });
-            jsPlumb.addEndpoint($(Div), { anchor: "Right" }, { isSource: true, isTarget: false });
-            jsPlumb.addEndpoint($(Div), { anchor: "Left" }, { isSource: true, isTarget: false });
-            block_array.blocks.push({
-                "id": id,
-                "type": "Gate",
-                "text": text,
-                "position": {
-                    "posX": posx,
-                    "posY": posy
-                }
-            });
+        Div.appendTo("#canvas");
+        //document.getElementById(id).innerHTML = "<p class='text' style='transform: rotate(-45deg)'>" + text + "</p>";
+        document.getElementById(id).innerHTML = '<div style="display: inline - block; float:left"><img src="/Content/Images/gateway_small.png" height="80" width="80"></div><div style="display: inline-block"><p class="title">Gateway</p><p class="text">' + text + '</p></div>';
+        jsPlumb.draggable($(Div));
+        jsPlumb.addEndpoint($(Div), { anchor: "TopCenter" }, { isSource: false, isTarget: true, maxConnections: -1 });
+        jsPlumb.addEndpoint($(Div), { anchor: "Right" }, { isSource: true, isTarget: false });
+        jsPlumb.addEndpoint($(Div), { anchor: "Left" }, { isSource: true, isTarget: false });
+        block_array.blocks.push({
+            "id": id,
+            "type": "Gate",
+            "text": text,
+            "position": {
+                "posX": posx,
+                "posY": posy
+            }
+        });
     }
 
     this.AddPaletteGate = function (posx, posy, text) {
         var Div = createGateDiv("palettegateway", posx, posy, "GateWay", "PaletteItem");
         Div.appendTo("#palette").draggable({ helper: 'clone' });
-        document.getElementById("palettegateway").innerHTML = "<p style='transform: rotate(-45deg)'>" + "Gateway" + "</p>";
+        //document.getElementById("palettegateway").innerHTML = "<p style='transform: rotate(-45deg)'>" + "Gateway" + "</p>";
     }
-    
 
     this.Save = function () {
         for (i = 0; i < block_array.blocks.length; i++) {
@@ -500,7 +623,10 @@
                     LoadStart(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, "Start");
                     break;
                 case "AltStart":
-                    LoadAltStart(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, "Start");
+                    LoadAltStart(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, "AltStart");
+                    break;
+                case "TimerStart":
+                    LoadTimerStart(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, "TimerStart");
                     break;
                 case "Act":
                     LoadAct(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, load_array.loadblocks[i].text);
@@ -526,6 +652,11 @@
             });
         });
         //console.log("fesfsefes");
+        //for (i = 0; i < block_array.blocks.length; i++) {
+        //    if ("Act" == block_array.blocks[i].type) {
+        //        document.getElementsByName('valami')[i].innerHTML = block_array.blocks[i].text;
+        //    }
+        //}
     }
 
     Clear = function () {

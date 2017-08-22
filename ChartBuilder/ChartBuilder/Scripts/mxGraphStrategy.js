@@ -50,9 +50,12 @@
             graph.getStylesheet().putCellStyle('port', style);
             graph.getStylesheet().getDefaultEdgeStyle()['edgeStyle'] = 'orthogonalEdgeStyle';
 
-            var styleimage  = new Object();
-            styleimage[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_IMAGE;
-            graph.getStylesheet().putCellStyle('picture', style);
+            var stylefornode = new Object();
+            stylefornode[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_IMAGE;
+            stylefornode[mxConstants.STYLE_NOLABEL] = 0;
+            //var styleimage = new Object();
+            //styleimage[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_IMAGE;
+            graph.getStylesheet().putCellStyle('picture', stylefornode);
 
             var xmlDocument = mxUtils.createXmlDocument();
             sourceNode = xmlDocument.createElement('Source');
@@ -71,14 +74,14 @@
             // Source node does not want any incoming connections
             graph.multiplicities.push(new mxMultiplicity(
                 false, 'Source', null, null, 0, 0, null,
-               'Source Must Have No Incoming Edge',
-               null));
+                'Source Must Have No Incoming Edge',
+                null));
 
             // Target node does not want any outgoing connections
             graph.multiplicities.push(new mxMultiplicity(
                 true, 'Target', null, null, 0, 0, null,
-               'Target Must Have No Outgoing edge',
-               null));
+                'Target Must Have No Outgoing edge',
+                null));
 
             new mxRubberband(graph);
             // Removes cells when [DELETE] is pressed
@@ -106,11 +109,9 @@
         }
     }
 
-    RemCells = function()
-    {
+    RemCells = function () {
         selection = graph.getSelectionCells();
-        for(var i=0;i<graph.getSelectionCells().length;i++)
-        {
+        for (var i = 0; i < graph.getSelectionCells().length; i++) {
             if (selection[i] != null) {
                 if (selection[i].parent != parent) graph.removeCells([selection[i].parent]);
                 else graph.removeCells([selection[i]]);
@@ -152,8 +153,8 @@
     LoadStart = function (id, posx, posy, text) {
         graph.getModel().beginUpdate();
         try {
-            var v1 = graph.insertVertex(parent, id, text, posx, posy, startwidth, startheight, 'editable=0;shape=ellipse;fillColor=' + startcolor); //vagy 'doubleEllipse'
-            v1.setConnectable(false);
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, startwidth, startheight, 'picture;editable=0;'/*shape=ellipse;*/ + 'fillColor=' + startcolor + ';image=/Content/Images/protocol_start_small.png'); //vagy 'doubleEllipse'
+            v1.setConnectable(false); /*'picture;editable=0;fillColor=' + altstartcolor + ';image=/Content/Images/protocol_start_alternative_small.png'*/
             v1.scale = false;
 
             var port = graph.insertVertex(v1, null, sourceNode, 0.5, 1.0, 16, 16, 'port;image=/Content/dot.gif', true);
@@ -192,15 +193,20 @@
                 left: posx,
                 'min-height': startheight + 'px',
                 'min-width': startwidth + 'px',
+                width: startheight + 'px',
+                height: startwidth + 'px',
                 //width: 'auto',
                 //height: 'auto',
-                border: 'solid 1px',
+                //border: 'solid 0px',
                 background: startcolor,
-                'line-height': (startheight / 2) + 'px',
+                'line-height': (startheight-11) + 'px',
                 'border-color': 'black',
                 color: fontcolor,
                 'border-radius': startheight + 'px',
-                //'background-image': 'url("Content/Images/ball.png")'
+                'background-image': 'url("/Content/Images/protocol_start_small.png")',
+                'background-size': 'cover',
+                'background-repeat': 'no-repeat',
+                'background-position': 'center center',
             });
         return Div;
     }
@@ -217,7 +223,7 @@
     LoadAltStart = function (id, posx, posy, text) {
         graph.getModel().beginUpdate();
         try {
-            var v1 = graph.insertVertex(parent, id, text, posx, posy, altstartwidth, altstartheight, 'picture;editable=0;image=/Content/Images/ball.png'); //vagy 'doubleEllipse'
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, altstartwidth, altstartheight, 'picture;editable=0;fillColor=' + altstartcolor + ';image=/Content/Images/protocol_start_alternative_small.png'); //vagy 'doubleEllipse'
             v1.setConnectable(false);
             v1.scale = false;
 
@@ -244,33 +250,96 @@
                 left: posx,
                 'min-height': altstartheight + 'px',
                 'min-width': altstartwidth + 'px',
+                width: altstartheight + 'px',
+                height: altstartwidth + 'px',
                 //width: 'auto',
                 //height: 'auto',
-                border: 'solid 1px',
-                background: startcolor,
+                //border: 'solid 0px',
+                background: altstartcolor,
                 'border-color': 'black',
                 color: fontcolor,
-                'line-height': (altstartheight / 2) + 'px',
+                'line-height': (altstartheight-11) + 'px',
                 'border-radius': altstartheight + 'px',
-                'background-image': 'url("Content/Images/ball.png")'
+                'background-image': 'url("/Content/Images/protocol_start_alternative_small.png")',
+                'background-size': 'cover',
+                'background-repeat': 'no-repeat',
+                'background-position': 'center center',
             });
         return Div;
     }
 
     this.AddPaletteAltStart = function (posx, posy, text) {
-        var Div = createAltStartDiv("palettealtstart", posx, posy, "Start", "PaletteItem");
+        var Div = createAltStartDiv("palettealtstart", posx, posy, "AltStart", "PaletteItem");
+        Div.appendTo("#palette").draggable({ helper: 'clone' });;
+    }
+
+
+    this.AddTimerStart = function (posx, posy, text) {
+        LoadTimerStart(null, posx, posy, text);
+    }
+
+    LoadTimerStart = function (id, posx, posy, text) {
+        graph.getModel().beginUpdate();
+        try {
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, altstartwidth, altstartheight, 'picture;editable=0;fillColor=' + timerstartcolor + ';image=/Content/Images/protocol_start_timed_small.png'); //vagy 'doubleEllipse'
+            v1.setConnectable(false);
+            v1.scale = false;
+
+            var port = graph.insertVertex(v1, null, sourceNode, 0.5, 1.0, 16, 16, 'port;image=/Content/dot.gif', true);
+            port.geometry.offset = new mxPoint(-6, -6);
+
+            v1.type = "TimerStart";
+        }
+        finally {
+            graph.getModel().endUpdate();
+        }
+    }
+
+    createTimerStartDiv = function (id, posx, posy, text, category) {
+        var Div = $('<div>', {
+            id: String(id),
+            class: 'window jtk-node',
+            text: text,
+            category: category,
+        })
+            .css(
+            {
+                top: posy,
+                left: posx,
+                'min-height': timerstartheight + 'px',
+                'min-width': timerstartwidth + 'px',
+                width: timerstartheight + 'px',
+                height: timerstartwidth + 'px',
+                //width: 'auto',
+                //height: 'auto',
+                //border: 'solid 0px',
+                background: timerstartcolor,
+                'border-color': 'black',
+                color: fontcolor,
+                'line-height': (timerstartheight-11) + 'px',
+                'border-radius': timerstartheight + 'px',
+                'background-image': 'url("/Content/Images/protocol_start_timed_small.png")',
+                'background-size': 'cover',
+                'background-repeat': 'no-repeat',
+                'background-position': 'center center',
+            });
+        return Div;
+    }
+
+    this.AddPaletteTimerStart = function (posx, posy, text) {
+        var Div = createTimerStartDiv("palettetimerstart", posx, posy, "TimerStart", "PaletteItem");
         Div.appendTo("#palette").draggable({ helper: 'clone' });;
     }
 
     this.AddStop = function (posx, posy, text) {
-        LoadStop(null,posx,posy,text);
+        LoadStop(null, posx, posy, text);
     }
 
     LoadStop = function (id, posx, posy, text) {
         graph.getModel().beginUpdate();
         try {
-            var v1 = graph.insertVertex(parent, id, text, posx, posy, stopwidth, stopheight, "editable=0;shape=ellipse;fillColor=" + stopcolor);
-            v1.setConnectable(false);
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, stopwidth, stopheight, "picture;editable=0;"/*shape=ellipse;*/ + "fillColor=" + stopcolor + ';image=/Content/Images/protocol_end_small.png');
+            v1.setConnectable(false);/*'picture;editable=0;fillColor=' + altstartcolor + ';image=/Content/Images/protocol_start_alternative_small.png'*/
 
             var port = graph.insertVertex(v1, null, targetNode, 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
             port.geometry.offset = new mxPoint(-6, -8);
@@ -295,15 +364,21 @@
                 left: posx,
                 'min-height': stopheight + 'px',
                 'min-width': stopwidth + 'px',
+                width: stopheight + 'px',
+                height: stopwidth + 'px',
                 //width: 'auto',
                 //height: 'auto',
-                border: 'solid 1px',
+                //border: 'solid 0px',
                 background: stopcolor,
                 raius: '2',
                 'border-color': 'black',
                 color: fontcolor,
-                'line-height': (stopheight / 2) + 'px',
-                'border-radius': stopheight + 'px'
+                'line-height': (stopheight-11) + 'px',
+                'border-radius': stopheight + 'px',
+                'background-image': 'url("/Content/Images/protocol_end_small.png")',
+                'background-size': 'cover',
+                'background-repeat': 'no-repeat',
+                'background-position': 'center center',
             });
         return Div;
     }
@@ -314,14 +389,22 @@
     }
 
     this.AddDec = function (posx, posy, text) {
-        LoadDec(null,posx,posy,text);
+        LoadDec(null, posx, posy, text);
     }
 
     LoadDec = function (id, posx, posy, text) {
         graph.getModel().beginUpdate();
         try {
-            var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 40, decheight, "shape=ellipse;fillColor=" + deccolor);
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 40, decheight, /*shape=ellipse;*//*"picture;fillColor=" + deccolor + ';image=/Content/Images/decision_small.png'*/"shape=rectangle;fillColor=" + deccolor);
             v1.setConnectable(false);
+
+            var icon = graph.insertVertex(v1, null, null, 0, 0.13, 50, 50, 'picture;image=/Content/Images/decision_small.png', true);
+            icon.geometry.offset = new mxPoint(-50, -6);
+            icon.setConnectable(false);
+
+            var label = graph.insertVertex(v1, null, "Decision", 0.5, 0.13, 46, 10, 'fillColor=' + deccolor, true);
+            label.geometry.offset = new mxPoint(-23, 3);
+            label.setConnectable(false);
 
             var rightlabel = graph.insertVertex(v1, null, 'True', 1.1, 0.3, 0, 0, null, true);
             rightlabel.setConnectable(false);
@@ -366,12 +449,13 @@
                     'min-width': decwidth + 'px',
                     width: 'auto',
                     height: 'auto',
-                    border: 'solid 1px',
+                    //border: 'solid 1px',
                     background: deccolor,
+                    //'background-image': 'url("/Content/Images/decision_small.png")',
                     'border-color': 'black',
                     color: fontcolor,
-                    'line-height': (decheight / 2) + 'px',
-                    'border-radius': decheight + 'px'
+                    //'line-height': (decheight / 2) + 'px',
+                    //'border-radius': decheight + 'px'
                 }
                 );
             return Div;
@@ -384,7 +468,7 @@
     }
 
     this.AddAct = function (posx, posy, text) {
-        LoadAct(null,posx,posy,text);
+        LoadAct(null, posx, posy, text);
     }
 
     LoadAct = function (id, posx, posy, text) {
@@ -393,14 +477,18 @@
             var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 40, actheight, "shape=rectangle;fillColor=" + actcolor);
             v1.setConnectable(false);
 
+            var icon = graph.insertVertex(v1, null, null, 0, 0.13, 50, 50, 'picture;image=/Content/Images/command_small.png', true);
+            icon.geometry.offset = new mxPoint(-50, -6);
+            icon.setConnectable(false);
+
+            var label = graph.insertVertex(v1, null, "Action", 0.5, 0.13, 30, 10, 'fillColor=' + actcolor, true);
+            label.geometry.offset = new mxPoint(-15, 3);
+            label.setConnectable(false);
+
             var port = graph.insertVertex(v1, null, targetNode, 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
             var port2 = graph.insertVertex(v1, null, sourceNode, 0.5, 1, 16, 16, 'port;image=/Content/dot.gif', true);
             port.geometry.offset = new mxPoint(-8, -8);
             port2.geometry.offset = new mxPoint(-8, -8);
-
-            var icon = graph.insertVertex(v1, null, sourceNode, 0, 0.25, 50, 50, 'port;image=/Content/Images/gateway_small.png', true);
-            icon.geometry.offset = new mxPoint(-6, -6);
-            icon.setConnectable(false);
 
             v1.type = "Act";
         }
@@ -429,10 +517,10 @@
                     'min-width': actwidth + 'px',
                     width: 'auto',
                     height: 'auto',
-                    border: 'solid 1px',
+                    //border: 'solid 0px',
                     'border-color': 'black',
                     color: fontcolor,
-                    'line-height': (actheight / 2) + 'px',
+                    'line-height': (actheight-11) + 'px',
                     background: actcolor
                 });
             return Div;
@@ -451,15 +539,24 @@
     LoadGate = function (id, posx, posy, text) {
         graph.getModel().beginUpdate();
         try {
-            var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 40, gateheight, "shape=rhombus;fillColor=" + gatecolor);
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 40, gateheight, "shape=rectangle;fillColor=" + gatecolor); //shape=rhombus
             v1.setConnectable(false);
-            
+
+            var icon = graph.insertVertex(v1, null, null, 0, 0.13, 50, 50, 'picture;image=/Content/Images/gateway_small.png', true);
+            icon.geometry.offset = new mxPoint(-50, -6);
+            icon.setConnectable(false);
+
+            var label = graph.insertVertex(v1, null, "Gateway", 0.5, 0.13, 48, 10, 'fillColor=' + gatecolor, true);
+            label.geometry.offset = new mxPoint(-24, 3);
+            label.setConnectable(false);
+
             var port = graph.insertVertex(v1, null, targetNode, 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
             var port2 = graph.insertVertex(v1, null, sourceNode, 0, 0.5, 16, 16, 'port;image=/Content/dot.gif', true);
             var port3 = graph.insertVertex(v1, null, sourceNode, 1, 0.5, 16, 16, 'port;image=/Content/dot.gif', true);
             port.geometry.offset = new mxPoint(-8, -8);
             port2.geometry.offset = new mxPoint(-8, -8);
             port3.geometry.offset = new mxPoint(-8, -8);
+
             v1.type = "Gate";
         }
         finally {
@@ -488,12 +585,12 @@
                     'min-width': gatewidth + 'px',
                     width: 'auto',
                     height: 'auto',
-                    border: 'solid 1px',
+                    //border: 'solid 0px',
                     background: gatecolor,
                     'border-color': 'black',
                     color: fontcolor,
-                    'line-height': ((gateheight / 2) + 40) + 'px',
-                    'transform': 'rotate(45deg)'
+                    'line-height': (gateheight-11) + 'px',
+                    //'transform': 'rotate(45deg)'
                 }
                 );
             return Div;
@@ -503,7 +600,7 @@
     this.AddPaletteGate = function (posx, posy, text) {
         var Div = createGateDiv("palettegateway", posx, posy, "GateWay", "PaletteItem");
         Div.appendTo("#palette").draggable({ helper: 'clone' });
-        document.getElementById("palettegateway").innerHTML = "<p style='transform: rotate(-45deg)'>" + "Gateway" + "</p>";
+        //document.getElementById("palettegateway").innerHTML = "<p style='transform: rotate(-45deg)'>" + "Gateway" + "</p>";
     }
 
     this.Save = function () {
@@ -549,7 +646,10 @@
                     LoadStart(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, "Start");
                     break;
                 case "AltStart":
-                    LoadAltStart(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, "Start");
+                    LoadAltStart(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, "AltStart");
+                    break;
+                case "TimerStart":
+                    LoadTimerStart(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, "TimerStart");
                     break;
                 case "Act":
                     LoadAct(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, load_array.loadblocks[i].text);
@@ -572,7 +672,7 @@
                 if (
                     source.children[j].geometry.x == load_array.loadconnections[i].anchors[0][0]
                     && source.children[j].geometry.y == load_array.loadconnections[i].anchors[0][1]
-                  )
+                )
                     sourceCell = j;
             }
             //megkeresi a target a megfelelő pontjának indexét
@@ -580,7 +680,7 @@
                 if (
                     target.children[j].geometry.x == load_array.loadconnections[i].anchors[1][0]
                     && target.children[j].geometry.y == load_array.loadconnections[i].anchors[1][1]
-                  )
+                )
                     targetCell = j;
             }
 

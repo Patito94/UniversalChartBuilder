@@ -72,30 +72,30 @@
 
         // define the Node templates for regular nodes
 
-        myDiagram.nodeTemplateMap.add("",  // the default category
-            $(go.Node, "Spot", nodeStyle(),
-                // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
-                $(go.Panel, "Auto",
-                    $(go.Shape, "Rectangle",
-                        { fill: "#00A9C9", stroke: null },
-                        new go.Binding("figure", "figure")),
-                    $(go.TextBlock,
-                        {
-                            font: "bold 11pt Helvetica, Arial, sans-serif",
-                            stroke: fontcolor,
-                            margin: 8,
-                            maxSize: new go.Size(160, NaN),
-                            wrap: go.TextBlock.WrapFit,
-                            editable: true
-                        },
-                        new go.Binding("text").makeTwoWay())
-                ),
-                // four named ports, one on each side:
-                makePort("T", go.Spot.Top, false, true),
-                makePort("L", go.Spot.Left, true, true),
-                makePort("R", go.Spot.Right, true, true),
-                makePort("B", go.Spot.Bottom, true, false)
-            ));
+        //myDiagram.nodeTemplateMap.add("",  // the default category
+        //    $(go.Node, "Spot", nodeStyle(),
+        //        // the main object is a Panel that surrounds a TextBlock with a rectangular Shape
+        //        $(go.Panel, "Auto",
+        //            $(go.Shape, "Rectangle",
+        //                { fill: "#00A9C9", stroke: null },
+        //                new go.Binding("figure", "figure")),
+        //            $(go.TextBlock,
+        //                {
+        //                    font: "bold 11pt Helvetica, Arial, sans-serif",
+        //                    stroke: fontcolor,
+        //                    margin: 8,
+        //                    maxSize: new go.Size(160, NaN),
+        //                    wrap: go.TextBlock.WrapFit,
+        //                    editable: true
+        //                },
+        //                new go.Binding("text").makeTwoWay())
+        //        ),
+        //        // four named ports, one on each side:
+        //        makePort("T", go.Spot.Top, false, true),
+        //        makePort("L", go.Spot.Left, true, true),
+        //        makePort("R", go.Spot.Right, true, true),
+        //        makePort("B", go.Spot.Bottom, true, false)
+        //    ));
 
         myDiagram.nodeTemplateMap.add("Start",
             $(go.Node, "Spot", nodeStyle(),
@@ -106,10 +106,10 @@
                         { font: "bold 11pt Helvetica, Arial, sans-serif", stroke: fontcolor },
                         new go.Binding("text"))
                 ),
-                //$(go.Picture, {
-                //    source: "Content/Images/ball.png", column: 4,
-                //    width: 50, height: 50, margin: 2
-                //}),
+                $(go.Picture, {
+                    source: "Content/Images/protocol_start_small.png", column: 4,
+                    width: startwidth, height: startheight, margin: 2
+                }),
                 // three named ports, one on each side except the top, all output only:
                 makePort("B", go.Spot.Bottom, true, false)
             ));
@@ -119,14 +119,31 @@
                 $(go.Panel, "Auto",
                     $(go.Shape, "Circle",
                         { minSize: new go.Size(/*40, 40*/altstartwidth, altstartheight), /*maxSize: new go.Size(40, 40),*/ fill: /*"#79C900"*/altstartcolor, stroke: null }),
+                    $(go.Picture, {
+                        source: "Content/Images/protocol_start_alternative_small.png", column: 4,
+                        minSize: new go.Size(/*40, 40*/altstartwidth, altstartheight), maxSize: new go.Size(/*40, 40*/altstartwidth, altstartheight), margin: 2
+                    }),
                     $(go.TextBlock, "AltStart",
                         { font: "bold 11pt Helvetica, Arial, sans-serif", stroke: fontcolor },
                         new go.Binding("text"))
                 ),
-                $(go.Picture, {
-                    source: "Content/Images/ball.png", column: 4,
-                    minSize: new go.Size(/*40, 40*/altstartwidth, altstartheight), margin: 2
-                }),
+                // three named ports, one on each side except the top, all output only:
+                makePort("B", go.Spot.Bottom, true, false)
+            ));
+
+        myDiagram.nodeTemplateMap.add("TimerStart",
+            $(go.Node, "Spot", nodeStyle(),
+                $(go.Panel, "Auto",
+                    $(go.Shape, "Circle",
+                        { minSize: new go.Size(/*40, 40*/timerstartwidth, timerstartheight), /*maxSize: new go.Size(40, 40),*/ fill: /*"#79C900"*/timerstartcolor, stroke: null }),
+                    $(go.Picture, {
+                        source: "Content/Images/protocol_start_timed_small.png", column: 4,
+                        minSize: new go.Size(/*40, 40*/timerstartwidth, timerstartheight), maxSize: new go.Size(/*40, 40*/timerstartwidth, timerstartheight), margin: 2
+                    }),
+                    $(go.TextBlock, "TimerStart",
+                        { font: "bold 8pt Helvetica, Arial, sans-serif", stroke: fontcolor },
+                        new go.Binding("text"))
+                ),
                 // three named ports, one on each side except the top, all output only:
                 makePort("B", go.Spot.Bottom, true, false)
             ));
@@ -134,13 +151,13 @@
         myDiagram.nodeTemplateMap.add("Act",
             $(go.Node, "Spot", nodeStyle(),
                 $(go.Panel, "Horizontal",
-                    { background: actcolor, minSize: new go.Size(200,80)},
+                    { background: actcolor, minSize: new go.Size(actwidth, actheight) },
                     //$(go.Shape, "Rectangle", { fill: /*"#00A9C9"*/actcolor, stroke: null }),
                     $(go.Picture,
-                      { source: "Content/Images/command_small.png", width: 80, height: 80 }),
+                        { source: "/Content/Images/command_small.png", width: 80, height: 80 }),
                     $(go.Panel, "Vertical",
-                        { margin: 5},
-                         $(go.TextBlock, "Utasítás",
+                        { margin: 5 },
+                        $(go.TextBlock, "Utasítás",
                             {
                                 editable: false
                             }),
@@ -156,7 +173,7 @@
                                 editable: true
                             },
                             new go.Binding("text").makeTwoWay())
-                   )
+                    )
                 ),
                 makePort("T", go.Spot.Top, false, true),
                 makePort("B", go.Spot.Bottom, true, false)
@@ -167,28 +184,43 @@
 
         myDiagram.nodeTemplateMap.add("Dec",
             $(go.Node, "Spot", nodeStyle(),
-                $(go.Panel, "Auto",
-                    $(go.Shape, "Circle",
-                        { fill: /*"#00A9C9"*/deccolor, stroke: null }),
-                    $(go.TextBlock, "Decision",
-                        {
-                            font: "bold 11pt Helvetica, Arial, sans-serif",
-                            stroke: fontcolor,
-                            margin: 8,
-                            //maxSize: new go.Size(160, NaN),
-                            minSize: new go.Size(/*40, 40*/decwidth, decheight),
-                            wrap: go.TextBlock.WrapFit,
-                            editable: true
-                        },
-                        new go.Binding("text").makeTwoWay())
+                $(go.Panel, /*"Auto"*//*go.Panel.Spot*/"Horizontal",
+                    //$(go.Shape, "Circle",
+                    //    { fill: /*"#00A9C9"*/deccolor, stroke: null }),
+                    //$(go.Picture, {
+                    //    source: "Content/Images/decision_small.png", column: 4,
+                    //    width: decwidth+20, height: decheight+20, margin: 2
+                    //}),
+                    { background: deccolor, minSize: new go.Size(decwidth, decheight) },
+                    //$(go.Shape, "Rectangle", { fill: /*"#00A9C9"*/actcolor, stroke: null }),
+                    $(go.Picture,
+                        { source: "/Content/Images/decision_small.png", width: 80, height: 80 }),
+                    $(go.Panel, "Vertical",
+                        { margin: 5 },
+                        $(go.TextBlock, "Decision",
+                            {
+                                editable: false
+                            }),
+                        $(go.TextBlock, "Decision",
+                            {
+                                font: "bold 11pt Helvetica, Arial, sans-serif",
+                                stroke: fontcolor,
+                                margin: 8,
+                                //maxSize: new go.Size(160, NaN),
+                                //minSize: new go.Size(/*40, 40*/decwidth, decheight),
+                                wrap: go.TextBlock.WrapFit,
+                                editable: true
+                            },
+                            new go.Binding("text").makeTwoWay())
+                    )
                 ),
+                makePort("T", go.Spot.Top, false, true),
+                makePort("L", go.Spot.Left, true, false),
+                makePort("R", go.Spot.Right, true, false),
                 $(go.TextBlock,
                     { text: "False", alignment: go.Spot.TopLeft }),
                 $(go.TextBlock,
                     { text: "True", alignment: go.Spot.TopRight }),
-                makePort("T", go.Spot.Top, false, true),
-                makePort("L", go.Spot.Left, true, false),
-                makePort("R", go.Spot.Right, true, false),
             ));
 
         myDiagram.nodeTemplateMap.add("Stop",
@@ -200,26 +232,40 @@
                         { font: "bold 11pt Helvetica, Arial, sans-serif", stroke: fontcolor },
                         new go.Binding("text"))
                 ),
+                $(go.Picture, {
+                    source: "Content/Images/protocol_end_small.png", column: 4,
+                    width: stopwidth, height: stopheight, margin: 2
+                }),
                 // three named ports, one on each side except the bottom, all input only:
                 makePort("T", go.Spot.Top, false, true)
             ));
 
         myDiagram.nodeTemplateMap.add("Gate",
             $(go.Node, "Spot", nodeStyle(),
-                $(go.Panel, "Auto",
-                    $(go.Shape, "Diamond",
-                        { fill: gatecolor, stroke: null }),
-                    $(go.TextBlock, "Decision",
-                        {
-                            font: "bold 11pt Helvetica, Arial, sans-serif",
-                            stroke: fontcolor,
-                            margin: 8,
-                            //maxSize: new go.Size(160, NaN),
-                            minSize: new go.Size(gatewidth, gateheight),
-                            wrap: go.TextBlock.WrapFit,
-                            editable: true
-                        },
-                        new go.Binding("text").makeTwoWay())
+                $(go.Panel, /*"Auto"*/"Horizontal",
+                    { background: gatecolor, minSize: new go.Size(gatewidth, gateheight) },
+                    //$(go.Shape, "Diamond",
+                    //    { fill: gatecolor, stroke: null }),
+                    $(go.Picture,
+                        { source: "/Content/Images/gateway_small.png", width: 80, height: 80 }),
+                    $(go.Panel, "Vertical",
+                        { margin: 5 },
+                        $(go.TextBlock, "Gateway",
+                            {
+                                editable: false
+                            }),
+                        $(go.TextBlock, "Gateway",
+                            {
+                                font: "bold 11pt Helvetica, Arial, sans-serif",
+                                stroke: fontcolor,
+                                margin: 8,
+                                //maxSize: new go.Size(160, NaN),
+                                minSize: new go.Size(gatewidth / 2, gateheight / 2),
+                                wrap: go.TextBlock.WrapFit,
+                                editable: true
+                            },
+                            new go.Binding("text").makeTwoWay())
+                    )
                 ),
                 makePort("T", go.Spot.Top, false, true),
                 makePort("L", go.Spot.Left, true, false),
@@ -261,10 +307,11 @@
                     model: new go.GraphLinksModel([  // specify the contents of the Palette
                         { category: "Start", text: "Start" },
                         { category: "AltStart", text: "AltStart" },
+                        { category: "TimerStart", text: "TimerStart" },
+                        { category: "Stop", text: "Stop" },
                         { category: "Act", text: "Action" },
                         { category: "Dec", text: "???", figure: "Diamond" },
-                        { category: "Stop", text: "Stop" },
-                        { category: "Gate", text: "gate" }
+                        { category: "Gate", text: "Gate" }
                     ])
                 });
 
@@ -296,6 +343,10 @@
 
     this.AddAltStart = function (posx, posy, text) {
         CreateNode(posx, posy, text, "AltStart");
+    }
+
+    this.AddTimerStart = function (posx, posy, text) {
+        CreateNode(posx, posy, text, "TimerStart");
     }
 
     this.AddStop = function (posx, posy, text) {

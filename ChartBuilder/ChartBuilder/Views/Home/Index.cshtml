@@ -51,6 +51,7 @@
             strategy.Create();
             library.AddPaletteStart();
             library.AddPaletteAltStart();
+            library.AddPaletteTimerStart();
             library.AddPaletteStop();
             library.AddPaletteDec();
             library.AddPaletteAct();
@@ -62,6 +63,9 @@
         }
         function AddAltStart(x, y, text) {
             strategy.AddAltStart(x, y, text);
+        }
+        function AddTimerStart(x, y, text) {
+            strategy.AddTimerStart(x, y, text);
         }
         function AddStop(x, y, text) {
             strategy.AddStop(x, y, text);
@@ -128,6 +132,9 @@
                             case "palettealtstart":
                                 AddAltStart(x, y, "AltStart");
                                 return;
+                            case "palettetimerstart":
+                                AddTimerStart(x, y, "TimerStart");
+                                return;
                             case "palettestop":
                                 AddStop(x, y, "Stop");
                                 return;
@@ -187,6 +194,7 @@
     <div id="buttons" style="text-align:center; visibility:visible">
         <button id="startbtn" onClick="AddStart(0,0,'Start');">Add start</button>
         <button id="altstartbtn" onClick="AddAltStart(0,0,'Alternative Start');">Add alternative start</button>
+        <button id="altstartbtn" onClick="AddTimerStart(0,0,'Alternative Start');">Add timer start</button>
         <button id="stopbtn" onClick="AddStop(0,0,'Stop');">Add stop</button>
         <button id="actbtn" onClick="AddAct(0,0,'Action');">Add action</button>
         <button id="decbtn" onClick="AddDec(0,0,'Decision');">Add decision</button>
