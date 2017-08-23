@@ -478,7 +478,14 @@
                 "posY": posy
             }
         });
-        block_array.blocks[id].text = text;
+        //block_array.blocks[id].text = text; //Hibát dob, és rossz!
+        for (var i = 0; i < block_array.blocks.length; i++)
+        {
+            if (block_array.blocks[i].id == id)
+            {
+                block_array.blocks[i].text = text;
+            }
+        }
         //console.log("bl text: " + block_array.blocks[id].text);
         //console.log("doc: " + document.getElementById(indexer).innerHTML);
         //document.getElementById(indexer).innerHTML = text;
