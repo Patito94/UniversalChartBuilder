@@ -41,7 +41,6 @@
             graph.setAllowDanglingEdges(false);
             graph.setDisconnectOnMove(false);
 
-
             style = new Object();
             style[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_IMAGE;
             //port label ne látszódjon
@@ -53,6 +52,7 @@
             var stylefornode = new Object();
             stylefornode[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_IMAGE;
             stylefornode[mxConstants.STYLE_NOLABEL] = 0;
+            //stylefornode[mxConstants.STYLE_FOLDABLE] = 0;
             //var styleimage = new Object();
             //styleimage[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_IMAGE;
             graph.getStylesheet().putCellStyle('picture', stylefornode);
@@ -101,17 +101,20 @@
 
             var style = graph.getStylesheet().getDefaultVertexStyle();
             style[mxConstants.STYLE_FONTCOLOR] = fontcolor;
+            //Ne lehessen kicsinyíteni a node-okat
+            style[mxConstants.STYLE_FOLDABLE] = 0;
             graph.getStylesheet().putCellStyle('vertexesDefault', style);
 
             //palette.cellsMovable = false;
             //palette.cellsEditable = false;
             //palette.cellsResizable = false;
+            
         }
     }
 
     RemCells = function () {
         selection = graph.getSelectionCells();
-        for (var i = 0; i < graph.getSelectionCells().length; i++) {
+        for (var i = 0; i < selection.length; i++) {
             if (selection[i] != null) {
                 if (selection[i].parent != parent) graph.removeCells([selection[i].parent]);
                 else graph.removeCells([selection[i]]);
@@ -672,16 +675,20 @@
                 if (
                     source.children[j].geometry.x == load_array.loadconnections[i].anchors[0][0]
                     && source.children[j].geometry.y == load_array.loadconnections[i].anchors[0][1]
-                )
+                ) {
                     sourceCell = j;
+                    break;
+                }
             }
             //megkeresi a target a megfelelő pontjának indexét
             for (var j = 0; j < target.children.length; j++) {
                 if (
                     target.children[j].geometry.x == load_array.loadconnections[i].anchors[1][0]
                     && target.children[j].geometry.y == load_array.loadconnections[i].anchors[1][1]
-                )
+                ) {
                     targetCell = j;
+                    break;
+                }
             }
 
             //beilleszti a vonalat
