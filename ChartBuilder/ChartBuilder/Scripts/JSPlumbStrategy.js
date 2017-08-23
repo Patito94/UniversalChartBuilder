@@ -45,7 +45,16 @@
         //console.log(text);
         document.getElementById(thisid).getElementsByClassName('text')[0].innerHTML = text;
         //document.getElementsByClassName('actionName').innerHTML = text;
-        block_array.blocks[thisid].text = text;
+        //block_array.blocks[thisid].text = text;
+        getNodebyId(thisid).text = text;
+        //for (var i = 0; i < block_array.blocks.length; i++)
+        //{
+        //    if (block_array.blocks[i].id == thisid)
+        //    {
+        //        block_array.blocks[i].text = text;
+        //    }
+        //}
+        //block_array.blocks[i].text = text;
         //console.log("bl text: " + block_array.blocks[thisid].text);
         //for (i = 0; i < block_array.blocks.length; i++) {
         //    if (thisid == block_array.blocks[i].id) {
@@ -108,6 +117,13 @@
         }
     });
 
+    function getNodebyId(id) {
+        for (var i = 0; i < block_array.blocks.length; i++) {
+            if (block_array.blocks[i].id == id) {
+                return block_array.blocks[i];
+            }
+        }
+    }
 
     ///NYÍL LEGYEN
     jsPlumb.bind('connection', function (e) {
@@ -395,7 +411,7 @@
         var Div = createDecDiv(id, posx, posy, text, "Editable");
         Div.appendTo("#canvas");
         //document.getElementById(id).innerHTML = "<p class='text'>" + text + "</p>";
-        document.getElementById(id).innerHTML = '<div style="display: inline - block; float:left"><img src="/Content/Images/decision_small.png" height="80" width="80"></div><div style="display: inline-block"><p class="title">Decision</p><p class="text">' + text + '</p></div>';
+        document.getElementById(id).innerHTML = '<div style="display: inline - block; float:left"><img src="/Content/Images/decision_small.png" height="' + decheight + '" width="' + decwidth + '"></div><div style="display: inline-block"><p class="title">Decision</p><p class="text">' + text + '</p></div>';
         jsPlumb.draggable($(Div));
         $(Div).addClass('window');
         jsPlumb.addEndpoint($(Div), { anchor: "TopCenter" }, { isSource: false, isTarget: true, maxConnections: -1 });
@@ -462,7 +478,7 @@
         //Div.load('/Content/action.html');
         //$('#refresh').html(Div);
         //Div.style='<div style="display: inline - block"><img src="/Content/Images/command_small.png" height="80" width="80" ></div><div style="display: inline-block"><p class="title">Utasítás</p><p class="actionName">' + text + "Asd" + '</p></div>';
-        document.getElementById(id).innerHTML = '<div style="display: inline - block; float:left"><img src="/Content/Images/command_small.png" height="80" width="80"></div><div style="display: inline-block"><p class="title">Action</p><p class="text">' + text + '</p></div>';
+        document.getElementById(id).innerHTML = '<div style="display: inline - block; float:left"><img src="/Content/Images/command_small.png" height="' + actheight + '" width="' + actwidth + '"></div><div style="display: inline-block"><p class="title">Action</p><p class="text">' + text + '</p></div>';
         //console.log(Div);
         //var x = Div;
         //console.log(x);
@@ -479,13 +495,14 @@
             }
         });
         //block_array.blocks[id].text = text; //Hibát dob, és rossz!
-        for (var i = 0; i < block_array.blocks.length; i++)
-        {
-            if (block_array.blocks[i].id == id)
-            {
-                block_array.blocks[i].text = text;
-            }
-        }
+        getNodebyId(id).text = text;
+        //for (var i = 0; i < block_array.blocks.length; i++)
+        //{
+        //    if (block_array.blocks[i].id == id)
+        //    {
+        //        block_array.blocks[i].text = text;
+        //    }
+        //}
         //console.log("bl text: " + block_array.blocks[id].text);
         //console.log("doc: " + document.getElementById(indexer).innerHTML);
         //document.getElementById(indexer).innerHTML = text;
@@ -533,10 +550,6 @@
                 {
                     top: posy,
                     left: posx,
-                    //'min-height': gateheight + 'px',
-                    //'min-width': gatewidth + 'px',
-                    //width: 'auto',
-                    //height: 'auto',
                     'min-width': gatewidth + 'px',
                     'min-height': gateheight + 'px',
                     width: 'auto',
@@ -545,7 +558,7 @@
                     background: gatecolor,
                     'border-color': 'black',
                     color: fontcolor,
-                    'line-height': ((gateheight) - 11) + 'px',
+                    //'line-height': (gateheight - 11) + 'px',
                     //'transform': 'rotate(45deg)'
                 }
                 );
@@ -562,7 +575,7 @@
         var Div = createGateDiv(id, posx, posy, text, "Editable");
         Div.appendTo("#canvas");
         //document.getElementById(id).innerHTML = "<p class='text' style='transform: rotate(-45deg)'>" + text + "</p>";
-        document.getElementById(id).innerHTML = '<div style="display: inline - block; float:left"><img src="/Content/Images/gateway_small.png" height="80" width="80"></div><div style="display: inline-block"><p class="title">Gateway</p><p class="text">' + text + '</p></div>';
+        document.getElementById(id).innerHTML = '<div style="display: inline - block; float:left"><img src="/Content/Images/gateway_small.png" height="' + gateheight + '" width="' + gatewidth + '"></div><div style="display: inline-block"><p class="title">Gateway</p><p class="text">' + text + '</p></div>';
         jsPlumb.draggable($(Div));
         jsPlumb.addEndpoint($(Div), { anchor: "TopCenter" }, { isSource: false, isTarget: true, maxConnections: -1 });
         jsPlumb.addEndpoint($(Div), { anchor: "Right" }, { isSource: true, isTarget: false });
