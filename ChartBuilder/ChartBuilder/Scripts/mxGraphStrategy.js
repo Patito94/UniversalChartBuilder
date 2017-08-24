@@ -108,7 +108,6 @@
             //palette.cellsMovable = false;
             //palette.cellsEditable = false;
             //palette.cellsResizable = false;
-            
         }
     }
 
@@ -401,8 +400,8 @@
             var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 40, decheight, /*shape=ellipse;*//*"picture;fillColor=" + deccolor + ';image=/Content/Images/decision_small.png'*/"shape=rectangle;fillColor=" + deccolor);
             v1.setConnectable(false);
 
-            var icon = graph.insertVertex(v1, null, null, 0, 0.13, 50, 50, 'picture;image=/Content/Images/decision_small.png', true);
-            icon.geometry.offset = new mxPoint(-50, -6);
+            var icon = graph.insertVertex(v1, null, null, 0, 0.13, decwidth, decheight, 'picture;image=/Content/Images/decision_small.png', true);
+            icon.geometry.offset = new mxPoint(-decwidth, -6);
             icon.setConnectable(false);
 
             var label = graph.insertVertex(v1, null, "Decision", 0.5, 0.13, 46, 10, 'fillColor=' + deccolor, true);
@@ -480,8 +479,8 @@
             var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 40, actheight, "shape=rectangle;fillColor=" + actcolor);
             v1.setConnectable(false);
 
-            var icon = graph.insertVertex(v1, null, null, 0, 0.13, 50, 50, 'picture;image=/Content/Images/command_small.png', true);
-            icon.geometry.offset = new mxPoint(-50, -6);
+            var icon = graph.insertVertex(v1, null, null, 0, 0.13, actwidth, actheight, 'picture;image=/Content/Images/command_small.png', true);
+            icon.geometry.offset = new mxPoint(-actwidth, -6);
             icon.setConnectable(false);
 
             var label = graph.insertVertex(v1, null, "Action", 0.5, 0.13, 30, 10, 'fillColor=' + actcolor, true);
@@ -545,8 +544,8 @@
             var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 40, gateheight, "shape=rectangle;fillColor=" + gatecolor); //shape=rhombus
             v1.setConnectable(false);
 
-            var icon = graph.insertVertex(v1, null, null, 0, 0.13, 50, 50, 'picture;image=/Content/Images/gateway_small.png', true);
-            icon.geometry.offset = new mxPoint(-50, -6);
+            var icon = graph.insertVertex(v1, null, null, 0, 0.13, gatewidth, gateheight, 'picture;image=/Content/Images/gateway_small.png', true);
+            icon.geometry.offset = new mxPoint(-gatewidth, -6);
             icon.setConnectable(false);
 
             var label = graph.insertVertex(v1, null, "Gateway", 0.5, 0.13, 48, 10, 'fillColor=' + gatecolor, true);
@@ -606,6 +605,66 @@
         //document.getElementById("palettegateway").innerHTML = "<p style='transform: rotate(-45deg)'>" + "Gateway" + "</p>";
     }
 
+    this.AddInform = function (posx, posy, text) {
+        LoadInform(null, posx, posy, text);
+    }
+
+    LoadInform = function (id, posx, posy, text) {
+        graph.getModel().beginUpdate();
+        try {
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 40, informheight, "shape=rectangle;fillColor=" + informcolor);
+            v1.setConnectable(false);
+
+            var icon = graph.insertVertex(v1, null, null, 0, 0.13, informwidth, informheight, 'picture;image=/Content/Images/information_task_small.png', true);
+            icon.geometry.offset = new mxPoint(-informwidth, -6);
+            icon.setConnectable(false);
+
+            var label = graph.insertVertex(v1, null, "Inform", 0.5, 0.13, 30, 10, 'fillColor=' + informcolor, true);
+            label.geometry.offset = new mxPoint(-15, 3);
+            label.setConnectable(false);
+
+            v1.type = "Inform";
+        }
+        finally {
+            // Updates the display
+            graph.getModel().endUpdate();
+        }
+    }
+
+    createInformDiv = function (id, posx, posy, text, category) {
+        if (text == null) {
+            text = prompt("Action name: ", "Some Action");
+        }
+        if (text != null) {
+            var Div = $('<div>', {
+                id: String(id),
+                class: 'window jtk-node',
+                text: text,
+                category: category
+            })
+                .css(
+                {
+                    top: posy,
+                    left: posx,
+                    'min-height': informheight + 'px',
+                    'min-width': informwidth + 'px',
+                    width: 'auto',
+                    height: 'auto',
+                    //border: 'solid 0px',
+                    'border-color': 'black',
+                    color: fontcolor,
+                    'line-height': (informheight - 11) + 'px',
+                    background: informcolor
+                });
+            return Div;
+        }
+    }
+
+    this.AddPaletteInform = function (posx, posy, text) {
+        var Div = createInformDiv("paletteinform", posx, posy, "Inform", "PaletteItem");
+        Div.appendTo("#palette").draggable({ helper: 'clone' });
+    }
+
     this.Save = function () {
         var encoder = new mxCodec();
         nodeData = [];
@@ -659,6 +718,9 @@
                     break;
                 case "Gate":
                     LoadGate(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, load_array.loadblocks[i].text);
+                    break;
+                case "Inform":
+                    LoadInform(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, load_array.loadblocks[i].text);
                     break;
                 case "Stop":
                     LoadStop(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, "Stop");

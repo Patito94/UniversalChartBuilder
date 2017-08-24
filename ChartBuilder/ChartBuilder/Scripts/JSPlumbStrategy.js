@@ -597,6 +597,61 @@
         //document.getElementById("palettegateway").innerHTML = "<p style='transform: rotate(-45deg)'>" + "Gateway" + "</p>";
     }
 
+    createInformDiv = function (id, posx, posy, text, category) {
+        if (text == null) {
+            text = prompt("Inform name: ", "Some Inform");
+        }
+        if (text != null) {
+            var Div = $('<div>',
+                {
+                    id: String(id),
+                    class: 'window jtk-node',
+                    text: text,
+                    category: category
+                })
+                .css(
+                {
+                    top: posy,
+                    left: posx,
+                    'min-width': gatewidth + 'px',
+                    'min-height': gateheight + 'px',
+                    width: 'auto',
+                    height: 'auto',
+                    background: gatecolor,
+                    'border-color': 'black',
+                    color: fontcolor,
+                }
+                );
+            return Div;
+        }
+    }
+
+    this.AddInform = function (posx, posy, text) {
+        LoadInform("" + indexer, posx, posy, text);
+        indexer++;
+    }
+
+    LoadInform = function (id, posx, posy, text) {
+        var Div = createInformDiv(id, posx, posy, text, "Editable");
+        Div.appendTo("#canvas");
+        document.getElementById(id).innerHTML = '<div style="display: inline - block; float:left"><img src="/Content/Images/information_task_small.png" height="' + informheight + '" width="' + informwidth + '"></div><div style="display: inline-block"><p class="title">Inform</p><p class="text">' + text + '</p></div>';
+        jsPlumb.draggable($(Div));
+        block_array.blocks.push({
+            "id": id,
+            "type": "Inform",
+            "text": text,
+            "position": {
+                "posX": posx,
+                "posY": posy
+            }
+        });
+    }
+
+    this.AddPaletteInform = function (posx, posy, text) {
+        var Div = createInformDiv("paletteinform", posx, posy, "Inform", "PaletteItem");
+        Div.appendTo("#palette").draggable({ helper: 'clone' });
+    }
+
     this.Save = function () {
         for (i = 0; i < block_array.blocks.length; i++) {
             block_array.blocks[i].position.posX = document.getElementById(block_array.blocks[i].id).offsetLeft;
@@ -653,6 +708,9 @@
                     break;
                 case "Gate":
                     LoadGate(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, load_array.loadblocks[i].text);
+                    break;
+                case "Inform":
+                    LoadInform(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, load_array.loadblocks[i].text);
                     break;
                 case "Stop":
                     LoadStop(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, "Stop");

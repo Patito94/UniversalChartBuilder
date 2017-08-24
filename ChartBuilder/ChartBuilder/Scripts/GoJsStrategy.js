@@ -272,6 +272,35 @@
                 makePort("R", go.Spot.Right, true, false)
             ));
 
+
+        myDiagram.nodeTemplateMap.add("Inform",
+            $(go.Node, "Spot", nodeStyle(),
+                $(go.Panel, "Horizontal",
+                    { background: informcolor, minSize: new go.Size(informwidth, informheight) },
+                    $(go.Picture,
+                        { source: "/Content/Images/information_task_small.png", width: informwidth, height: informheight }),
+                    $(go.Panel, "Vertical",
+                        { margin: 5 },
+                        $(go.TextBlock, "Inform",
+                            {
+                                editable: false
+                            }),
+                        $(go.TextBlock, "Inform",
+                            {
+                                font: "bold 11pt Helvetica, Arial, sans-serif",
+                                stroke: fontcolor,
+                                width: 200,
+                                //margin: 8,
+                                //maxSize: new go.Size(160, NaN),
+                                //minSize: new go.Size(/*40, 40*/actwidth, actheight),
+                                wrap: go.TextBlock.WrapFit,
+                                editable: true
+                            },
+                            new go.Binding("text").makeTwoWay())
+                    )
+                )
+            ));
+
         //A port ne ugráljon
         myDiagram.model = $(go.GraphLinksModel,
             {
@@ -311,7 +340,8 @@
                         { category: "Stop", text: "Stop" },
                         { category: "Act", text: "Action" },
                         { category: "Dec", text: "???", figure: "Diamond" },
-                        { category: "Gate", text: "Gate" }
+                        { category: "Gate", text: "Gate" },
+                        { category: "Inform", text: "Inform" }
                     ])
                 });
 
@@ -363,6 +393,10 @@
 
     this.AddGate = function (posx, posy, text) {
         CreateNode(posx, posy, text, "Gate");
+    }
+
+    this.AddInform = function (posx, posy, text) {
+        CreateNode(posx, posy, text, "Inform");
     }
 
     CreateNode = function (posx, posy, text, cat) {

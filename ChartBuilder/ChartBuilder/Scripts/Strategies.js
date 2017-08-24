@@ -10,6 +10,7 @@
 var actcolor = '#6CCFFF';
 var deccolor = '#7FB2F0';
 var gatecolor = '#7FB2FF';
+var informcolor = '#7FB2FF';
 var startcolor = '#FFFFFF';
 var altstartcolor = '#FFFFFF';
 var timerstartcolor = '#FFFFFF';
@@ -34,6 +35,8 @@ var decwidth = 50;
 var decheight = 50;
 var gatewidth = 50;
 var gateheight = 50;
+var informwidth = 50;
+var informheight = 50;
 
 LibraryStrategy.prototype = {
     setStrategy: function (library) {
@@ -62,6 +65,9 @@ LibraryStrategy.prototype = {
     },
     AddGate: function (posx, posy, text) {
         return this.library.AddGate(posx, posy, text);
+    },
+    AddInform: function (posx, posy, text) {
+        return this.library.AddInform(posx, posy, text);
     },
 
     Save: function () {

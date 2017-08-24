@@ -56,6 +56,7 @@
             library.AddPaletteDec();
             library.AddPaletteAct();
             library.AddPaletteGate();
+            library.AddPaletteInform();
         }
 
         function AddStart(x, y, text) {
@@ -78,6 +79,9 @@
         }
         function AddGate(x, y, text) {
             strategy.AddGate(x, y, text);
+        }
+        function AddInform(x, y, text) {
+            strategy.AddInform(x, y, text);
         }
 
         function Save() {
@@ -147,6 +151,9 @@
                             case "palettegateway":
                                 AddGate(x, y, "Gateway");
                                 return;
+                            case "paletteinform":
+                                AddInform(x, y, "Inform");
+                                return;
                             default:
                                 return;
                         }
@@ -199,6 +206,7 @@
         <button id="actbtn" onClick="AddAct(0,0,'Action');">Add action</button>
         <button id="decbtn" onClick="AddDec(0,0,'Decision');">Add decision</button>
         <button id="gatebtn" onClick="AddGate(0,0,'Gateway');">Add gateway</button>
+        <button id="informbtn" onClick="AddInform(0,0,'Inform');">Add inform</button>
     </div>
     <div style="text-align:center;">
         <button id="savebtn" onclick="Save();">Save</button>
