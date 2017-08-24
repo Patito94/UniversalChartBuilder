@@ -426,6 +426,62 @@
         Div.appendTo("#palette").draggable({ helper: 'clone' });
     }
 
+    this.AddCompCollection = function (posx, posy, text) {
+        LoadCompCollection("" + indexer, posx, posy, text);
+        indexer++;
+    }
+
+    createCompCollectionDiv = function (id, posx, posy, text, category) {
+        var Div = $('<div>', {
+            id: String(id),
+            class: 'window jtk-node',
+            text: text,
+            category: category,
+        })
+            .css(
+            {
+                top: posy,
+                left: posx,
+                'min-height': compcollectionheight + 'px',
+                'min-width': compcollectionwidth + 'px',
+                width: compcollectionheight + 'px',
+                height: compcollectionwidth + 'px',
+                background: compcollectioncolor,
+                raius: '2',
+                'border-color': 'black',
+                color: fontcolor,
+                'background-image': 'url("/Content/Images/collection_complex_small.png")',
+                'background-size': 'cover',
+                'background-repeat': 'no-repeat',
+                'background-position': 'center center',
+                'line-height': (compcollectionheight - 11) + 'px',
+                //'border-radius': collectionheight + 'px'
+            });
+        return Div;
+    }
+
+    LoadCompCollection = function (id, posx, posy, text) {
+        var Div = createCompCollectionDiv(id, posx, posy, "CompCollection", "Deletable");
+        Div.appendTo("#canvas");
+        jsPlumb.draggable($(Div));
+        jsPlumb.addEndpoint($(Div), { anchor: "BottomCenter" }, { isSource: true, isTarget: false, maxConnections: -1 });
+        jsPlumb.addEndpoint($(Div), { anchor: "TopCenter" }, { isSource: false, isTarget: true, maxConnections: -1 });
+        block_array.blocks.push({
+            "id": id,
+            "type": "CompCollection",
+            "text": text,
+            "position": {
+                "posX": posx,
+                "posY": posy
+            }
+        });
+    }
+
+    this.AddPaletteCompCollection = function (posx, posy, text) {
+        var Div = createCompCollectionDiv("palettecompcollection", posx, posy, "CompCollection", "PaletteItem");
+        Div.appendTo("#palette").draggable({ helper: 'clone' });
+    }
+
     this.AddDec = function (posx, posy, text) {
         LoadDec("" + indexer, posx, posy, text);
         indexer++;
@@ -774,6 +830,9 @@
                     break;
                 case "Collection":
                     LoadCollection(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, "Collection");
+                    break;
+                case "CompCollection":
+                    LoadCompCollection(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, "CompCollection");
                     break;
             }
         }

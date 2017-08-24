@@ -43,8 +43,8 @@
     <script>
         var strategy;
         function runOnLoad() {
-            var library = new JSPlumbStrategy();
-            //var library = new GoJsStrategy();
+            //var library = new JSPlumbStrategy();
+            var library = new GoJsStrategy();
             //var library = new mxGraphStrategy();
             strategy = new LibraryStrategy();
             strategy.setStrategy(library);
@@ -54,6 +54,7 @@
             library.AddPaletteTimerStart();
             library.AddPaletteStop();
             library.AddPaletteCollection();
+            library.AddPaletteCompCollection();
             library.AddPaletteDec();
             library.AddPaletteAct();
             library.AddPaletteGate();
@@ -74,6 +75,9 @@
         }
         function AddCollection(x, y, text) {
             strategy.AddCollection(x, y, text);
+        }
+        function AddCompCollection(x, y, text) {
+            strategy.AddCompCollection(x, y, text);
         }
         function AddDec(x, y, text) {
             strategy.AddDec(x, y, text);
@@ -149,6 +153,9 @@
                             case "palettecollection":
                                 AddCollection(x, y, "Collection");
                                 return;
+                            case "palettecompcollection":
+                                AddCompCollection(x, y, "CompCollection");
+                                return;
                             case "paletteaction":
                                 AddAct(x, y, "Action");
                                 return;
@@ -207,14 +214,15 @@
 
     <div id="buttons" style="text-align:center; visibility:visible">
         <button id="startbtn" onClick="AddStart(0,0,'Start');">Add start</button>
-        <button id="altstartbtn" onClick="AddAltStart(0,0,'Alternative Start');">Add alternative start</button>
-        <button id="altstartbtn" onClick="AddTimerStart(0,0,'Alternative Start');">Add timer start</button>
-        <button id="stopbtn" onClick="AddStop(0,0,'Stop');">Add stop</button>
-        <button id="actbtn" onClick="AddAct(0,0,'Action');">Add action</button>
-        <button id="decbtn" onClick="AddDec(0,0,'Decision');">Add decision</button>
-        <button id="gatebtn" onClick="AddGate(0,0,'Gateway');">Add gateway</button>
-        <button id="informbtn" onClick="AddInform(0,0,'Inform');">Add inform</button>
+        <button id="altstartbtn" onClick="AddAltStart(0,0,'Alternative Start');">Add Alternative Start</button>
+        <button id="altstartbtn" onClick="AddTimerStart(0,0,'Alternative Start');">Add Timer Start</button>
+        <button id="stopbtn" onClick="AddStop(0,0,'Stop');">Add Stop</button>
+        <button id="actbtn" onClick="AddAct(0,0,'Action');">Add Action</button>
+        <button id="decbtn" onClick="AddDec(0,0,'Decision');">Add Decision</button>
+        <button id="gatebtn" onClick="AddGate(0,0,'Gateway');">Add Gateway</button>
+        <button id="informbtn" onClick="AddInform(0,0,'Inform');">Add Inform</button>
         <button id="collectionbtn" onClick="AddCollection(0,0,'Collection');">Add Collection</button>
+        <button id="compcollectionbtn" onClick="AddCompCollection(0,0,'CompCollection');">Add Complex Collection</button>
     </div>
     <div style="text-align:center;">
         <button id="savebtn" onclick="Save();">Save</button>

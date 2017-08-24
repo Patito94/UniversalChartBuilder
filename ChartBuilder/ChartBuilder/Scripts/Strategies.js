@@ -16,6 +16,7 @@ var altstartcolor = '#FFFFFF';
 var timerstartcolor = '#FFFFFF';
 var stopcolor = '#FFFFFF';
 var collectioncolor = '#FFFFFF';
+var compcollectioncolor = '#FFFFFF';
 //var actcolor = '#FFFFFF';
 //var deccolor = '#FFFFFF';
 //var gatecolor = '#FFFFFF';
@@ -30,6 +31,8 @@ var timerstartwidth = 50;
 var timerstartheight = 50;
 var collectionwidth = 50;
 var collectionheight = 50;
+var compcollectionwidth = 50;
+var compcollectionheight = 50;
 var stopwidth = 50;
 var stopheight = 50;
 var actwidth = 50;
@@ -62,6 +65,9 @@ LibraryStrategy.prototype = {
     },
     AddCollection: function (posx, posy, text) {
         return this.library.AddCollection(posx, posy, text);
+    },
+    AddCompCollection: function (posx, posy, text) {
+        return this.library.AddCompCollection(posx, posy, text);
     },
     AddDec: function (posx, posy, text) {
         return this.library.AddDec(posx, posy, text);

@@ -258,6 +258,24 @@
                 makePort("B", go.Spot.Bottom, true, false),
             ));
 
+        myDiagram.nodeTemplateMap.add("CompCollection",
+            $(go.Node, "Spot", nodeStyle(),
+                $(go.Panel, "Auto",
+                    $(go.Shape, "Rectangle",
+                        { minSize: new go.Size(compcollectionwidth, compcollectionheight), fill: compcollectioncolor, stroke: null }),
+                    $(go.Picture, {
+                        source: "/Content/Images/collection_complex_small.png", column: 4,
+                        width: compcollectionwidth, height: compcollectionheight, margin: 2
+                    }),
+                    $(go.TextBlock, "CompCollection",
+                        { font: "bold 11pt Helvetica, Arial, sans-serif", stroke: fontcolor },
+                        new go.Binding("text"))
+                ),
+                // three named ports, one on each side except the bottom, all input only:
+                makePort("T", go.Spot.Top, false, true),
+                makePort("B", go.Spot.Bottom, true, false),
+            ));
+
         myDiagram.nodeTemplateMap.add("Gate",
             $(go.Node, "Spot", nodeStyle(),
                 $(go.Panel, /*"Auto"*/"Horizontal",
@@ -357,6 +375,7 @@
                         { category: "TimerStart", text: "TimerStart" },
                         { category: "Stop", text: "Stop" },
                         { category: "Collection", text: "Collection" },
+                        { category: "CompCollection", text: "CompCollection" },
                         { category: "Act", text: "Action" },
                         { category: "Dec", text: "???", figure: "Diamond" },
                         { category: "Gate", text: "Gate" },
@@ -400,6 +419,10 @@
 
     this.AddCollection = function (posx, posy, text) {
         CreateNode(posx, posy, text, "Collection");
+    }
+
+    this.AddCompCollection = function (posx, posy, text) {
+        CreateNode(posx, posy, text, "CompCollection");
     }
 
     this.AddStop = function (posx, posy, text) {
