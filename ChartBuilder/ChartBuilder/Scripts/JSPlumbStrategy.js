@@ -765,6 +765,63 @@
         Div.appendTo("#palette").draggable({ helper: 'clone' });
     }
 
+    this.AddSimpleForm = function (posx, posy, text) {
+        LoadSimpleForm("" + indexer, posx, posy, text);
+        indexer++;
+    }
+
+    createSimpleFormDiv = function (id, posx, posy, text, category) {
+        if (text == null) {
+            text = prompt("SimpleForm name: ", "Some SimpleForm");
+        }
+        if (text != null) {
+            var Div = $('<div>', {
+                id: String(id),
+                class: 'window jtk-node',
+                text: text,
+                category: category
+            })
+                .css(
+                {
+                    top: posy,
+                    left: posx,
+                    'min-height': simpleformheight + 'px',
+                    'min-width': simpleformwidth + 'px',
+                    width: 'auto',
+                    height: 'auto',
+                    //border: 'solid 1px',
+                    'border-color': 'black',
+                    color: fontcolor,
+                    background: simpleformcolor
+                });
+            return Div;
+        }
+    }
+
+    LoadSimpleForm = function (id, posx, posy, text) {
+        var Div = createSimpleFormDiv(id, posx, posy, text, "Editable");
+        Div.appendTo("#canvas");
+        document.getElementById(id).innerHTML = '<div style="display: inline - block; float:left"><img src="/Content/Images/simple_form_small.png" height="' + simpleformheight + '" width="' + simpleformwidth + '"></div><div style="display: inline-block"><p class="title">SimpleForm</p><p class="text">' + text + '</p></div>';
+        jsPlumb.draggable($(Div));
+        jsPlumb.addEndpoint($(Div), { anchor: "TopCenter" }, { isSource: false, isTarget: true, maxConnections: -1 });
+        jsPlumb.addEndpoint($(Div), { anchor: "BottomCenter" }, { isSource: true, isTarget: false });
+        block_array.blocks.push({
+            "id": id,
+            "type": "SimpleForm",
+            "text": text,
+            "position": {
+                "posX": posx,
+                "posY": posy
+            }
+        });
+        getNodebyId(id).text = text;
+    }
+
+    this.AddPaletteSimpleForm = function (posx, posy, text) {
+        var Div = createSimpleFormDiv("palettesimpleform", posx, posy, "SimpleForm", "PaletteItem");
+        Div.appendTo("#palette").draggable({ helper: 'clone' });
+    }
+
     this.Save = function () {
         for (i = 0; i < block_array.blocks.length; i++) {
             block_array.blocks[i].position.posX = document.getElementById(block_array.blocks[i].id).offsetLeft;
@@ -824,6 +881,9 @@
                     break;
                 case "Inform":
                     LoadInform(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, load_array.loadblocks[i].text);
+                    break;
+                case "SimpleForm":
+                    LoadSimpleForm(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, load_array.loadblocks[i].text);
                     break;
                 case "Stop":
                     LoadStop(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, "Stop");

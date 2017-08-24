@@ -135,7 +135,7 @@
             $(go.Node, "Spot", nodeStyle(),
                 $(go.Panel, "Auto",
                     $(go.Shape, "Circle",
-                        { minSize: new go.Size(/*40, 40*/timerstartwidth, timerstartheight), /*maxSize: new go.Size(40, 40),*/ fill: /*"#79C900"*/timerstartcolor, stroke: null }),
+                        { minSize: new go.Size(/*40, 40*/timerstartwidth, timerstartheight), /*maxSize: new go.Size(timerstartwidth, timerstartheight),*/ fill: /*"#79C900"*/timerstartcolor, stroke: null }),
                     $(go.Picture, {
                         source: "/Content/Images/protocol_start_timed_small.png", column: 4,
                         minSize: new go.Size(/*40, 40*/timerstartwidth, timerstartheight), maxSize: new go.Size(/*40, 40*/timerstartwidth, timerstartheight), margin: 2
@@ -337,6 +337,37 @@
                 )
             ));
 
+        myDiagram.nodeTemplateMap.add("SimpleForm",
+            $(go.Node, "Spot", nodeStyle(),
+                $(go.Panel, "Horizontal",
+                    { background: actcolor, minSize: new go.Size(simpleformwidth, simpleformheight) },
+                    //$(go.Shape, "Rectangle", { fill: /*"#00A9C9"*/actcolor, stroke: null }),
+                    $(go.Picture,
+                        { source: "/Content/Images/simple_form_small.png", width: simpleformwidth, height: simpleformheight }),
+                    $(go.Panel, "Vertical",
+                        { margin: 5 },
+                        $(go.TextBlock, "SimpleForm",
+                            {
+                                editable: false
+                            }),
+                        $(go.TextBlock, "*Write Here*",
+                            {
+                                font: "bold 11pt Helvetica, Arial, sans-serif",
+                                stroke: fontcolor,
+                                width: 200,
+                                //margin: 8,
+                                //maxSize: new go.Size(160, NaN),
+                                //minSize: new go.Size(/*40, 40*/actwidth, actheight),
+                                wrap: go.TextBlock.WrapFit,
+                                editable: true
+                            },
+                            new go.Binding("text").makeTwoWay())
+                    )
+                ),
+                makePort("T", go.Spot.Top, false, true),
+                makePort("B", go.Spot.Bottom, true, false)
+            ));
+
         //A port ne ugráljon
         myDiagram.model = $(go.GraphLinksModel,
             {
@@ -379,7 +410,8 @@
                         { category: "Act", text: "Action" },
                         { category: "Dec", text: "???", figure: "Diamond" },
                         { category: "Gate", text: "Gate" },
-                        { category: "Inform", text: "Inform" }
+                        { category: "Inform", text: "Inform" },
+                        { category: "SimpleForm", text: "*Write Here*" }
                     ])
                 });
 
@@ -443,6 +475,10 @@
 
     this.AddInform = function (posx, posy, text) {
         CreateNode(posx, posy, text, "Inform");
+    }
+
+    this.AddSimpleForm = function (posx, posy, text) {
+        CreateNode(posx, posy, text, "SimpleForm");
     }
 
     CreateNode = function (posx, posy, text, cat) {

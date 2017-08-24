@@ -59,6 +59,7 @@
             library.AddPaletteAct();
             library.AddPaletteGate();
             library.AddPaletteInform();
+            library.AddPaletteSimpleForm();
         }
 
         function AddStart(x, y, text) {
@@ -90,6 +91,9 @@
         }
         function AddInform(x, y, text) {
             strategy.AddInform(x, y, text);
+        }
+        function AddSimpleForm(x, y, text) {
+            strategy.AddSimpleForm(x, y, text);
         }
 
         function Save() {
@@ -168,6 +172,9 @@
                             case "paletteinform":
                                 AddInform(x, y, "Inform");
                                 return;
+                            case "palettesimpleform":
+                                AddSimpleForm(x, y, "*Write here*");
+                                return;
                             default:
                                 return;
                         }
@@ -223,6 +230,7 @@
         <button id="informbtn" onClick="AddInform(0,0,'Inform');">Add Inform</button>
         <button id="collectionbtn" onClick="AddCollection(0,0,'Collection');">Add Collection</button>
         <button id="compcollectionbtn" onClick="AddCompCollection(0,0,'CompCollection');">Add Complex Collection</button>
+        <button id="simpleformbtn" onClick="AddSimpleForm(0,0,'*Write here*');">Add Simple Form</button>
     </div>
     <div style="text-align:center;">
         <button id="savebtn" onclick="Save();">Save</button>

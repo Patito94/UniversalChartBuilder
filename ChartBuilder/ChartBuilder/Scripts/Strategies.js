@@ -17,6 +17,7 @@ var timerstartcolor = '#FFFFFF';
 var stopcolor = '#FFFFFF';
 var collectioncolor = '#FFFFFF';
 var compcollectioncolor = '#FFFFFF';
+var simpleformcolor = '#6CCFFF';
 //var actcolor = '#FFFFFF';
 //var deccolor = '#FFFFFF';
 //var gatecolor = '#FFFFFF';
@@ -43,6 +44,8 @@ var gatewidth = 50;
 var gateheight = 50;
 var informwidth = 50;
 var informheight = 50;
+var simpleformwidth = 50;
+var simpleformheight = 50;
 
 LibraryStrategy.prototype = {
     setStrategy: function (library) {
@@ -80,6 +83,9 @@ LibraryStrategy.prototype = {
     },
     AddInform: function (posx, posy, text) {
         return this.library.AddInform(posx, posy, text);
+    },
+    AddSimpleForm: function (posx, posy, text) {
+        return this.library.AddSimpleForm(posx, posy, text);
     },
 
     Save: function () {

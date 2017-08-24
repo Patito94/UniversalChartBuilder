@@ -780,6 +780,70 @@
         Div.appendTo("#palette").draggable({ helper: 'clone' });
     }
 
+    this.AddSimpleForm = function (posx, posy, text) {
+        LoadSimpleForm(null, posx, posy, text);
+    }
+
+    LoadSimpleForm = function (id, posx, posy, text) {
+        graph.getModel().beginUpdate();
+        try {
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, (text.length * font_size) + 40, simpleformheight, "shape=rectangle;fillColor=" + simpleformcolor);
+            v1.setConnectable(false);
+
+            var icon = graph.insertVertex(v1, null, null, 0, 0.13, actwidth, simpleformheight, 'picture;image=/Content/Images/simple_form_small.png', true);
+            icon.geometry.offset = new mxPoint(-simpleformwidth, -6);
+            icon.setConnectable(false);
+
+            var label = graph.insertVertex(v1, null, "SimpleForm", 0.5, 0.13, 60, 10, 'fillColor=' + simpleformcolor, true);
+            label.geometry.offset = new mxPoint(-30, 3);
+            label.setConnectable(false);
+
+            var port = graph.insertVertex(v1, null, targetNode, 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
+            var port2 = graph.insertVertex(v1, null, sourceNode, 0.5, 1, 16, 16, 'port;image=/Content/dot.gif', true);
+            port.geometry.offset = new mxPoint(-8, -8);
+            port2.geometry.offset = new mxPoint(-8, -8);
+
+            v1.type = "SimpleForm";
+        }
+        finally {
+            // Updates the display
+            graph.getModel().endUpdate();
+        }
+    }
+
+    createSimpleFormDiv = function (id, posx, posy, text, category) {
+        if (text == null) {
+            text = prompt("SimpleForm name: ", "Some SimpleForm");
+        }
+        if (text != null) {
+            var Div = $('<div>', {
+                id: String(id),
+                class: 'window jtk-node',
+                text: text,
+                category: category
+            })
+                .css(
+                {
+                    top: posy,
+                    left: posx,
+                    'min-height': simpleformheight + 'px',
+                    'min-width': simpleformwidth + 'px',
+                    width: 'auto',
+                    height: 'auto',
+                    //border: 'solid 1px',
+                    'border-color': 'black',
+                    color: fontcolor,
+                    background: simpleformcolor
+                });
+            return Div;
+        }
+    }
+
+    this.AddPaletteSimpleForm = function (posx, posy, text) {
+        var Div = createSimpleFormDiv("palettesimpleform", posx, posy, "SimpleForm", "PaletteItem");
+        Div.appendTo("#palette").draggable({ helper: 'clone' });
+    }
+
     this.Save = function () {
         var encoder = new mxCodec();
         nodeData = [];
@@ -836,6 +900,9 @@
                     break;
                 case "Inform":
                     LoadInform(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, load_array.loadblocks[i].text);
+                    break;
+                case "SimpleForm":
+                    LoadSimpleForm(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, load_array.loadblocks[i].text);
                     break;
                 case "Stop":
                     LoadStop(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, "Stop");
