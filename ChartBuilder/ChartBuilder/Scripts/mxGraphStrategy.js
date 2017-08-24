@@ -390,6 +390,63 @@
         Div.appendTo("#palette").draggable({ helper: 'clone' });;
     }
 
+    this.AddCollection = function (posx, posy, text) {
+        LoadCollection(null, posx, posy, text);
+    }
+
+    LoadCollection = function (id, posx, posy, text) {
+        graph.getModel().beginUpdate();
+        try {
+            var v1 = graph.insertVertex(parent, id, text, posx, posy, collectionwidth, collectionheight, "picture;editable=0;"/*shape=ellipse;*/ + "fillColor=" + collectioncolor + ';image=/Content/Images/collection_small.png');
+            v1.setConnectable(false);
+
+            var port = graph.insertVertex(v1, null, targetNode, 0.5, 0, 16, 16, 'port;image=/Content/dot.gif', true);
+            port.geometry.offset = new mxPoint(-6, -8);
+            var port = graph.insertVertex(v1, null, sourceNode, 0.5, 1.0, 16, 16, 'port;image=/Content/dot.gif', true);
+            port.geometry.offset = new mxPoint(-6, -6);
+
+            v1.type = "Collection";
+        }
+        finally {
+            // Updates the display
+            graph.getModel().endUpdate();
+        }
+    }
+
+    createCollectionDiv = function (id, posx, posy, text, category) {
+        var Div = $('<div>', {
+            id: String(id),
+            class: 'window jtk-node',
+            text: text,
+            category: category,
+        })
+            .css(
+            {
+                top: posy,
+                left: posx,
+                'min-height': collectionheight + 'px',
+                'min-width': collectionwidth + 'px',
+                width: collectionheight + 'px',
+                height: collectionwidth + 'px',
+                background: collectioncolor,
+                raius: '2',
+                'border-color': 'black',
+                color: fontcolor,
+                'background-image': 'url("/Content/Images/collection_small.png")',
+                'background-size': 'cover',
+                'background-repeat': 'no-repeat',
+                'background-position': 'center center',
+                'line-height': (collectionheight - 11) + 'px',
+                //'border-radius': collectionheight + 'px'
+            });
+        return Div;
+    }
+
+    this.AddPaletteCollection = function (posx, posy, text) {
+        var Div = createCollectionDiv("palettecollection", posx, posy, "Collection", "PaletteItem");
+        Div.appendTo("#palette").draggable({ helper: 'clone' });
+    }
+
     this.AddDec = function (posx, posy, text) {
         LoadDec(null, posx, posy, text);
     }
@@ -724,6 +781,9 @@
                     break;
                 case "Stop":
                     LoadStop(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, "Stop");
+                    break;
+                case "Collection":
+                    LoadCollection(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, "Collection");
                     break;
             }
         }

@@ -107,7 +107,7 @@
                         new go.Binding("text"))
                 ),
                 $(go.Picture, {
-                    source: "Content/Images/protocol_start_small.png", column: 4,
+                    source: "/Content/Images/protocol_start_small.png", column: 4,
                     width: startwidth, height: startheight, margin: 2
                 }),
                 // three named ports, one on each side except the top, all output only:
@@ -120,7 +120,7 @@
                     $(go.Shape, "Circle",
                         { minSize: new go.Size(/*40, 40*/altstartwidth, altstartheight), /*maxSize: new go.Size(40, 40),*/ fill: /*"#79C900"*/altstartcolor, stroke: null }),
                     $(go.Picture, {
-                        source: "Content/Images/protocol_start_alternative_small.png", column: 4,
+                        source: "/Content/Images/protocol_start_alternative_small.png", column: 4,
                         minSize: new go.Size(/*40, 40*/altstartwidth, altstartheight), maxSize: new go.Size(/*40, 40*/altstartwidth, altstartheight), margin: 2
                     }),
                     $(go.TextBlock, "AltStart",
@@ -137,7 +137,7 @@
                     $(go.Shape, "Circle",
                         { minSize: new go.Size(/*40, 40*/timerstartwidth, timerstartheight), /*maxSize: new go.Size(40, 40),*/ fill: /*"#79C900"*/timerstartcolor, stroke: null }),
                     $(go.Picture, {
-                        source: "Content/Images/protocol_start_timed_small.png", column: 4,
+                        source: "/Content/Images/protocol_start_timed_small.png", column: 4,
                         minSize: new go.Size(/*40, 40*/timerstartwidth, timerstartheight), maxSize: new go.Size(/*40, 40*/timerstartwidth, timerstartheight), margin: 2
                     }),
                     $(go.TextBlock, "TimerStart",
@@ -233,11 +233,29 @@
                         new go.Binding("text"))
                 ),
                 $(go.Picture, {
-                    source: "Content/Images/protocol_end_small.png", column: 4,
+                    source: "/Content/Images/protocol_end_small.png", column: 4,
                     width: stopwidth, height: stopheight, margin: 2
                 }),
                 // three named ports, one on each side except the bottom, all input only:
                 makePort("T", go.Spot.Top, false, true)
+            ));
+
+        myDiagram.nodeTemplateMap.add("Collection",
+            $(go.Node, "Spot", nodeStyle(),
+                $(go.Panel, "Auto",
+                    $(go.Shape, "Rectangle",
+                        { minSize: new go.Size(collectionwidth, collectionheight), fill: collectioncolor, stroke: null }),
+                    $(go.Picture, {
+                        source: "/Content/Images/collection_small.png", column: 4,
+                        width: collectionwidth, height: collectionheight, margin: 2
+                    }),
+                    $(go.TextBlock, "Collection",
+                        { font: "bold 11pt Helvetica, Arial, sans-serif", stroke: fontcolor },
+                        new go.Binding("text"))
+                ),
+                // three named ports, one on each side except the bottom, all input only:
+                makePort("T", go.Spot.Top, false, true),
+                makePort("B", go.Spot.Bottom, true, false),
             ));
 
         myDiagram.nodeTemplateMap.add("Gate",
@@ -338,6 +356,7 @@
                         { category: "AltStart", text: "AltStart" },
                         { category: "TimerStart", text: "TimerStart" },
                         { category: "Stop", text: "Stop" },
+                        { category: "Collection", text: "Collection" },
                         { category: "Act", text: "Action" },
                         { category: "Dec", text: "???", figure: "Diamond" },
                         { category: "Gate", text: "Gate" },
@@ -377,6 +396,10 @@
 
     this.AddTimerStart = function (posx, posy, text) {
         CreateNode(posx, posy, text, "TimerStart");
+    }
+
+    this.AddCollection = function (posx, posy, text) {
+        CreateNode(posx, posy, text, "Collection");
     }
 
     this.AddStop = function (posx, posy, text) {

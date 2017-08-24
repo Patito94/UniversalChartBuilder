@@ -53,6 +53,7 @@
             library.AddPaletteAltStart();
             library.AddPaletteTimerStart();
             library.AddPaletteStop();
+            library.AddPaletteCollection();
             library.AddPaletteDec();
             library.AddPaletteAct();
             library.AddPaletteGate();
@@ -70,6 +71,9 @@
         }
         function AddStop(x, y, text) {
             strategy.AddStop(x, y, text);
+        }
+        function AddCollection(x, y, text) {
+            strategy.AddCollection(x, y, text);
         }
         function AddDec(x, y, text) {
             strategy.AddDec(x, y, text);
@@ -142,6 +146,9 @@
                             case "palettestop":
                                 AddStop(x, y, "Stop");
                                 return;
+                            case "palettecollection":
+                                AddCollection(x, y, "Collection");
+                                return;
                             case "paletteaction":
                                 AddAct(x, y, "Action");
                                 return;
@@ -207,6 +214,7 @@
         <button id="decbtn" onClick="AddDec(0,0,'Decision');">Add decision</button>
         <button id="gatebtn" onClick="AddGate(0,0,'Gateway');">Add gateway</button>
         <button id="informbtn" onClick="AddInform(0,0,'Inform');">Add inform</button>
+        <button id="collectionbtn" onClick="AddCollection(0,0,'Collection');">Add Collection</button>
     </div>
     <div style="text-align:center;">
         <button id="savebtn" onclick="Save();">Save</button>

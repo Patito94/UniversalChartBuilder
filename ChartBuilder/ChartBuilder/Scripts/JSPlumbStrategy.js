@@ -1,5 +1,6 @@
 ﻿var JSPlumbStrategy = function () {
     var thisid;
+    var maxnodenumber = 10000000;
     var block_array = {
         blocks: []
     }
@@ -33,7 +34,7 @@
     }
     function openModal() {
         //Előre hozom a Modal-t, így az a node-ok előtt jelenik meg
-        modal.style.zIndex = 100001;
+        modal.style.zIndex = maxnodenumber+1;
         modal.style.display = "block";
     }
     this.EditNode = function () {
@@ -369,6 +370,62 @@
         Div.appendTo("#palette").draggable({ helper: 'clone' });;
     }
 
+    this.AddCollection = function (posx, posy, text) {
+        LoadCollection("" + indexer, posx, posy, text);
+        indexer++;
+    }
+
+    createCollectionDiv = function (id, posx, posy, text, category) {
+        var Div = $('<div>', {
+            id: String(id),
+            class: 'window jtk-node',
+            text: text,
+            category: category,
+        })
+            .css(
+            {
+                top: posy,
+                left: posx,
+                'min-height': collectionheight + 'px',
+                'min-width': collectionwidth + 'px',
+                width: collectionheight + 'px',
+                height: collectionwidth + 'px',
+                background: collectioncolor,
+                raius: '2',
+                'border-color': 'black',
+                color: fontcolor,
+                'background-image': 'url("/Content/Images/collection_small.png")',
+                'background-size': 'cover',
+                'background-repeat': 'no-repeat',
+                'background-position': 'center center',
+                'line-height': (collectionheight - 11) + 'px',
+                //'border-radius': collectionheight + 'px'
+            });
+        return Div;
+    }
+
+    LoadCollection = function (id, posx, posy, text) {
+        var Div = createCollectionDiv(id, posx, posy, "Collection", "Deletable");
+        Div.appendTo("#canvas");
+        jsPlumb.draggable($(Div));
+        jsPlumb.addEndpoint($(Div), { anchor: "BottomCenter" }, { isSource: true, isTarget: false, maxConnections: -1 });
+        jsPlumb.addEndpoint($(Div), { anchor: "TopCenter" }, { isSource: false, isTarget: true, maxConnections: -1 });
+        block_array.blocks.push({
+            "id": id,
+            "type": "Collection",
+            "text": text,
+            "position": {
+                "posX": posx,
+                "posY": posy
+            }
+        });
+    }
+
+    this.AddPaletteCollection = function (posx, posy, text) {
+        var Div = createCollectionDiv("palettecollection", posx, posy, "Collection", "PaletteItem");
+        Div.appendTo("#palette").draggable({ helper: 'clone' });
+    }
+
     this.AddDec = function (posx, posy, text) {
         LoadDec("" + indexer, posx, posy, text);
         indexer++;
@@ -684,7 +741,7 @@
 
         //console.log(load_array.loadblocks);
         var length = load_array.loadblocks.length;
-        var bestid = -100000;
+        var bestid = -maxnodenumber;
         for (i = 0; i < length; i++) {
             if (parseInt(load_array.loadblocks[i].id) > parseInt(bestid)) { bestid = parseInt(load_array.loadblocks[i].id) };
             //console.log("id: " + load_array.loadblocks[i].id);
@@ -714,6 +771,9 @@
                     break;
                 case "Stop":
                     LoadStop(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, "Stop");
+                    break;
+                case "Collection":
+                    LoadCollection(load_array.loadblocks[i].id, load_array.loadblocks[i].position.posX, load_array.loadblocks[i].position.posY, "Collection");
                     break;
             }
         }
